@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MEDIA - INTAN MALAYSIA</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
+	<link href="./vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="vendor/star-rating/star-rating-svg.css">
+    <link href="./css/style.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    
+    <!-- DataTables -->
+    <link href="./vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Responsive datatable examples -->
+    <link href="./vendor/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+    <!-- imported css -->
+    <link rel="stylesheet" href="./vendor/sweet-alert/sweetalert2.css" type="text/css" />
+    <link rel="stylesheet" href="./vendor/sweet-alert/sweetalert2.min.css" type="text/css" />
+    <link rel="stylesheet" href="./vendor/footable2/css/footable.bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="./vendor/footable2/css/footable.bootstrap.min.css" type="text/css" />
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="index.html" class="brand-logo">
+                <img class="logo-abbr" src="./images/DCM.png" alt="">
+                <!-- <img class="logo-compact" src="./images/logo-text.png" alt=""> -->
+                <!-- <img class="brand-title" src="./images/logo-text.png" alt=""> -->
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box start
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box End
+        ***********************************-->
+
+
+		
+		
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="dashboard_bar">
+								Galeri Media
+                            </div>
+                        </div>
+                        <ul class="navbar-nav header-right">
+							<li class="nav-item">
+								<div class="input-group search-area d-xl-inline-flex d-none">
+									<div class="input-group-append">
+										<span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
+									</div>
+									<input type="text" class="form-control" id="Search" placeholder="Carian...">
+								</div>
+							</li>
+							
+							
+							
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
+                                    <img src="images/profile/17.jpg" width="20" alt=""/>
+									<div class="header-info">
+										<span class="text-black" id="nama"><strong></strong></span>
+										<!-- <p class="fs-12 mb-0">Super Admin</p> -->
+									</div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <!-- <a href="./app-profile.html" class="dropdown-item ai-icon">
+                                        <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        <span class="ml-2">Profile </span>
+                                    </a> -->
+                                    <!-- <a href="./email-inbox.html" class="dropdown-item ai-icon">
+                                        <svg id="icon-inbox" xmlns="http://www.w3.org/2000/svg" class="text-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                        <span class="ml-2">Inbox </span>
+                                    </a> -->
+                                    <a id="logKeluar" class="dropdown-item ai-icon">
+                                        <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        <span class="ml-2">Log Keluar </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="deznav">
+            <div class="deznav-scroll">
+				<ul class="metismenu" id="menu">
+                    <li>
+						<a class="ai-icon" id="home" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-home"></i>
+							<span class="nav-text"> Laman Utama</span>
+						</a>
+                    </li>
+                    <li><a class="ai-icon" id="list" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-list"></i>
+							<span class="nav-text">Senarai Permohonan</span>
+						</a>
+                    </li>
+                    <li><a class="ai-icon" id="contact" href="javascript:void()" aria-expanded="false">
+							<i class="fa fa-phone"></i>
+							<span class="nav-text">Hubungi Kami</span>
+						</a>
+                    </li>
+                   
+                </ul>
+				
+				
+			</div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="page-titles">
+                    <ol class="breadcrumb" id="page_title">
+                        <!-- <li class="breadcrumb-item"><a href="javascript:void(0)">Layout</a></li> -->
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Laman Utama</a></li>
+                    </ol>
+                </div>
+                <div align="right" id="permohonan" style="display: none;">
+                    <input type="text" id="disp_id" style="display: none;">
+                    <button type="button" class="btn btn-success mb-3" id="modal-permohonan" ><i class="fa fa-download mb-2"></i> Permohonan Muat Turun</button>                    
+                </div>
+                <!-- MIMI : TAMBAH BUTTON MUAT TURUN ZIP START -->
+                <div align="right" id="muatturun" style="display: none;">
+                    <div align="left">
+                        <input type="checkbox" id="checkAll"> &nbsp;&nbsp;Cek Semua Media
+                    </div>
+                    
+                    <a href="../api_asdcm/api_media/public/myZip.zip" download="myZip.zip" id="download-item-media" class="hidden"></a>
+                    <input type="text" id="disp_id" style="display: none;">
+                    <button type="button" class="btn btn-success mb-3" id="muatturun-permohonan"><i class="fa fa-download mb-2"></i> Muat Turun</button>                    
+                </div>
+                <!-- TAMBAH BUTTON MUAT TURUN ZIP END -->
+                <div class="row" id="data_load">
+					
+					<!-- review -->
+					
+                </div>
+                <div class="modal fade" id="reg-permohonan">.
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <form role="form" id="registerpermohonan" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Permohonan Muat Turun</h5>
+                                    <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-3 mb-3">
+                                            <label for="nama_program">Nama Program</label>
+                                        </div>
+                                        <div class="col-9 mb-3">
+                                            <span id="nama_program"></span>
+                                        </div>
+                                        <div class="col-3 mb-3">
+                                            <label for="nama_program">Tarikh Program</label>
+                                        </div>
+                                        <div class="col-9 mb-3">
+                                            <span id="tarikh_program"></span>
+                                        </div>
+                                        <div class="col-3 mb-3">
+                                            <label for="nama_program">Bilangan Media</label>
+                                        </div>
+                                        <div class="col-9 mb-3">
+                                            <span id="bilangan_media"></span>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label for="sebab">Sebab Muatturun</label>
+                                            <input type="text" id="sebab" class="form-control" style="color: black;">
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <div class="custom-control custom-checkbox mb-3 checkbox-success">
+                                                <input type="checkbox" class="custom-control-input" id="customCheckBox3" required>
+                                                <label class="custom-control-label" for="customCheckBox3">
+                                                    Saya mengaku bahawa semua keterangan yang dinyatakan adalah <b>BENAR</b> dan saya mengaku bahawa tidak akan menyalahgunakan maklumat fail media yang dimuat turun dari pihak INTAN
+                                                </label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="badge badge-success" type="submit"><i class="fa fa-check"></i> Hantar </button>
+                                    <button class="badge badge-danger" data-dismiss="modal" id="closeButton"><i class="fa fa-times"></i> Tutup</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © <a href="#" target="_blank">MEDIA INTAN</a> 2022</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="./vendor/global/global.min.js"></script>
+	<script src="./vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./js/custom.min.js"></script>
+	<script src="./js/deznav-init.js"></script>
+	
+
+    <script src="./vendor/highlightjs/highlight.pack.min.js"></script>
+    <!-- Circle progress -->
+
+    <!-- Required datatable js -->
+    <script src="./vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="./vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="./vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="./vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="./vendor/jszip/jszip.min.js"></script>
+    <script src="./vendor/pdfmake/build/pdfmake.min.js"></script>
+    <script src="./vendor/pdfmake/build/vfs_fonts.js"></script>
+    <script src="./vendor/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="./vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="./vendor/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="./vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="./vendor/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="./js/datatables.init.js"></script> 
+	
+	<!-- Rating -->
+	<script src="./vendor/star-rating/jquery.star-rating-svg.js"></script>
+    <script src="./vendor/sweet-alert/sweetalert2.js"></script>
+    <script src="./vendor/sweet-alert/sweetalert2.min.js"></script>
+	<script src="config.js"></script>
+	<script src="index.js"></script>
+
+
+</body>
+</html>
