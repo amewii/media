@@ -222,8 +222,9 @@ function list(){
     var colums = [
         { "data": "bil", "title": "Bil" },
         { "data": "nama_program", "title": "Nama Program" },
-        { "data": "nama", "title": "Nama Pemohon", class: "desktop" },
+        // { "data": "nama", "title": "Nama Pemohon", class: "desktop" },
         { "data": "tarikh_permohonan", "title": "Tarikh Permohonan", class: "desktop" },
+        { "data": "tarikh_pengesahan", "title": "Tarikh Pengesahan", class: "desktop" },
         { "data": "tarikh_luput", "title": "Tarikh Luput", class: "desktop" },
         { "data": "nama_status", "title": "Status", class: "desktop" },
         { "data": "upt_btn", "title": "Tindakan", class: "desktop" },
@@ -245,7 +246,19 @@ function list(){
 
         $.each(response.data, function (i, field) {
             t_permohonan = new Date(field.tarikh_permohonan);
-            t_luput = new Date(field.tarikh_luput);
+            if (field.tarikh_luput == null)    {
+                t_luput_list = "-";
+            } else  {
+                t_luput = new Date(field.tarikh_luput);
+                t_luput_list = t_luput.getDate() + "/" + (t_luput.getMonth() + 1) + "/" + t_luput.getFullYear()
+            }
+            if (field.tarikh_pengesahan == null)    {
+                t_pengesahan_list = "-";
+            } else  {
+                t_pengesahan = new Date(field.tarikh_pengesahan);
+                t_pengesahan_list = t_pengesahan.getDate() + "/" + (t_pengesahan.getMonth() + 1) + "/" + t_pengesahan.getFullYear()
+            }
+            var button_detail = '';
             now = new Date();
             if (field.nama_status == 'Lulus')   {
                 if (t_luput - now < 0)   {
@@ -263,28 +276,29 @@ function list(){
                     };
                     $.ajax(settings).done(function (response) {});
                     badge_status = '<span class="badge badge-danger">Luput</span>';
+                    button_detail = ''
                 } else  {
                     badge_status = '<span class="badge badge-success">'+ field.nama_status +'</span>';
                     button_detail = '<a onclick="download_media('+field.PK+')">' + field.nama_program + '</a>'
                 }
             }
                 
-            else if (field.nama_status == 'Gagal'){
+            else if (field.status_permohonan == '3'){
                 badge_status = '<span class="badge badge-danger">'+ field.nama_status +'</span>';
                 button_detail = field.nama_program;
                 }
                 
-            else if (field.nama_status == 'Batal'){
+            else if (field.status_permohonan == '4'){
                 badge_status = '<span class="badge badge-danger">'+ field.nama_status +'</span>';
                 button_detail = field.nama_program;
             }
                 
-            else  if (field.nama_status == 'In Progress'){
+            else  if (field.status_permohonan == '1'){
                 badge_status = '<span class="badge badge-primary">'+ field.nama_status +'</span>';
                 button_detail = field.nama_program;
             }
                 
-            else  if (field.nama_status == 'Luput'){
+            else  if (field.status_permohonan == '5'){
                 badge_status = '<span class="badge badge-danger">'+ field.nama_status +'</span>';
                 button_detail = field.nama_program;
             }
@@ -293,11 +307,13 @@ function list(){
                 id: field.PK, FK_users: field.FK_users, 
                 nama_program: button_detail, 
                 nama: field.nama,
+                tarikh_pengesahan: t_pengesahan_list, 
                 tarikh_permohonan: t_permohonan.getDate() + "/" + (t_permohonan.getMonth() + 1) + "/" + t_permohonan.getFullYear(), 
-                tarikh_luput: t_luput.getDate() + "/" + (t_luput.getMonth() + 1) + "/" + t_luput.getFullYear(), 
+                tarikh_luput: t_luput_list, 
                 nama_status: badge_status,
                 bil: bil++,
-                "upt_btn":  ' <button type="button" class="btn btn-link text-danger" onclick="del_rekod(\''+field.PK+'\')"><i class="fa fa-close"></i></button>'
+                "upt_btn":  '<button type="button" class="badge badge-primary" onclick="upt_rekod(\''+field.PK+'\')"><i class="fa fa-pencil-square-o"></i></button> '+
+                            '<button type="button" class="badge badge-success" onclick="upt_rekod(\''+field.PK+'\')"><i class="fa fa-download"></i></button>'
             });
         });
 
