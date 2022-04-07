@@ -6519,6 +6519,9 @@ button.bg-dark:focus {
 .p-0 {
   padding: 0 !important; }
 
+  .p-0-7 {
+    padding: 7px !important; }
+
 .pt-0,
 .py-0 {
   padding-top: 0 !important; }
@@ -27600,7 +27603,7 @@ table.dataTable thead .sorting {
       font-size: 14px; } }
 
 .authincation-content {
-  background: #0B2A97;
+  background: #3eb8ff;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
   border-radius: 5px; }
   [data-theme-version="dark"] .authincation-content {
@@ -31154,3 +31157,34 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       color: #fff; }
 
 /*# sourceMappingURL=style.css.map */
+
+.watermark{
+  position:relative;
+}
+
+.watermark::after{
+  content: "**CONTOH**";
+  font-size:30px;
+  font-weight:bold;
+  color:black;
+  opacity: 0.5;
+
+  position:absolute;
+  bottom: 50%;
+  right: 30%;
+  /* bottom:0;
+  right:0; */
+}
+
+/* .row.make-columns {
+  -moz-column-width: 19em;
+  -webkit-column-width: 19em;
+  -moz-column-gap: 1em;
+  -webkit-column-gap:1em; 
+}
+
+.row.make-columns > div {
+  display: inline-block;
+  padding:  .5rem;
+  width:  100%; 
+} */

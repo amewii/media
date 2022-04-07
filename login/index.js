@@ -1,4 +1,4 @@
-sessionStorage.url = '../../media/login';
+sessionStorage.url = '../login';
 window.sessionStorage.removeItem("no_kad_pengenalan");
 window.sessionStorage.removeItem("FK_jenis_pengguna");
 window.sessionStorage.removeItem("content");
@@ -30,22 +30,11 @@ $("#login").on('submit', function (e) {
             result = JSON.parse(response);
             // console.log(result);
             if (!result.success) {
-                // Swal(result.message, result.data, "error");
-                // return;
-                swal({
-                    title: "Log Masuk",
-                    text: result.data,
-                    type: "error",
-                    closeOnConfirm: true,
-                    allowOutsideClick: false,
-                    html: false
-                }).then(function(){
-                    sessionStorage.token = result.token;
-                    window.location.reload();      
-                });
+                sessionStorage.token = result.token;
+                window.location.reload();      
             } else  {
                 // alert(result.data.PK);
-                sessionStorage.id = result.data.PK;
+                sessionStorage.id = result.data.id_users;
                 sessionStorage.token = result.data.token;
                 sessionStorage.no_kad_pengenalan = result.data.no_kad_pengenalan;
                 sessionStorage.nama = result.data.nama;
