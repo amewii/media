@@ -33,6 +33,16 @@ $("#checkusers").on('submit',function(e){
         form.append("no_kad_pengenalan",no_kad_pengenalan);
 
         // console.log(nama_user)
+        // var settings = {
+        //     "url": host+"api_hrmis/hrmis.php",
+        //     "method": "POST",
+        //     "timeout": 0,
+        //     "processData": false,
+        //     "mimeType": "multipart/form-data",
+        //     "contentType": false,
+        //     "data": form
+        // };
+
         var settings = {
             "url": host+"api_pentadbir/public/users",
             "method": "POST",
