@@ -268,14 +268,14 @@ function detail_media(indexs,varType){
 
             if(varType == 1){
 
-                // alert(ext[1]);
+                alert(field.FK_vip);
                 if(ext[1] != 'mp4' && ext[1] != 'mov'){
                     
                     preview = '<img class="img-fluid"  style="height:225px" src="../api_asdcm/api_media/public/uploads/'+field.images+'" alt="">';
                     
                     data_programs = '<div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">'+
                                 '<div class="card p-0-7">'+
-                                    '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="'+ field.images +'" id="'+ field.images +'"/>'+
+                                    '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="'+ field.images +';'+field.FK_vip+'" id="'+ field.images +'"/>'+
                                         '<div class="new-arrival-product">'+
                                             '<div class="new-arrivals-img-contnent">'+
                                                 '<div class="watermark">'+
@@ -298,7 +298,7 @@ function detail_media(indexs,varType){
 
                     data_programs = '<div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">'+
                                 '<div class="card p-0-7">'+
-                                    '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="'+ field.images +'" id="'+ field.images +'"/>'+
+                                    '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="'+ field.images +';'+field.FK_vip+'" id="'+ field.images +'"/>'+
                                         '<div class="new-arrival-product">'+
                                             '<div class="new-arrivals-img-contnent">'+
                                                 preview+
@@ -515,7 +515,7 @@ function download_media(indexs){
         "method": "GET",
         "timeout": 0,
     };
-    // console.log(settings)
+    
     $.ajax(settings).done(function (response) {
         
         $("#data_load").append('<div id="checkboxmedia" class="row"></div>');

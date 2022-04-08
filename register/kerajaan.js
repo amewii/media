@@ -148,9 +148,6 @@ $("#registergov").on('submit', function (e) {
                         allowOutsideClick: false,
                         html: false
                     }).then(function(){
-                        
-                        // sessionStorage.token = result.token;
-                        // sessionStorage.no_kad_pengenalan = result.no_kad_pengenalan;
                         window.location.replace("../login");                
                     });
                 });
