@@ -1,0 +1,335 @@
+<!-- Page Headings Start -->
+<div class="row justify-content-between align-items-center mb-10">
+
+    <!-- Page Heading Start -->
+    <div class="col-12 col-lg-auto mb-20">
+        <div class="page-heading">
+            <h3 class="title">Pentadbir <span>/ Tetapan</span><span>/ Peranan & Capaian</span></h3>
+        </div>
+    </div><!-- Page Heading End -->
+
+</div><!-- Page Headings End -->
+
+<div class="col-12 mb-30">
+    <div class="box" id="divSenarai">
+        <div class="box-head row justify-content-between align-items-center mb-10">
+            <!-- Page Heading Start -->
+            <div class="col-12 col-lg-auto mb-20">
+                <h4 class="title">Senarai <span id="textperanan">Peranan</span><span id="textcapaian" class="hidden">Capaian</span></h4>                
+            </div><!-- Page Heading End -->
+            <!-- Page Heading Start -->
+            <div class="col-12 col-lg-auto mb-20">
+                <span id="buttonPentadbir"><button id="dftr_users" class="button button-primary"><span><i class="ti-plus"></i>Daftar Pentadbir</span></button></span>
+                <span id="buttonPeranan" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#reg-peranan"><span><i class="ti-plus"></i>Daftar Peranan</span></button></span>
+            </div><!-- Page Heading End -->
+        </div>
+        <div class="box-body">     
+            
+            <ul class="nav nav-pills mb-20">
+                <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#dataPentadbir" id="pentadbir">Pentadbir</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPengguna" id="pengguna">Pengguna</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPeranan" id="peranan">Peranan</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="dataPentadbir">
+                    <div id="tablePentadbir" class="table-responsive">
+                        <textarea class="hidden" id="dataListPentadbir"></textarea>
+                        <table id="listPentadbir" class="table"></table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="dataPengguna">
+                    <div id="tablePengguna" class="table-responsive">
+                        <textarea class="hidden" id="dataListPengguna"></textarea>
+                        <table id="listPengguna" class="table"></table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="dataPeranan">
+                    <div id="tablePengguna" class="table-responsive">
+                        <textarea class="hidden" id="dataListPeranan"></textarea>
+                        <table id="listPeranan" class="table"></table>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div><!-- Recent Transaction End -->
+
+<!-- Modal -->
+<div class="modal fade" id="reg-peranan">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form role="form" id="registerPeranan">
+                <div class="modal-header">
+                    <h5 class="modal-title">Daftar Rekod Peranan</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <div class="col-12 mb-20">
+                            <label for="nama_peranan">Nama Peranan</label>
+                            <input type="text" class="form-control" id="nama_peranan">
+                        </div>
+                        <div class="col-6 mb-20">
+                            <label for="FK_capaian">Submodul/Capaian</label>
+                            <div class="adomx-checkbox-radio-group" id="FK_capaian"></div>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
+                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="update-peranan">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form role="form" id="updatePeranan">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kemaskini Rekod Peranan</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <div class="col-12 mb-20">
+                            <label for="nama_peranan">Nama Peranan</label>
+                            <input type="text" class="form-control hidden" id="upt_id">
+                            <input type="text" class="form-control" id="upt_nama_peranan">
+                        </div>
+                        <div class="col-6 mb-20">
+                            <label for="FK_capaian">Submodul/Capaian</label>
+                            <div class="adomx-checkbox-radio-group" id="upt_FK_capaian"></div>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
+                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal no.KP -->
+<div id="check_noic" class="modal fade mt-100" data-backdrop="static">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                Semak Pengguna
+                <button type="button" class="close"  data-dismiss="modal" onclick="resetForm();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="send_noic" class="input-group">
+                            <input type="text" name="noic_check" id="noic_check" required class="form-control form-sm" maxlength="12">
+                            <button id="semak_btn" class="btn btn-primary"><i id="icon_semak" class="fa fa-search"></i> Semak</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End No. Kp -->
+
+<!-- register Users-->
+<div class="modal fade mt-100" id="register_users">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">Daftar Pengguna Sistem</div>
+            <form id="registergov">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-10">
+                            <b>Maklumat Pengguna</b>
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <b>Nama</b><br>
+                                            <span id="nama_text_add"></span>
+                                        </td>
+                                        <td>
+                                            <b>No K/Pengenalan</b><br>
+                                            <span id="noic_text_add"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>No Telefon</b><br>
+                                            <span id="notel_text_add"></span>
+                                        </td>
+                                        <td>
+                                            <b>Emel</b><br>
+                                            <span id="emel_text_add"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Maklumat Perkhidmatan</b>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-2">
+                                <label for="nama_jawatan_add">Jawatan</label>
+                                <input type="text" name="nama_jawatan" id="nama_jawatan_add" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 hidden">
+                            <div class="form-group mt-2">
+                                <label for="kategori_perkhidmatan_add">Lain-lain</label>
+                                <input type="text" id="nama_add" class="form-control ">
+                                <input type="text" id="emel_add" class="form-control ">
+                                <input type="text" id="no_kad_pengenalan_add" class="form-control ">
+                                <input type="text" id="notel_add" class="form-control ">
+                                <input type="text" id="emel_kerajaan_add" class="form-control ">
+                                <input type="text" id="notel_kerajaan_add" class="form-control ">
+                            </div>                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-2">
+                                <label for="FK_kampus_add">Kampus</label>
+                                <select class="form-control c-select" id="FK_kampus_add"></select>                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-2">
+                                <label for="FK_kluster_add">Kluster</label>
+                                <select class="form-control c-select"  id="FK_kluster_add"></select>                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-2">
+                                <label for="FK_subkluster_add">Sub Kluster</label>
+                                <select class="form-control c-select" id="FK_subkluster_add"></select>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="FK_peranan_add">Peranan</label>
+                                <select class="form-control c-select" id="FK_peranan_add"></select>
+                            </div>
+                            <div class="form-group mt-2 hidden">
+                                <label for="FK_unit_add">Unit</label>
+                                <select class="form-control c-select" id="FK_unit_add"></select>                                
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" type="submit" id="daftar"><i id="icon_Ya" class="ti-check"></i> Ya</button>
+                    <button class="button button-white" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Register user-->
+
+<!-- Modal -->
+<div class="modal fade" id="reg-capaian">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form role="form" id="registerCapaian">
+                <div class="modal-header">
+                    <h5 class="modal-title">Daftar Rekod Capaian</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="nama_pegawai"></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 mb-20">
+                            <label for="FK_users">Pegawai</label>
+                            <input list="FK_userss" id="FK_users" class="form-control">
+                            <datalist id="FK_userss"></datalist>
+                            <input type="text" id="FK_user" class="hidden">
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <label for="FK_kampus">Kampus</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_kampus"></select>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <label for="FK_kluster">Kluster</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_kluster"></select>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <label for="FK_subkluster">Sub Kluster</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_subkluster"></select>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <label for="FK_unit">Unit</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_unit"></select>
+                        </div>
+                        <div class="col-md-6 mb-20">
+                            <label for="FK_peranan">Peranan</label>
+                            <select class="form-control c-select" required id="FK_peranan"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
+                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="update-capaian">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form role="form" id="updateCapaian">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kemaskini Rekod Capaian</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <div class="col-12 mb-20">
+                            <label for="FK_users">Pegawai</label>
+                            <input list="FK_userss" id="upt_FK_users" class="form-control" readonly>
+                            <datalist id="FK_userss"></datalist>
+                            <input type="text" id="upt_FK_user_capaian" class="hidden">
+                            <input type="text" id="upt_id_capaian" class="hidden">
+                        </div>
+                        <div class="col-12 mb-20">
+                            <label for="FK_kampus">Kampus</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_kampus"></select>
+                        </div>
+                        <div class="col-12 mb-20">
+                            <label for="FK_kluster">Kluster</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_kluster"></select>
+                        </div>
+                        <div class="col-12 mb-20">
+                            <label for="FK_subkluster">Subkluster</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_subkluster"></select>
+                        </div>
+                        <div class="col-12 mb-20 hidden">
+                            <label for="FK_unit">Unit</label>
+                            <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_unit"></select>
+                        </div>
+                        <div class="col-12 mb-20">
+                            <label for="FK_peranan">Peranan</label>
+                            <select class="form-control c-select" required id="upt_FK_peranan"></select>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
+                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="./js/ttpn_peranancapaian.js"></script>

@@ -1,0 +1,154 @@
+<div class="col-lg-12 mt-5">
+    <div class="pt-3">
+        <div class="settings-form">
+            <form id="update">
+                <div class="form-row">
+                    <!-- <div class="form-group col-md-12">
+                        <h4 class="text-primary mb-4">Maklumat Diri</h4>
+                    </div> -->
+                    <div class="form-group col-md-6">
+                        <label>No. Kad Pengenalan</label>
+                        <input type="text" id="displayno_kad_pengenalan" class="form-control" readonly>
+                        <input type="text" class="form-control" style="display: none;" id="FK_jenis_pengguna">
+                        <input type="text" class="form-control" style="display: none;" id="id_users">
+                    </div>
+                    <div class="form-group col-md-6 input-success-o">
+                        <label>Emel Peribadi</label>
+                        <input type="Emel" id="displayemel" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6" style="display: none;">
+                        <label>Tarikh Lahir</label>
+                        <input id="displaytarikhlahir" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-6 input-success-o" id="divEmel_kerajaan">
+                        <label>Emel Rasmi</label>
+                        <input type="text" id="emel_kerajaan" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6 input-success-o" id="divNotel_kerajaan">
+                        <label>No. Telefon Rasmi</label>
+                        <input type="Emel" id="notel_kerajaan" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6" style="display: none;" id="divNotel">
+                        <label>No. Telefon</label>
+                        <input id="notel" class="form-control">
+                    </div>
+                </div>
+                <div id="divKerajaan" class="form-row" style="display: none;">
+                    <div class="form-group col-md-12 mt-4">
+                        <h4 class="text-primary mb-4">Maklumat Pekerjaan</h4>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Nama Jawatan</label>
+                        <input id="nama_jawatan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Kategori Perkhidmatan</label>
+                        <input id="kategori_perkhidmatan" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Skim</label>
+                        <input id="skim" class="form-control" readonly>
+                    </div>
+                    <div class="form-group col-md-6" style="display: none;">
+                        <label>Gred</label>
+                        <select id="gred" class="form-control" style="pointer-events: none; touch-action: none;"></select>
+                    </div>
+                    <div class="form-group col-md-12 mt-4">
+                        <h4 class="text-primary mb-4">Maklumat Perkhidmatan</h4>
+                    </div>
+                    <div class="form-group col-md-12" style="display: none;">
+                        <label>Staff INTAN</label>
+                        <select class="form-control c-select success" id="users_intan" style="pointer-events: none;">
+                            <option value="">-Pilih-</option>
+                            <option value="1">Ya</option>
+                            <option value="0">Tidak</option>
+                        </select>
+                    </div>
+                    <div id="usersintan" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row" style="display: none;">
+                        <div class="form-group col-md-6">
+                            <label for="FK_kampus">Kampus</label>
+                            <select class="form-control c-select"  id="FK_kampus" style="pointer-events: none; touch-action: none;"></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="FK_kluster">Kluster</label>
+                            <select class="form-control c-select"  id="FK_kluster" style="pointer-events: none; touch-action: none;"></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="FK_subkluster">Sub Kluster</label>
+                            <select class="form-control c-select" id="FK_subkluster" style="pointer-events: none; touch-action: none;"></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="FK_unit">Unit</label>
+                            <select class="form-control c-select" id="FK_unit" style="pointer-events: none; touch-action: none;"></select>
+                        </div>       
+                    </div>
+                    <div id="usersluar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row" style="display: none;">
+                        <div class="form-group col-md-6 input-success-o">
+                            <label for="FK_kementerian">Kementerian</label>
+                            <input type="text" id="id_usersgov" class="form-control" style="display: none;">
+                            <select class="form-control c-select"  id="FK_kementerian"></select>
+                        </div>
+                        <div class="form-group col-md-6 input-success-o">
+                            <label for="FK_agensi">Agensi</label>
+                            <select class="form-control c-select"  id="FK_agensi"></select>
+                        </div>
+                        <div class="form-group col-md-6 input-success-o">
+                            <label for="FK_bahagian">Bahagian</label>
+                            <select class="form-control c-select"  id="FK_bahagian"></select>
+                        </div>
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label for="FK_ila">ILA (Jika Ada)</label>
+                            <select class="form-control c-select" id="FK_ila" style="pointer-events: none; touch-action: none;"></select>
+                        </div>    
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label>Alamat 1</label>
+                            <input type="text" class="form-control" id="alamat1_pejabat" placeholder="Alamat 1" >
+                        </div>
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label>Alamat 2</label>
+                            <input type="text" class="form-control" id="alamat2_pejabat" placeholder="Alamat 2" >
+                        </div>
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label>Poskod</label>
+                            <input type="text" class="form-control" id="poskod_pejabat" placeholder="Poskod" >
+                        </div>
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label>Daerah</label>
+                            <input type="text" class="form-control" id="daerah_pejabat" placeholder="Daerah" readonly >
+                        </div>
+                        <div class="form-group col-md-6" style="display: none;">
+                            <label>Negeri</label>
+                            <input type="text" class="form-control" id="negeri_pejabat" placeholder="Negeri" readonly >
+                        </div> 
+                    </div>
+                </div>
+                <div id="divSwasta" class="form-row" style="display: none;">
+                    <div class="form-group col-md-12 mt-4">
+                        <h4 class="text-primary mb-4">Maklumat Pekerjaan</h4>
+                    </div>
+                    <div class="form-group col-md-6 input-success-o">
+                        <label>Nama Majikan</label>
+                        <input type="text" id="nama_majikan" class="form-control">
+                        <input type="text" id="id_usersswasta" class="form-control" style="display: none;">
+                    </div>
+                    <div class="form-group col-md-6 input-success-o">
+                        <label>Jawatan</label>
+                        <input type="text" id="jawatan" class="form-control">
+                    </div>
+                </div>
+                <div id="divPelajar" class="form-row" style="display: none;">
+                    <div class="form-group col-md-12 mt-4">
+                        <h4 class="text-primary mb-4">Maklumat Sekolah atau Institusi</h4>
+                    </div>
+                    <div class="form-group col-md-12 input-success-o">
+                        <label>Nama Sekolah atau Institusi</label>
+                        <input type="text" id="id_userspelajar" class="form-control" style="display: none;">
+                        <input type="text" id="nama_sekolah" class="form-control">
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Kemaskini</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="profil.js"></script>

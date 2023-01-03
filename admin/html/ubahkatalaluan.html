@@ -1,0 +1,59 @@
+<!-- <div class="row mbn-50"> -->
+
+    <!--Author Top Start-->
+    <form id="update">
+        <!--Author Top End-->
+        <div class="modal" id="loading_modal" data-backdrop="static">
+            <div class="modal-dialog">
+              <div style="padding-top: 50%;" class="text-center text-white"><span class="fa fa-cog fa-spin fa-3x m-b"></span><br><i>Loading...</i></div>
+            </div>
+        </div>
+        <!--Timeline / Activities Start-->
+        <div class="col-xlg-12 col-12 mb-50">
+            <div class="box">
+
+                <div class="box-head">
+                    <h3 class="title">Ubah Katalaluan</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="smart-wizard">
+                        <div>
+                            <div id="step-3">
+                                <div class="mbn-20">
+                                    <div class="col-12 mb-20 mt-30">
+                                        <h4>Tukar Katalaluan</h4>
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 col-12 mb-20">
+                                        <label>Katalaluan Semasa</label>
+                                        <input type="password" class="form-control" id="katalaluansemasa" placeholder="Katalaluan">
+                                        <input type="text" class="form-control hidden" id="no_kad_pengenalan">
+                                        <!-- <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" required> -->
+                                    </div>
+                                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 col-12 mb-20">
+                                        <label>Katalaluan Baharu</label>
+                                        <input type="password" class="form-control" id="katalaluanbaharu" disabled placeholder="Katalaluan">
+                                    </div>   
+                                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 col-12 mb-20">
+                                        <label>Pengesahan Katalaluan Baharu</label>
+                                        <input type="password" class="form-control" id="sahkankatalaluan" disabled placeholder="Katalaluan">
+                                    </div>
+                                </div>
+                            </div>                           
+                            <div id="step-4">         
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20">
+                                    <div class="row">
+                                        <div class="mt-20"><button class="button button-primary button-outline">Kemaskini</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--Timeline / Activities End-->
+
+<!-- </div> -->
+<script src="./js/ubahkatalaluan.js"></script>
