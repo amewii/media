@@ -13,7 +13,7 @@ var colums = [
     { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs" },
 ];
 var settings = {
-    "url": host + "api_public/public/gelaransListAll",
+    "url": host + "gelaransListAll",
     "method": "GET",
     "timeout": 0,
   };
@@ -90,7 +90,7 @@ $("#register").on('submit',function(e){
             form.append("nama_gelaran",nama_gelaran);
             // console.log(nama_gelaran)
             var settings = {
-                "url": host+"api_public/public/addGelarans",
+                "url": host+"addGelarans",
                 "method": "POST",
                 "timeout": 0,
                 "processData": false,
@@ -167,7 +167,7 @@ $("#update").on('submit',function(e){
             form.append("nama_gelaran", upt_nama_gelaran);
 
             var settings = {
-                "url": host+"api_public/public/gelaransUpdate",
+                "url": host+"gelaransUpdate",
                 "method": "POST",
                 "timeout": 0,
                 "processData": false,
@@ -229,7 +229,7 @@ function del_rekod(i){
     form.append("id", id);    
 
     var settings = {
-        "url": host+"api_public/public/gelaransDelete",
+        "url": host+"gelaransDelete",
         "method": "POST",
         "timeout": 0,
         "processData": false,

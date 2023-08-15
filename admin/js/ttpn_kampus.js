@@ -9,7 +9,7 @@ var colums = [
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
-    "url": host + "api_public/public/kampusList",
+    "url": host + "kampusList",
     "method": "GET",
     "timeout": 0,
   };
@@ -100,7 +100,7 @@ $("#register").on('submit',function(e){
             form.append("FK_negeri",negeri);
             console.log(nama_kampus)
             var settings = {
-                "url": host+"api_public/public/addKampus",
+                "url": host+"addKampus",
                 "method": "POST",
                 "timeout": 0,
                 "processData": false,
@@ -185,7 +185,7 @@ $("#update").on('submit',function(e){
             form.append("FK_negeri", upt_negeri);
 
             var settings = {
-                "url": host+"api_public/public/kampusUpdate",
+                "url": host+"kampusUpdate",
                 "method": "POST",
                 "timeout": 0,
                 "processData": false,
@@ -247,7 +247,7 @@ function del_rekod(i){
     form.append("id", id);    
 
     var settings = {
-        "url": host+"api_public/public/kampusDelete",
+        "url": host+"kampusDelete",
         "method": "POST",
         "timeout": 0,
         "processData": false,

@@ -1,8 +1,9 @@
 // SERVER
-var host = "https://admin.media.intan.my/api_asdcm/";
+// var host = "https://admin.media.intan.my/api_asdcm/";
 
 // LOCALHOST
-// var host = "http://localhost/media/api_asdcm/";
+//untuk panggkl API
+var host = "http://localhost/media/api_asdcm/public/";
 
 function getUrlVars() {
     var vars = {};
