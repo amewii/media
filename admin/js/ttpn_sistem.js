@@ -1,5 +1,5 @@
 var settings = {
-    "url": host + "api_pentadbir/public/tetapansList",
+    "url": host + "tetapansList",
     "method": "GET",
     "timeout": 0,
   };
@@ -95,7 +95,7 @@ $("#update").on('submit',function(e){
             form.append("updated_by", window.sessionStorage.id);
 
             var settings = {
-                "url": host+"api_pentadbir/public/tetapansUpdate",
+                "url": host+"tetapansUpdate",
                 "method": "POST",
                 "timeout": 0,
                 "processData": false,

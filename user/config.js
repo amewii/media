@@ -1,8 +1,8 @@
 // SERVER
-var host = "https://media.intan.my/api_asdcm/";
+// var host = "https://media.intan.my/api_asdcm/";
 
 // SERVER
-// var host = "http://localhost/api_asdcm/";
+var host = "http://localhost/media/api_asdcm/";
 
 function getUrlVars() {
     var vars = {};
