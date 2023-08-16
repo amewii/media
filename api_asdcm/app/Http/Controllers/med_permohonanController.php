@@ -173,6 +173,7 @@ class med_permohonanController extends Controller
     public function showGetUsersNotification($FK_users)  {
         $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
                                             join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+                                            join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                             join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                             where('med_permohonan.FK_users',$FK_users) -> where('med_permohonan.status_permohonan','2') -> orwhere('med_permohonan.status_permohonan','3') -> 
                                             orderBy('id_permohonan', 'desc') ->
@@ -193,6 +194,7 @@ class med_permohonanController extends Controller
     public function list()  {
         $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
                                             join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+                                            join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                             join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                             where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
                                             orderBy('id_permohonan', 'desc') ->

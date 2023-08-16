@@ -193,13 +193,10 @@ function tableProgram() {
     { name: "bil", title: "Bil" },
     { name: "nama_program", title: "Nama Program" },
     { name: "t_program", title: "Tarikh Program", breakpoints: "md sm xs" },
-    {
-      name: "nama_kategori",
-      title: "Kategori Program",
-      breakpoints: "md sm xs",
-    },
+    {name: "nama_kategori", title: "Kategori Program", breakpoints: "md sm xs",},
     // { "name": "butiran_program", "title": "Butiran Program" },
     // { "name": "gambar", "title": "Gambar Program", "breakpoints": "md sm xs" },
+    {name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs",},
     { name: "status_rekod", title: "Status" },
     { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
@@ -237,7 +234,6 @@ function tableProgram() {
         badge = "badge-danger";
         text_statusrekod = "Tidak Aktif";
       }
-
       if (window.sessionStorage.control_program_media_U2 == 1) {
         list.push({
           id: field.id_program,
@@ -279,6 +275,7 @@ function tableProgram() {
           nama_program: field.nama_program,
           saiz_fail: field.saiz_fail,
           bil: bil++,
+          nama_kampus: field.nama_kampus,
           status_rekod:
             '<label class="adomx-switch-2 success"><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
             checked +
@@ -359,7 +356,8 @@ function tableProgram() {
         });
       }
     });
-
+    
+    $('#totalProgram').html(`<span id="" class="timeline-date">`+(list.length)+` Program</span>`)
     $("#programList").footable({
       columns: colums,
       rows: list,

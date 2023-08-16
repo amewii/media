@@ -579,7 +579,8 @@ function tablePentadbir() {
     { name: "nama", title: "Nama" },
     { name: "jenis_pengguna", title: "Sektor", breakpoints: "lg md sm xs" },
     { name: "nama_peranan", title: "Peranan" },
-    { name: "data_intan", title: "Kluster" },
+    { name: "nama_kampus", title: "Kampus" },
+    // { name: "data_intan", title: "Kluster" },
     { name: "emel", title: "Emel", breakpoints: "lg md sm xs" },
     { name: "no_kad_pengenalan", title: "No. K/P", breakpoints: "md sm xs" },
     { name: "status_rekod", title: "Status", breakpoints: "lg md sm xs" },
@@ -609,7 +610,6 @@ function tablePentadbir() {
         badge = "badge-danger";
         text_statusrekod = "Tidak Aktif";
       }
-
       list.push({
         id: field.id_users,
         nama: field.nama,
@@ -619,12 +619,12 @@ function tablePentadbir() {
         jenis_pengguna: field.jenis_pengguna,
         nama_peranan: field.nama_peranan,
         bil: bil++,
-        data_intan:
-          field.nama_kampus +
-          "/ " +
-          field.nama_kluster +
-          "/ " +
-          field.nama_subkluster,
+        nama_kampus: field.nama_kampus,
+          // field.nama_kampus +
+          // "/ " +
+          // field.nama_kluster +
+          // "/ " +
+          // field.nama_subkluster,
         status_rekod:
           '<label class="adomx-switch-2 success "><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
           checked +

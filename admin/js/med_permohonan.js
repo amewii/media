@@ -52,6 +52,7 @@ function listPermohonan() {
         breakpoints: "md sm xs",
       },
       { name: "tarikh_luput", title: "Tarikh Luput", breakpoints: "md sm xs" },
+      { name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs" },
       { name: "nama_status", title: "Status", breakpoints: "md sm xs" },
       { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
       // {"name":"status","title":"Status","breakpoints":"sm xs"}
@@ -103,6 +104,7 @@ function listPermohonan() {
     let bil = 1;
 
     $.each(response.data, function (i, field) {
+    
       t_permohonan = new Date(field.tarikh_permohonan);
       if (field.tarikh_luput == null) {
         t_luput_list = "-";
@@ -167,6 +169,7 @@ function listPermohonan() {
         id: field.id_permohonan,
         FK_users: field.FK_users,
         nama_program: field.nama_program,
+        nama_kampus: field.nama_kampus,
         nama: field.nama,
         tarikh_permohonan:
           t_permohonan.getDate() +
@@ -191,6 +194,9 @@ function listPermohonan() {
       });
     });
 
+      // totalpermohonan = field.length;
+
+      $('#totalpermohonan').html(`<span class="timeline-date">`+(list.length)+` Permohonan</span>`);
     $("#permohonanList").footable({
       columns: colums,
       rows: list,

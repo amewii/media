@@ -87,7 +87,7 @@ var $sideHeaderNav = $('.side-header-menu'),
 $sideHeaderSubMenu.siblings('a').append('<span class="menu-expand"><i class="zmdi zmdi-chevron-down"></i></span>');
 
 /*Close Off Canvas Sub Menu*/
-$sideHeaderSubMenu.slideUp();
+$sideHeaderSubMenu.slideDown();
 
 /*Category Sub Menu Toggle*/
 $sideHeaderNav.on('click', 'li a, li .menu-expand', function(e) {
