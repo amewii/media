@@ -16,55 +16,27 @@
             <!-- Page Heading Start -->
             <div class="col-12 col-lg-auto mb-20">
                 <h4 class="title">Senarai <span id="textperanan">Peranan</span><span id="textcapaian" class="hidden">Capaian</span></h4>                
-            </div>
-            <!-- Page Heading End -->
-            
-            
+            </div><!-- Page Heading End -->
             <!-- Page Heading Start -->
             <div class="col-12 col-lg-auto mb-20">
-                <span id="buttonPentadbir"><button id="dftr_users" onclick="reg_capaian()" class="button button-primary"><span><i class="ti-plus"></i>Daftar Pentadbir</span></button></span>
-                <span id="buttonPeranan" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#reg-peranan"><span><i class="ti-plus"></i>Daftar Peranan</span></button></span>
-                <span id="btnSU" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Super Admin</span></button></span>
-                <span id="btnPK" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Pegawai Kluster</span></button></span>
-                <span id="btnPM" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Pegawai Media</span></button></span>
-                <!-- <span id="btnKemaskiniPeranan" class=""><button class="button button-primary" data-toggle="modal" data-target="#reg-peranan"><span><i class="fa fa-gear"></i>Tetatpan</span></button></span> -->
+                <span id="buttonPentadbir"><button id="dftr_users" class="button button-primary"><span><i class="ti-plus"></i>Daftar Pentadbir</span></button></span>
+                <span id="buttonPeranan" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#reg-peranan"><span><i class="ti-plus"></i>Daftar Peranan</span></button></span>
             </div><!-- Page Heading End -->
         </div>
         <div class="box-body">     
             
             <ul class="nav nav-pills mb-20">
-                <!-- <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#dataPentadbir" id="pentadbir">Pentadbir</a></li>
+                <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#dataPentadbir" id="pentadbir">Pentadbir</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPengguna" id="pengguna">Pengguna</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPeranan" id="peranan">Peranan</a></li> -->
-                <li class="nav-item"><a class="nav-link active" onclick="tableByPeranan('Super Admin')" data-toggle="pill" href="#dataSuperAdmin" id="superAdmin">Super Admin</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="tableByPeranan('Pentadbir Media')" data-toggle="pill" href="#dataPentadbirMedia" id="pgwMedia">Pegawai Media</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="tableByPeranan('Pentadbir Kluster')" data-toggle="pill" href="#dataPentadbirKluster" id="pgwKluster">Pegawai Kluster</a></li>
-                <!-- <li class="nav-item"><a class="nav-link"  onclick="tableByPeranan('pengguna')"data-toggle="pill" href="#datapengguna" id="pengguna">Pengguna</a></li> -->
-                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPengguna" id="pengguna">Pengguna</a></li>
-                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPeranan" id="peranan">Peranan & Capaian</a></li>
-
+                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPeranan" id="peranan">Peranan</a></li>
             </ul>
             <div class="tab-content">
-            
-                 <div class="tab-pane fade show active" id="dataSuperAdmin">
-                    <div id="tableSuperAdmin" class="table-responsive">
-                        <textarea class="hidden" id="dataListSuperAdmin"></textarea>
-                        <table id="listSuperAdmin" class="table"></table>
+                <div class="tab-pane fade show active" id="dataPentadbir">
+                    <div id="tablePentadbir" class="table-responsive">
+                        <textarea class="hidden" id="dataListPentadbir"></textarea>
+                        <table id="listPentadbir" class="table"></table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="dataPentadbirMedia">
-                    <div id="tablePentadbirMedia" class="table-responsive">
-                        <textarea class="hidden" id="dataListPentadbirMedia"></textarea>
-                        <table id="listPentadbirMedia" class="table"></table>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="dataPentadbirKluster">
-                    <div id="tablePentadbirKluster" class="table-responsive">
-                        <textarea class="hidden" id="dataListPentadbirKluster"></textarea>
-                        <table id="listPentadbirKluster" class="table"></table>
-                    </div>
-                </div>
-                
                 <div class="tab-pane fade" id="dataPengguna">
                     <div id="tablePengguna" class="table-responsive">
                         <textarea class="hidden" id="dataListPengguna"></textarea>

@@ -178,4 +178,25 @@ class med_capaianController extends Controller
             ],404);
         }
     }
+
+    public function showbyID($idcapaian)    {
+
+        $med_capaian = med_capaian::where('id_capaian',$idcapaian)->first(); 
+      
+        
+        if ($med_capaian)  {
+            return response()->json([
+                'success'=>true,
+                'message'=>"Berjaya Padam!",
+                'data' => $med_capaian
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'=>false,
+                'message'=>"Gagal Padam!",
+                'data'=>''
+            ],404);
+        }
+    }
 }

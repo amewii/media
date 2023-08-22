@@ -2,6 +2,8 @@ $(function () {
   $.ajaxSetup({
     cache: false,
   });
+  checkingPeranan();
+
   kampusList();
   klusterList();
   subklusterList();
@@ -25,6 +27,36 @@ $("#pengguna").click(function () {
   $("#buttonPentadbir").addClass("hidden");
   $("#buttonPeranan").addClass("hidden");
   $("#buttonCapaian").addClass("hidden");
+  $("#btnSU").addClass("hidden");
+  $("#btnPK").addClass("hidden");
+  $("#btnPM").addClass("hidden");
+});
+$("#superAdmin").click(function () {
+  $("#buttonPentadbir").addClass("hidden");
+  $("#btnSU").removeClass("hidden");
+  $("#btnPK").addClass("hidden");
+  $("#btnPM").addClass("hidden");
+  $("#upt_FK_peranan").addClass("Superadmin");
+  $("#upt_FK_peranan").removeClass("PgwMedia");
+  $("#upt_FK_peranan").removeClass("PgwKluster");
+});
+$("#pgwMedia").click(function () {
+  $("#buttonPentadbir").addClass("hidden");
+  $("#btnSU").addClass("hidden");
+  $("#btnPK").addClass("hidden");
+  $("#btnPM").removeClass("hidden");
+  $("#upt_FK_peranan").removeClass("Superadmin");
+  $("#upt_FK_peranan").addClass("PgwMedia");
+  $("#upt_FK_peranan").removeClass("PgwKluster");
+});
+$("#pgwKluster").click(function () {
+  $("#buttonPentadbir").addClass("hidden");
+  $("#btnSU").addClass("hidden");
+  $("#btnPK").removeClass("hidden");
+  $("#btnPM").addClass("hidden");  
+  $("#upt_FK_peranan").removeClass("Superadmin");
+  $("#upt_FK_peranan").removeClass("PgwMedia");
+  $("#upt_FK_peranan").addClass("PgwKluster");
 });
 
 $("#dftr_users").click(function () {
@@ -664,6 +696,112 @@ function tablePentadbir() {
   });
 }
 
+
+function tableByPeranan(peranan) {
+  
+  var callPeranan = peranan.replace(/\s+/g, '');
+// alert(callPeranan);
+
+  // let callPeranan =  peranan.trim();
+  
+  var colums = [
+    { name: "bil", title: "Bil" },
+    { name: "nama", title: "Nama" },
+    { name: "jenis_pengguna", title: "Sektor", breakpoints: "lg md sm xs" },
+    { name: "nama_peranan", title: "Peranan" },
+    { name: "nama_kampus", title: "Kampus" },
+    // { name: "data_intan", title: "Kluster" },
+    { name: "emel", title: "Emel", breakpoints: "lg md sm xs" },
+    { name: "no_kad_pengenalan", title: "No. K/P", breakpoints: "md sm xs" },
+    { name: "status_rekod", title: "Status", breakpoints: "lg md sm xs" },
+    { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
+    // {"name":"status","title":"Status","breakpoints":"sm xs"}
+  ];
+  var settings = {
+    url: host + "usersListPentadbir/byPeranan/"+peranan,
+    method: "GET",
+    timeout: 0,
+  };
+
+  $.ajax(settings).done(function (response) {
+    let convertList = JSON.stringify(response.data);
+    $("#dataList"+callPeranan).val(convertList);
+    var list = [];
+    let bil = 1;
+
+    $.each(response.data, function (i, field) {
+      var checked;
+      // alert(field.statusrekod_capaian);
+      if (field.statusrekod_capaian == "1") {
+        checked = "checked";
+        badge = "badge-success";
+        text_statusrekod = "Aktif";
+      } else {
+        badge = "badge-danger";
+        text_statusrekod = "Tidak Aktif";
+      }
+      list.push({
+        id: field.id_users,
+        nama: field.nama,
+        emel: field.emel,
+        no_kad_pengenalan: field.no_kad_pengenalan,
+        notel: field.notel,
+        jenis_pengguna: field.jenis_pengguna,
+        nama_peranan: field.nama_peranan,
+        bil: bil++,
+        nama_kampus: field.nama_kampus,
+          // field.nama_kampus +
+          // "/ " +
+          // field.nama_kluster +
+          // "/ " +
+          // field.nama_subkluster,
+        status_rekod:
+          '<label class="adomx-switch-2 success "><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
+          checked +
+          " onclick=\"del_rekod('" +
+          field.id_capaian +
+          "','" +
+          field.statusrekod_capaian +
+          '\')"> <i class="lever"></i> <span id="text_statusrekod' +
+          field.id_capaian +
+          '" class="badge ' +
+          badge +
+          '">' +
+          text_statusrekod +
+          "</span></label>",
+        upt_btn:
+          '<button class="button button-box button-sm button-primary" onclick="loaduptCapaian(\'' +
+          field.id_capaian + '\',\''+field.no_kad_pengenalan+
+          '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
+        // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
+      });
+    });
+
+    $("#list"+callPeranan).footable({
+      columns: colums,
+      rows: list,
+      paging: {
+        enabled: true,
+        size: 10,
+      },
+      filtering: {
+        enabled: true,
+        placeholder: "Carian...",
+        dropdownTitle: "Carian untuk:",
+        class: "brown-700",
+      },
+    });
+  });
+}
+
+function checknoic(){
+
+  $("#check_noic").modal("show");
+
+  // $("#dftr_users").click(function () {
+  // });
+}
+
 function loadData(indexs) {
   let data = JSON.parse($("#dataListPeranan").val());
 
@@ -722,6 +860,47 @@ function loadDataCapaian(indexs) {
 
   $("#update-capaian").modal("show");
 }
+
+
+// afiez baru buat utk function load capaian
+function loaduptCapaian(id_capaian, icno) {
+  
+  $("#upt_FK_users").val(icno);
+
+
+  var settings = {
+    url: host + "showbyID/" + id_capaian,
+    method: "GET",
+    timeout: 0,
+  };
+  $.ajax(settings).done(function (response) {
+    // alert(response.data)
+    // console.log(response);
+    $("#upt_FK_kampus").val(response.data.FK_kampus);
+    $("#upt_FK_kluster").val(response.data.FK_kluster);
+    $("#upt_FK_subkluster").val(response.data.FK_subkluster);
+    $("#FK_unit").val(response.data.FK_unit);
+    $("#upt_FK_peranan").val(response.data.FK_peranan);
+  });
+  // $("#upt_FK_user_capaian").val(data[indexs].id_users);
+  // $("#upt_id_capaian").val(data[indexs].id_capaian);
+  // $("#upt_FK_kampus").val(data[indexs].id_kampus);
+  // $("#upt_FK_kluster").val(data[indexs].FK_kluster);
+  // $("#upt_FK_subkluster").val(data[indexs].FK_subkluster);
+  // $("#upt_FK_unit").val(data[indexs].FK_unit);
+  // $("#upt_FK_peranan").val(data[indexs].FK_peranan);
+
+  // saveLog(
+  //   window.sessionStorage.id,
+  //   "View Data of [id = " +
+  //     data[indexs].id_peranan +
+  //     "] at Tetapan Admin Pengguna.",
+  //   window.sessionStorage.browser
+  // );
+
+  $("#update-capaian").modal("show");
+}
+
 
 $("#FK_users").change(function () {
   var settings = {
@@ -910,7 +1089,7 @@ $("#registerPeranan").on("submit", function (e) {
         if (!result.success) {
           // Swal(result.message, result.data, "error");
           // return;
-          console.log(result);
+          // console.log(result);
           swal({
             title: "Daftar Peranan Pengguna",
             text: result.message,
@@ -1913,6 +2092,25 @@ function ezxsKampus(id_kampus) {
   // END Dropdown Kampus List
 }
 
+function checkingPeranan() {
+
+  let checking = window.sessionStorage.FK_peranan;
+  if (checking == 1) {
+    tableByPeranan('Super Admin');
+  } else if (checking == 3) {
+    tableByPeranan('Pentadbir Media');
+    
+    $("#dataSuperAdmin").removeClass("show active");
+    $("#dataPentadbirMedia").addClass("show active");
+    $("#superAdmin").addClass("hidden");
+    $("#superAdmin").removeClass("active");
+    $("#pgwMedia").addClass("active");
+    
+  } 
+
+
+}
+
 function ezxsKluster(id_kluster) {
   //Dropdown Kluster List
   var form = new FormData();
@@ -1999,6 +2197,10 @@ $.ajax(settings).done(function (response) {
       text: "Pilih Peranan",
     })
   );
+
+
+
+  //utk pilih peranan mula sni
   $("#FK_peranan").empty();
   $("#FK_peranan").append(
     $("<option>", {
@@ -2013,27 +2215,58 @@ $.ajax(settings).done(function (response) {
       text: "Pilih Peranan",
     })
   );
+  
+  // $.each(response.data, function (i, item) {
+  
+  //   $("#FK_peranan").append(
+  //     $("<option>", {
+  //       value: item.id_peranan,
+  //       text: item.nama_peranan,
+  //     })
+  //   );
+  //   $("#upt_FK_peranan").append(
+  //     $("<option>", {
+  //       value: item.id_peranan,
+  //       text: item.nama_peranan,
+  //     })
+  //   );
+
+
+  // });
+
   $.each(response.data, function (i, item) {
-    $("#FK_peranan_add").append(
-      $("<option>", {
-        value: item.id_peranan,
-        text: item.nama_peranan,
-      })
-    );
-    $("#FK_peranan").append(
-      $("<option>", {
-        value: item.id_peranan,
-        text: item.nama_peranan,
-      })
-    );
-    $("#upt_FK_peranan").append(
-      $("<option>", {
-        value: item.id_peranan,
-        text: item.nama_peranan,
-      })
-    );
-  });
+    if (window.sessionStorage.FK_peranan == 1) {
+        $("#FK_peranan").append(
+            $("<option>", {
+                value: item.id_peranan,
+                text: item.nama_peranan,
+            })
+        );
+        $("#upt_FK_peranan").append(
+            $("<option>", {
+                value: item.id_peranan,
+                text: item.nama_peranan,
+            })
+        );
+    } else if (window.sessionStorage.FK_peranan == 3) {
+        if (item.id_peranan !== 1 && item.nama_peranan !== "Super Admin") {
+            $("#FK_peranan").append(
+                $("<option>", {
+                    value: item.id_peranan,
+                    text: item.nama_peranan,
+                })
+            );
+            $("#upt_FK_peranan").append(
+                $("<option>", {
+                    value: item.id_peranan,
+                    text: item.nama_peranan,
+                })
+            );
+        }
+    }
 });
+});
+
 // END Dropdown Peranan List
 
 //Dropdown User List

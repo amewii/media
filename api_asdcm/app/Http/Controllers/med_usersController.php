@@ -421,6 +421,7 @@ class med_usersController extends Controller
 
         if ($med_users)   {
             return response()->json([
+                'length'=>$med_users->count(),
                 'success'=>'true',
                 'message'=>'List Success!',
                 'data'=>$med_users
@@ -429,6 +430,34 @@ class med_usersController extends Controller
         
     }
 
+    public function listPentadbirbyPeranan($peranan)  {
+        $decodedPeranan = urldecode($peranan); //utk buang url pnya         
+        // dd($decodedPeranan);
+
+        $med_users = med_users::select('*','med_capaian.statusrekod AS statusrekod_capaian','med_users.statusrekod AS statusrekod_users')->
+                                join('med_jenispengguna', 'med_jenispengguna.id_jenispengguna', '=', 'med_users.FK_jenis_pengguna') -> 
+                                leftjoin('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_users.FK_gelaran') -> 
+                                join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
+                                join('med_peranan', 'med_peranan.id_peranan', '=', 'med_capaian.FK_peranan') -> 
+                                join('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
+                                leftjoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_usersgov.FK_kampus') -> 
+                                leftjoin('med_kluster', 'med_kluster.id_kluster', '=', 'med_usersgov.FK_kluster') -> 
+                                leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_usersgov.FK_subkluster') ->
+                                where('med_peranan.nama_peranan', $decodedPeranan) -> 
+                                orderby(med_users::raw('ISNULL(med_peranan.id_peranan)', 'ASC')) -> orderby('med_peranan.id_peranan', 'ASC') ->
+                                get();
+
+        if ($med_users)   {
+            return response()->json([
+                'length'=>$med_users->count()
+                ,
+                'success'=>'true',
+                'message'=>'List Success!',
+                'data'=>$med_users,
+            ],200);
+        }
+        
+    }
     public function listKerajaan()  {
         $med_users = med_users::join('med_jenispengguna', 'med_jenispengguna.id_jenispengguna', '=', 'med_users.FK_jenis_pengguna') -> 
                                 join('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_users.FK_gelaran') -> 

@@ -51,6 +51,7 @@ $router->get('/usersswastaList', 'med_usersController@listSwasta');
 $router->get('/userspelajarList', 'med_usersController@listPelajar');
 $router->get('/usersListAll', 'med_usersController@listAll');
 $router->get('/usersListPentadbir', 'med_usersController@listPentadbir');
+$router->get('/usersListPentadbir/byPeranan/{peranan}', 'med_usersController@listPentadbirbyPeranan');
 $router->get('/usersListKerajaan', 'med_usersController@listKerajaan');
 $router->get('/usersListKerajaan/{FK_users}', 'med_usersController@listKerajaanSingle');
 $router->get('/usersEditProfile/{FK_users}', 'med_usersController@listUsersEditProfile');
@@ -160,6 +161,7 @@ $router->get('/capaian/{FK_users}', 'med_capaianController@showGet');
 $router->get('/capaianList', 'med_capaianController@list');
 $router->post('/capaianUpdate', 'med_capaianController@update'); //setting tambah baru
 $router->post('/capaianDelete', 'med_capaianController@delete');
+$router->get('/showbyID/{idcapaian}', 'med_capaianController@showbyID');
 
 //Daripada api_public
 
