@@ -8,7 +8,7 @@ require_once __DIR__.'/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+date_default_timezone_set(env('APP_TIMEZONE', 'Asia/Kuala_Lumpur'));
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 |
 */
 
-$dotenv = Dotenv::createImmutable(__DIR__.'/../../../../../env_files','.media');
+$dotenv = Dotenv::createImmutable(__DIR__.'/../../../../env_files','.media');
 $dotenv->load();
 
 $app = new Laravel\Lumen\Application(
@@ -78,10 +78,15 @@ $app->configure('app');
 */
 
 $app->middleware([
-    App\Http\Middleware\ExampleMiddleware::class
+    App\Http\Middleware\ExampleMiddleware::class,
+    // Illuminate\Cookie\Middleware\EncryptCookies,
+    // Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse,
+    // Illuminate\Session\Middleware\StartSession,
+    // Illuminate\View\Middleware\ShareErrorsFromSession,
 ]);
 
 $app->routeMiddleware([
+    'public' => App\Http\Middleware\public_auth::class,
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
@@ -102,6 +107,9 @@ $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
+// $app->register('tibonilab\Pdf\PdfServiceProvider');
+// class_alias('tibonilab\Pdf\PdfFacade', 'PDF');
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -118,5 +126,7 @@ $app->router->group([
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
+
+$app->configure('services');
 
 return $app;
