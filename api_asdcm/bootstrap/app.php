@@ -1,5 +1,7 @@
 <?php
 
+use Dotenv\Dotenv;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -18,6 +20,9 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 | application as an "IoC" container and router for this framework.
 |
 */
+
+$dotenv = Dotenv::createImmutable(__DIR__.'/../../../../../env_files','.media');
+$dotenv->load();
 
 $app = new Laravel\Lumen\Application(
     dirname(__DIR__)

@@ -14,7 +14,6 @@ class authController extends Controller
     public function login(Request $request){
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
         $katalaluan = $request->input('katalaluan');
-
         $userS = med_users::select('*', 'med_usersgov.FK_kluster AS kluster') ->
                         leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
                         join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
@@ -48,7 +47,7 @@ class authController extends Controller
                         'token'=>$token,
                         'messages'=>'Log Masuk Gagal',
                         'data'=>'',
-                    ],201);
+                    ],400);
                 }
             }
             else{
@@ -57,7 +56,7 @@ class authController extends Controller
                     // 'token'=>$token,
                     'messages'=>'Log Masuk Gagal',
                     'data'=>'Katalaluan tidak tepat. Sila cuba lagi.',
-                ],201);
+                ],400);
             }
         }
         else {
@@ -66,7 +65,7 @@ class authController extends Controller
                 // 'token'=>$token,
                 'messages'=>'Log Masuk Gagal',
                 'data'=>'Sila hubungi pihak pentadbir sistem untuk maklumat lanjut.',
-            ],201);
+            ],400);
         }
     }
 
