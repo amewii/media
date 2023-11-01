@@ -460,7 +460,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 /*Content Body*/
 .content-body {
   padding: 30px;
-  margin-top: 110px;
+  margin-top: 47px;
   -webkit-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
@@ -7213,7 +7213,7 @@ table.data-table.collapsed tbody tr.child td.child ul li .dtr-title {
   -webkit-flex: 0 0 270px;
       -ms-flex: 0 0 270px;
           flex: 0 0 270px;
-  height: 110px;
+  height: 57px;
 }
 
 .header-logo a {
@@ -9047,16 +9047,16 @@ body.header-top-green .header-notification-area > li > a .user .name {
 .side-header {
   width: 270px !important;
   background-color: #dee2e6;
-  height: calc(100vh - 110px);
+  height: calc(100vh);
   position: fixed;
   left: 0;
-  top: 110px;
+  top: 57px;
   -webkit-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   /* z-index: 1100; */
   z-index: 99;
-  padding: 30px 0;
+  padding: 20px 0;
   -webkit-box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
           box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
 }
@@ -9158,7 +9158,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
   font-size: 14px;
   color: #8b8d9b;
   line-height: 20px;
-  padding: 12px 0 12px 25px;
+  padding: 5px 0 5px 20px;
 }
 
 .side-header-menu > ul > li > a::before {
@@ -9224,7 +9224,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
   color: #8b8d9b;
   font-size: 14px;
   line-height: 18px;
-  padding: 5px 0 5px 30px;
+  padding: 5px 0 5px 20px;
 }
 
 .side-header-sub-menu li a::before {

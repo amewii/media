@@ -112,6 +112,35 @@ $("#send_noic").on("submit", function (e) {
                   $("#noic_check").val("");
                 });
               } else {
+                console.log(obj_hrmis);
+                var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
+                $.each(kampus,function(i,item){
+                  if(item == "INTIM"){
+                    $("#FK_kampus_add").val('1');
+                    return false;
+                  }
+                  if(item == "INTURA"){
+                    $("#FK_kampus_add").val('2');
+                    return false;
+                  }
+                  if(item == "IKWAS"){
+                    $("#FK_kampus_add").val('3');
+                    return false;
+                  }
+                  if(item == "INTAN SABAH"){
+                    $("#FK_kampus_add").val('4');
+                    return false;
+                  }
+                  if(item == "INTAN SARAWAK"){
+                    $("#FK_kampus_add").val('5');
+                    return false;
+                  }
+                  if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
+                    $("#FK_kampus_add").val('11');
+                    return false;
+                  }
+                });
+                
                 $("#nama_text_add").text(obj_hrmis.peribadi.nama);
                 $("#noic_text_add").text(obj_hrmis.peribadi.icno);
                 $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
@@ -497,7 +526,8 @@ function tablePeranan() {
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_peranan+'\')"><i class="ti-trash"></i>'
       });
     });
-
+    $(".peranan-length").html(list.length);
+    $("#listPeranan").html('');
     $("#listPeranan").footable({
       columns: columsPeranan,
       rows: list,
@@ -587,7 +617,8 @@ function tablePengguna() {
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
-
+    $(".pengguna-length").html(list.length);
+    $("#listPengguna").html('');
     $("#listPengguna").footable({
       columns: colums,
       rows: list,
@@ -678,7 +709,8 @@ function tablePentadbir() {
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
-
+    $(".pentadbir-length").html(list.length);
+    $("#listPentadbir").html('');
     $("#listPentadbir").footable({
       columns: colums,
       rows: list,
@@ -776,7 +808,9 @@ function tableByPeranan(peranan) {
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
-
+    console.log(callPeranan);
+    $("."+callPeranan+"-length").html(list.length);
+    $("#list"+callPeranan).html('');
     $("#list"+callPeranan).footable({
       columns: colums,
       rows: list,

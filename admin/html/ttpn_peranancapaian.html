@@ -49,18 +49,21 @@
                  <div class="tab-pane fade show active" id="dataSuperAdmin">
                     <div id="tableSuperAdmin" class="table-responsive">
                         <textarea class="hidden" id="dataListSuperAdmin"></textarea>
+                        <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 SuperAdmin-length"></span></h6>
                         <table id="listSuperAdmin" class="table"></table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dataPentadbirMedia">
                     <div id="tablePentadbirMedia" class="table-responsive">
                         <textarea class="hidden" id="dataListPentadbirMedia"></textarea>
+                        <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 PentadbirMedia-length"></span></h6>
                         <table id="listPentadbirMedia" class="table"></table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dataPentadbirKluster">
                     <div id="tablePentadbirKluster" class="table-responsive">
                         <textarea class="hidden" id="dataListPentadbirKluster"></textarea>
+                        <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 PentadbirKluster-length"></span></h6>
                         <table id="listPentadbirKluster" class="table"></table>
                     </div>
                 </div>
@@ -68,12 +71,14 @@
                 <div class="tab-pane fade" id="dataPengguna">
                     <div id="tablePengguna" class="table-responsive">
                         <textarea class="hidden" id="dataListPengguna"></textarea>
+                        <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 pengguna-length"></span></h6>
                         <table id="listPengguna" class="table"></table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dataPeranan">
                     <div id="tablePengguna" class="table-responsive">
                         <textarea class="hidden" id="dataListPeranan"></textarea>
+                        <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 peranan-length"></span></h6>
                         <table id="listPeranan" class="table"></table>
                     </div>
                 </div>
@@ -229,12 +234,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mt-2">
-                                <label for="FK_kluster_add">Kluster</label>
+                                <label for="FK_kluster_add">Program / Pusat</label>
                                 <select class="form-control c-select"  id="FK_kluster_add"></select>                                
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group mt-2">
+                            <div class="form-group mt-2 hidden">
                                 <label for="FK_subkluster_add">Sub Kluster</label>
                                 <select class="form-control c-select" id="FK_subkluster_add"></select>
                             </div>
@@ -250,7 +255,7 @@
                     </div>                
                 </div>
                 <div class="modal-footer">
-                    <button class="button button-primary" type="submit" id="daftar"><i id="icon_Ya" class="ti-check"></i> Ya</button>
+                    <button class="button button-primary" type="submit" id="daftar"><i id="icon_Ya" class="ti-check"></i> Simpan</button>
                     <button class="button button-white" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
