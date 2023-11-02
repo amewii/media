@@ -11,7 +11,102 @@ $(function () {
   tablePeranan();
   tablePengguna();
   tablePentadbir();
+  load_select();
 });
+
+function load_select(){
+  var obj = new get(host+`perananList`,window)
+
+  //Dropdown Peranan List
+  var settings = {
+    url: host + "perananList",
+    method: "GET",
+    timeout: 0,
+    // "header":{
+    //     "Authentication": "ASDCM"+window.sessionStorage.token
+    //   }
+  };
+  
+  $.ajax(settings).done(function (response) {
+    //LIST OPTION
+    $("#FK_peranan_add").empty();
+    $("#FK_peranan_add").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
+  );
+  
+  
+  
+    //utk pilih peranan mula sni
+    $("#FK_peranan").empty();
+    $("#FK_peranan").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
+    );
+    $("#upt_FK_peranan").empty();
+    $("#upt_FK_peranan").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
+    );
+    
+    // $.each(response.data, function (i, item) {
+    
+    //   $("#FK_peranan").append(
+    //     $("<option>", {
+    //       value: item.id_peranan,
+    //       text: item.nama_peranan,
+    //     })
+    //   );
+    //   $("#upt_FK_peranan").append(
+    //     $("<option>", {
+    //       value: item.id_peranan,
+    //       text: item.nama_peranan,
+    //     })
+    //   );
+  
+  
+    // });
+  
+    $.each(response.data, function (i, item) {
+      if (window.sessionStorage.FK_peranan == 1) {
+          $("#FK_peranan").append(
+              $("<option>", {
+                  value: item.id_peranan,
+                  text: item.nama_peranan,
+              })
+          );
+          $("#upt_FK_peranan").append(
+              $("<option>", {
+                  value: item.id_peranan,
+                  text: item.nama_peranan,
+              })
+          );
+      } else if (window.sessionStorage.FK_peranan == 3) {
+          if (item.id_peranan !== 1 && item.nama_peranan !== "Super Admin") {
+              $("#FK_peranan").append(
+                  $("<option>", {
+                      value: item.id_peranan,
+                      text: item.nama_peranan,
+                  })
+              );
+              $("#upt_FK_peranan").append(
+                  $("<option>", {
+                      value: item.id_peranan,
+                      text: item.nama_peranan,
+                  })
+              );
+          }
+      }
+  });
+  });
+
+}
 
 $("#pentadbir").click(function () {
   $("#buttonCapaian").removeClass("hidden");
@@ -2211,95 +2306,6 @@ function ezxsSubKluster(id_subkluster) {
   });
   // END Dropdown Subkluster List
 }
-
-//Dropdown Peranan List
-var settings = {
-  url: host + "perananList",
-  method: "GET",
-  timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
-};
-
-$.ajax(settings).done(function (response) {
-  //LIST OPTION
-  $("#FK_peranan_add").empty();
-  $("#FK_peranan_add").append(
-    $("<option>", {
-      value: "",
-      text: "Pilih Peranan",
-    })
-  );
-
-
-
-  //utk pilih peranan mula sni
-  $("#FK_peranan").empty();
-  $("#FK_peranan").append(
-    $("<option>", {
-      value: "",
-      text: "Pilih Peranan",
-    })
-  );
-  $("#upt_FK_peranan").empty();
-  $("#upt_FK_peranan").append(
-    $("<option>", {
-      value: "",
-      text: "Pilih Peranan",
-    })
-  );
-  
-  // $.each(response.data, function (i, item) {
-  
-  //   $("#FK_peranan").append(
-  //     $("<option>", {
-  //       value: item.id_peranan,
-  //       text: item.nama_peranan,
-  //     })
-  //   );
-  //   $("#upt_FK_peranan").append(
-  //     $("<option>", {
-  //       value: item.id_peranan,
-  //       text: item.nama_peranan,
-  //     })
-  //   );
-
-
-  // });
-
-  $.each(response.data, function (i, item) {
-    if (window.sessionStorage.FK_peranan == 1) {
-        $("#FK_peranan").append(
-            $("<option>", {
-                value: item.id_peranan,
-                text: item.nama_peranan,
-            })
-        );
-        $("#upt_FK_peranan").append(
-            $("<option>", {
-                value: item.id_peranan,
-                text: item.nama_peranan,
-            })
-        );
-    } else if (window.sessionStorage.FK_peranan == 3) {
-        if (item.id_peranan !== 1 && item.nama_peranan !== "Super Admin") {
-            $("#FK_peranan").append(
-                $("<option>", {
-                    value: item.id_peranan,
-                    text: item.nama_peranan,
-                })
-            );
-            $("#upt_FK_peranan").append(
-                $("<option>", {
-                    value: item.id_peranan,
-                    text: item.nama_peranan,
-                })
-            );
-        }
-    }
-});
-});
 
 // END Dropdown Peranan List
 

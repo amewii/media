@@ -207,7 +207,7 @@ class med_usersController extends Controller
                 if(!$mail->send()) {
                     // dd("Mailer Error: " . $mail->ErrorInfo);
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
                         'data'=>''
                     ],200);
@@ -216,14 +216,14 @@ class med_usersController extends Controller
                 if(!$mail->send()) {
                     // dd("Mailer Error: " . $mail->ErrorInfo);
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
                         'data'=>''
                     ],200);
                 } 
                 else {
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
                         'data'=>''
                     ],200);
@@ -235,6 +235,17 @@ class med_usersController extends Controller
                 'message'=>"No Data!",
                 'data'=>''
             ]);
+        }
+    }
+
+    public function showSiteAdmin(Request $request){
+        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
+        $obj = med_users::
+                join('med_capaian','med_capaian.FK_users','med_users.id_users')->
+                join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
+                where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        if($obj){
+
         }
     }
 

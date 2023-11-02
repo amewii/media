@@ -16,47 +16,27 @@ $("#login").on("submit", function (e) {
     var form = new FormData();
     form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("katalaluan", katalaluan);
-    var settings = {
-      url: host + "login",
-      // "url": host + "api_auth_asdcm/public/login",
-      method: "POST",
-      timeout: 0,
-      processData: false,
-      mimeType: "multipart/form-data",
-      contentType: false,
-      data: form,
-    };
-
-    $.ajax(settings).done(function (response) {
-      result = JSON.parse(response);
-      if (!result.success) {
-        swal({
-          title: "Log Masuk",
-          text: result.data,
-          type: "error",
-          closeOnConfirm: true,
-          allowOutsideClick: false,
-          html: false,
-        }).then(function () {
-          sessionStorage.token = result.token;
-          window.location.reload();
-        });
-      } else {
-        sessionStorage.id = result.data.id_users;
-        sessionStorage.token = result.data.token;
-        sessionStorage.no_kad_pengenalan = result.data.no_kad_pengenalan;
-        sessionStorage.nama = result.data.nama;
-        sessionStorage.FK_kluster = result.data.kluster;
-        sessionStorage.emel = result.data.emel;
-        sessionStorage.id_peranan = result.data.id_peranan;
-        sessionStorage.FK_capaian = result.data.FK_capaian;
-        sessionStorage.FK_peranan = result.data.id_peranan;
-        sessionStorage.nama_peranan = result.data.nama_peranan;
-        sessionStorage.browser = getBrowser();
-        saveLog(result.data.id_users, "Login.", window.sessionStorage.browser);
-        window.location.replace("../");
-      }
-    });
+    var obj = new post(host+`login`,form,'').execute();
+    if(obj.success){
+      var data = obj.data;
+      window.sessionStorage.token = data.token;
+      window.sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
+      sessionStorage.browser = getBrowser();
+      saveLog(data.id_users, "Login.", window.sessionStorage.browser);
+      window.location.replace("../");
+    } else {
+      swal({
+        title: "Log Masuk",
+        text: result.data,
+        type: "error",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        sessionStorage.token = result.token;
+        window.location.reload();
+      });
+    }
   }
 });
 

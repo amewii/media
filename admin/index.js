@@ -2,7 +2,7 @@ $(function () {
   $.ajaxSetup({
     cache: false,
   });
-
+  var obj = new get(host+`users`)
   settingCapaian();
   if (window.sessionStorage.content == null) {
     statBilProgram();

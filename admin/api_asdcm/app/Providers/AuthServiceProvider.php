@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\pen_calon_soalan;
-use App\Models\pen_users;
+use App\Models\med_users;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -35,11 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
                 $apiToken = explode('0L1v3', $request->header('Authorization'));
-                return pen_users::where('token', $apiToken[1])->first();
-            }
-            if ($request->header('AuthorizationExam')) {
-                $apiToken = explode('0L1v3', $request->header('AuthorizationExam'));
-                return pen_calon_soalan::where('token', $apiToken[1])->first();
+                return med_users::where('token', $apiToken[1])->first();
             }
         });
     }
