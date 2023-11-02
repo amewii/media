@@ -11,102 +11,8 @@ $(function () {
   tablePeranan();
   tablePengguna();
   tablePentadbir();
-  load_select();
+  load_select_peranan_capaian();
 });
-
-function load_select(){
-  var obj = new get(host+`perananList`,window)
-
-  //Dropdown Peranan List
-  var settings = {
-    url: host + "perananList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-  
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_peranan_add").empty();
-    $("#FK_peranan_add").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Peranan",
-      })
-  );
-  
-  
-  
-    //utk pilih peranan mula sni
-    $("#FK_peranan").empty();
-    $("#FK_peranan").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Peranan",
-      })
-    );
-    $("#upt_FK_peranan").empty();
-    $("#upt_FK_peranan").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Peranan",
-      })
-    );
-    
-    // $.each(response.data, function (i, item) {
-    
-    //   $("#FK_peranan").append(
-    //     $("<option>", {
-    //       value: item.id_peranan,
-    //       text: item.nama_peranan,
-    //     })
-    //   );
-    //   $("#upt_FK_peranan").append(
-    //     $("<option>", {
-    //       value: item.id_peranan,
-    //       text: item.nama_peranan,
-    //     })
-    //   );
-  
-  
-    // });
-  
-    $.each(response.data, function (i, item) {
-      if (window.sessionStorage.FK_peranan == 1) {
-          $("#FK_peranan").append(
-              $("<option>", {
-                  value: item.id_peranan,
-                  text: item.nama_peranan,
-              })
-          );
-          $("#upt_FK_peranan").append(
-              $("<option>", {
-                  value: item.id_peranan,
-                  text: item.nama_peranan,
-              })
-          );
-      } else if (window.sessionStorage.FK_peranan == 3) {
-          if (item.id_peranan !== 1 && item.nama_peranan !== "Super Admin") {
-              $("#FK_peranan").append(
-                  $("<option>", {
-                      value: item.id_peranan,
-                      text: item.nama_peranan,
-                  })
-              );
-              $("#upt_FK_peranan").append(
-                  $("<option>", {
-                      value: item.id_peranan,
-                      text: item.nama_peranan,
-                  })
-              );
-          }
-      }
-  });
-  });
-
-}
 
 $("#pentadbir").click(function () {
   $("#buttonCapaian").removeClass("hidden");
@@ -207,7 +113,6 @@ $("#send_noic").on("submit", function (e) {
                   $("#noic_check").val("");
                 });
               } else {
-                console.log(obj_hrmis);
                 var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
                 $.each(kampus,function(i,item){
                   if(item == "INTIM"){
@@ -235,7 +140,11 @@ $("#send_noic").on("submit", function (e) {
                     return false;
                   }
                 });
-                
+                $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
+                $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
+                  console.log(item);
+                  // if(item == )
+                });
                 $("#nama_text_add").text(obj_hrmis.peribadi.nama);
                 $("#noic_text_add").text(obj_hrmis.peribadi.icno);
                 $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
@@ -493,15 +402,14 @@ $("#registergov").on("submit", function (e) {
 });
 
 function check_users(noic, returnValue) {
-  var settings = {
-    url: host + "usersgovsIntan/" + noic,
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_users = response;
+  var obj = new get(host+`usersgovsIntan/`+noic,window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_users = obj;
     returnValue();
-  });
+  } else {
+    obj_users = obj;
+    returnValue();
+  }
 }
 
 function check_usersIntan(noic, returnValue) {
@@ -554,20 +462,15 @@ function tablePeranan() {
     { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
-  var settings = {
-    url: host + "perananList",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`perananList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataListPeranan").val(convertList);
     var list = [];
     var senarai_capaian = "";
     let bil = 1;
     let nama_submodul = "";
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       senarai_capaian = "";
       let inc = 1;
       while (inc <= 7) {
@@ -637,7 +540,9 @@ function tablePeranan() {
         class: "brown-700",
       },
     });
-  });
+  } else {
+    console.log(obj);
+  }
 }
 
 function tablePengguna() {
@@ -652,19 +557,14 @@ function tablePengguna() {
     // { "name": "upt_btn", "title": "Tindakan", "breakpoints": "lg md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
-  var settings = {
-    url: host + "usersListAll",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`usersListAll`,window.sessionStorage.token).execute();
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataListPengguna").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       var checked;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_users == "1") {
@@ -728,7 +628,9 @@ function tablePengguna() {
         class: "brown-700",
       },
     });
-  });
+  } else {
+
+  }
 }
 
 function tablePentadbir() {
@@ -745,19 +647,16 @@ function tablePentadbir() {
     { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
-  var settings = {
-    url: host + "usersListPentadbir",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  
+  var obj = new get(host+`usersListPentadbir`,window.sessionStorage.token).execute();
+  if(obj.success){
+    console.log(obj);
+    let convertList = JSON.stringify(obj.data);
     $("#dataListPentadbir").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       var checked;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_capaian == "1") {
@@ -820,7 +719,9 @@ function tablePentadbir() {
         class: "brown-700",
       },
     });
-  });
+  } else {
+    
+  }
 }
 
 
@@ -844,19 +745,16 @@ function tableByPeranan(peranan) {
     { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
-  var settings = {
-    url: host + "usersListPentadbir/byPeranan/"+peranan,
-    method: "GET",
-    timeout: 0,
-  };
 
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`usersListPentadbir/byPeranan/`+peranan,window.sessionStorage.token).execute();
+  console.log(obj);
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataList"+callPeranan).val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       var checked;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_capaian == "1") {
@@ -903,7 +801,6 @@ function tableByPeranan(peranan) {
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
-    console.log(callPeranan);
     $("."+callPeranan+"-length").html(list.length);
     $("#list"+callPeranan).html('');
     $("#list"+callPeranan).footable({
@@ -920,7 +817,9 @@ function tableByPeranan(peranan) {
         class: "brown-700",
       },
     });
-  });
+  } else {
+    console.log(obj);
+  }
 }
 
 function checknoic(){
@@ -2223,7 +2122,7 @@ function ezxsKampus(id_kampus) {
 
 function checkingPeranan() {
 
-  let checking = window.sessionStorage.FK_peranan;
+  let checking = FK_peranan_master;
   if (checking == 1) {
     tableByPeranan('Super Admin');
   } else if (checking == 3) {
@@ -2307,140 +2206,205 @@ function ezxsSubKluster(id_subkluster) {
   // END Dropdown Subkluster List
 }
 
-// END Dropdown Peranan List
-
-//Dropdown User List
-var settings = {
-  url: host + "usersgovsIntanList",
-  method: "GET",
-  timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
-};
-
-$.ajax(settings).done(function (response) {
-  //LIST OPTION
-  $("#FK_userss").empty();
-  $.each(response.data, function (i, item) {
-    $("#FK_userss").append(
-      $("<option>", {
-        value: item.no_kad_pengenalan,
-        text: item.nama,
-      })
-    );
-  });
-
-  //LIST OPTION UPDATE
-  $("#upt_FK_users").empty();
-  $("#upt_FK_users").append(
-    $("<option>", {
-      value: "",
-      text: "Pilih Pengguna",
-    })
-  );
-  $.each(response.data, function (i, item) {
+function load_select_peranan_capaian(){
+  var obj = new get(host+`usersgovsIntanList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    console.log(obj);
+    $("#FK_userss").empty();
+    $.each(obj.data, function (i, item) {
+      $("#FK_userss").append(
+        $("<option>", {
+          value: item.no_kad_pengenalan,
+          text: item.nama,
+        })
+      );
+    });
+  
+    //LIST OPTION UPDATE
+    $("#upt_FK_users").empty();
     $("#upt_FK_users").append(
       $("<option>", {
-        value: item.PK,
-        text: item.nama,
+        value: "",
+        text: "Pilih Pengguna",
       })
     );
-  });
-});
-// END Dropdown User List
+    $.each(obj.data, function (i, item) {
+      $("#upt_FK_users").append(
+        $("<option>", {
+          value: item.PK,
+          text: item.nama,
+        })
+      );
+    });
+  } else {
+    console.log(obj);
+  }
 
-//Checkbox Submodul List
-sessionStorage.listsubmodule = [];
-var listsubmodule = [];
-var settings = {
-  url: host + "submodulsList",
-  method: "GET",
-  timeout: 0,
-};
-// console.log(checkboxval);
-$.ajax(settings).done(function (response) {
-  //LIST OPTION
-  $.each(response.data, function (i, item) {
-    $("#FK_capaian").append(
-      $(
-        '<table width="100%">' +
-          "<tbody>" +
-          "<tr>" +
-          '<td width="30%"><label class="adomx-checkbox">' +
-          item.nama_submodul +
-          "</label></td>" +
-          '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="C' +
-          item.id_submodul +
-          '" id="c' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Create</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="R' +
-          item.id_submodul +
-          '" id="r' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Read</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="U' +
-          item.id_submodul +
-          '" id="u' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Update</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="D' +
-          item.id_submodul +
-          '" id="d' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Delete</label></td>' +
-          "</tr>" +
-          "</tbody>" +
-          "</table>"
-      )
+  //Checkbox Submodul List
+  listsubmodule_master = [];
+  var listsubmodule = [];
+  var obj = new get(host+`submodulsList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
+      $("#FK_capaian").append(
+        $(
+          '<table width="100%">' +
+            "<tbody>" +
+            "<tr>" +
+            '<td width="30%"><label class="adomx-checkbox">' +
+            item.nama_submodul +
+            "</label></td>" +
+            '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="C' +
+            item.id_submodul +
+            '" id="c' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Create</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="R' +
+            item.id_submodul +
+            '" id="r' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Read</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="U' +
+            item.id_submodul +
+            '" id="u' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Update</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="D' +
+            item.id_submodul +
+            '" id="d' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Delete</label></td>' +
+            "</tr>" +
+            "</tbody>" +
+            "</table>"
+        )
+      );
+  
+      $("#upt_FK_capaian").append(
+        $(
+          '<table width="100%">' +
+            "<tbody>" +
+            "<tr>" +
+            '<td width="30%"><label class="adomx-checkbox">' +
+            item.nama_submodul +
+            "</label></td>" +
+            '<td width="10%"><label class="adomx-checkbox" id="tc' +
+            item.id_submodul +
+            '"><input class="form-control" type="checkbox" name="upt_crud" value="C' +
+            item.id_submodul +
+            '" id="upt_C' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Create</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox" id="tr' +
+            item.id_submodul +
+            '"><input class="form-control" type="checkbox" name="upt_crud" value="R' +
+            item.id_submodul +
+            '" id="upt_R' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Read</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox" id="tu' +
+            item.id_submodul +
+            '"><input class="form-control" type="checkbox" name="upt_crud" value="U' +
+            item.id_submodul +
+            '" id="upt_U' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Update</label></td>' +
+            '<td width="10%"><label class="adomx-checkbox" id="td' +
+            item.id_submodul +
+            '"><input class="form-control" type="checkbox" name="upt_crud" value="D' +
+            item.id_submodul +
+            '" id="upt_D' +
+            item.id_submodul +
+            '"/> <i class="icon"></i> Delete</label></td>' +
+            "</tr>" +
+            "</tbody>" +
+            "</table>"
+        )
+      );
+      listsubmodule.push(item.id_submodul);
+    });
+    listsubmodule_master = listsubmodule;
+  
+  } else {
+    console.log(obj);
+  }
+  
+  var obj = new get(host+`perananList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    //LIST OPTION
+    $("#FK_peranan_add").empty();
+    $("#FK_peranan_add").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
     );
+  
+    //utk pilih peranan mula sni
+    $("#FK_peranan").empty();
+    $("#FK_peranan").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
+    );
+    $("#upt_FK_peranan").empty();
+    $("#upt_FK_peranan").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Peranan",
+      })
+    );
+    console.log(obj.data);
+    $.each(obj.data,function(i,item){
+      if (FK_peranan_master == 1) {
+        $("#FK_peranan_add").append(
+            $("<option>", {
+                value: item.id_peranan,
+                text: item.nama_peranan,
+            })
+        );
+        $("#FK_peranan").append(
+            $("<option>", {
+                value: item.id_peranan,
+                text: item.nama_peranan,
+            })
+        );
+        $("#upt_FK_peranan").append(
+            $("<option>", {
+                value: item.id_peranan,
+                text: item.nama_peranan,
+            })
+        );
+      } else if (FK_peranan_master == 3) {
+        if (item.id_peranan !== 1 && item.nama_peranan !== "Super Admin") {
+          $("#FK_peranan_add").append(
+              $("<option>", {
+                  value: item.id_peranan,
+                  text: item.nama_peranan,
+              })
+          );
+          $("#FK_peranan").append(
+              $("<option>", {
+                  value: item.id_peranan,
+                  text: item.nama_peranan,
+              })
+          );
+          $("#upt_FK_peranan").append(
+              $("<option>", {
+                  value: item.id_peranan,
+                  text: item.nama_peranan,
+              })
+          );
+        }
+      }
+    });
 
-    $("#upt_FK_capaian").append(
-      $(
-        '<table width="100%">' +
-          "<tbody>" +
-          "<tr>" +
-          '<td width="30%"><label class="adomx-checkbox">' +
-          item.nama_submodul +
-          "</label></td>" +
-          '<td width="10%"><label class="adomx-checkbox" id="tc' +
-          item.id_submodul +
-          '"><input class="form-control" type="checkbox" name="upt_crud" value="C' +
-          item.id_submodul +
-          '" id="upt_C' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Create</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox" id="tr' +
-          item.id_submodul +
-          '"><input class="form-control" type="checkbox" name="upt_crud" value="R' +
-          item.id_submodul +
-          '" id="upt_R' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Read</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox" id="tu' +
-          item.id_submodul +
-          '"><input class="form-control" type="checkbox" name="upt_crud" value="U' +
-          item.id_submodul +
-          '" id="upt_U' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Update</label></td>' +
-          '<td width="10%"><label class="adomx-checkbox" id="td' +
-          item.id_submodul +
-          '"><input class="form-control" type="checkbox" name="upt_crud" value="D' +
-          item.id_submodul +
-          '" id="upt_D' +
-          item.id_submodul +
-          '"/> <i class="icon"></i> Delete</label></td>' +
-          "</tr>" +
-          "</tbody>" +
-          "</table>"
-      )
-    );
-    listsubmodule.push(item.id_submodul);
-  });
-  sessionStorage.listsubmodule = listsubmodule;
-});
+  } else {
+    console.log(obj);
+  }
+}
+
 // END Checkbox Format List
 
 function makeid(length) {

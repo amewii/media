@@ -14,6 +14,29 @@ use App\Models\med_tetapan;
 
 class med_usersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function getToken($id)  {
+        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $token     = hash("sha256", Str::random(32).$salt);
+        $obj = med_users::where('id_users',$id)->update([
+            'token' => $token
+        ]);
+
+        $token = false;
+
+        if($obj){
+            $obj = med_users::where('id_users',$id)->first(['token']);
+            $random = hash("sha256", Str::random(32)).'0L1v3';
+            $token = $random.$obj->token;
+        }
+
+        return $token;
+    }
+
     public function register(Request $request) {
         $katalaluan = $request->input('katalaluan');
         $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
@@ -238,14 +261,26 @@ class med_usersController extends Controller
         }
     }
 
-    public function showSiteAdmin(Request $request){
-        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
+    public function showSiteAdmin($no_kad_pengenalan){
+        
         $obj = med_users::
                 join('med_capaian','med_capaian.FK_users','med_users.id_users')->
                 join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
                 where('no_kad_pengenalan',$no_kad_pengenalan)->first();
         if($obj){
-
+            $token = $this->getToken($obj->id_users);
+            return response()->json([
+                'success'=>true,
+                'message'=>'Show Success!',
+                'data'=>$obj,
+                'token'=>$token,
+            ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ],400);
         }
     }
 
@@ -371,13 +406,18 @@ class med_usersController extends Controller
                                 join('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
                                 where('users_intan','1') -> where('med_users.no_kad_pengenalan',$no_kad_pengenalan) ->
                                 first();
-
         if ($med_users)   {
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_users
             ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'List Success!',
+                'data'=>$med_users
+            ],400);
         }
         
     }

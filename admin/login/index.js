@@ -19,7 +19,7 @@ $("#login").on("submit", function (e) {
     var obj = new post(host+`login`,form,'').execute();
     if(obj.success){
       var data = obj.data;
-      window.sessionStorage.token = data.token;
+      window.sessionStorage.token = obj.token;
       window.sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
       sessionStorage.browser = getBrowser();
       saveLog(data.id_users, "Login.", window.sessionStorage.browser);

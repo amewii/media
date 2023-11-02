@@ -360,13 +360,18 @@ class med_usersController extends Controller
                                 join('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
                                 where('users_intan','1') -> where('med_users.no_kad_pengenalan',$no_kad_pengenalan) ->
                                 first();
-
         if ($med_users)   {
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_users
             ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'List Success!',
+                'data'=>$med_users
+            ],400);
         }
         
     }

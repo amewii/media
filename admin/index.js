@@ -2,56 +2,64 @@ $(function () {
   $.ajaxSetup({
     cache: false,
   });
-  var obj = new get(host+`users`)
-  settingCapaian();
+  var obj = new get(host+`usersSiteAdmin/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
+  if(obj.success){
+    window.sessionStorage.token = obj.token;
+    var data = obj.data;
+    id_users_master = data.id_users;
+    FK_capaian_master = data.FK_capaian;
+    nama_master = data.nama;
+    nama_peranan_master = data.nama_peranan;
+    FK_peranan_master = data.FK_peranan;
+    console.log(obj.data);
+  } else {
+    console.log(obj);
+    window.location.replace('login/');
+  }
   if (window.sessionStorage.content == null) {
     statBilProgram();
     $("#chart").html(
       '<script src="assets/js/plugins/chartjs/chartjs.active.js"></script>'
     );
   }
-  // $('#user_nama').innerHTML = nama;
-  var str = window.sessionStorage.nama;
+  settingCapaian();
+  $('#user_nama').innerHTML = nama_master;
+  var str = nama_master;
   var matches = str.match(/\b(\w)/g); // ['J','S','O','N']
   var acronym = matches.join(""); // JSON
   $("#nama_pendek").text(acronym);
-  $("#user_nama").text(window.sessionStorage.nama);
-  $("#user_namas").text(window.sessionStorage.nama);
-  $("#nama_peranan").text(window.sessionStorage.nama_peranan);
+  $("#user_nama").text(nama_master);
+  $("#user_namas").text(nama_master);
+  $("#nama_peranan").text(nama_peranan_master);
   // $('#content').load(content+'.html');
   $("body").show();
 });
 
 function settingCapaian() {
-  var settings = {
-    url: host + "capaian/" + window.sessionStorage.id,
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
+  var obj = new get(host+`capaian/`+id_users_master,window.sessionStorage.token).execute();
+  if(obj.success){
     //TETAPAN MEDIA
     let med_tetapan = 0;
     let C1 = 0;
     let R1 = 0;
     let U1 = 0;
     let D1 = 0;
-    if (window.sessionStorage.FK_capaian.indexOf("C1") >= 0) {
+    if (FK_capaian_master.indexOf("C1") >= 0) {
       //CREATE TETAPAN MEDIA
       C1 = 1;
       sessionStorage.control_tetapan_media_C1 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R1") >= 0) {
+    if (FK_capaian_master.indexOf("R1") >= 0) {
       //READ TETAPAN MEDIA
       R1 = 1;
       sessionStorage.control_tetapan_media_R1 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("U1") >= 0) {
+    if (FK_capaian_master.indexOf("U1") >= 0) {
       //UPDATE TETAPAN MEDIA
       U1 = 1;
       sessionStorage.control_tetapan_media_U1 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("D1") >= 0) {
+    if (FK_capaian_master.indexOf("D1") >= 0) {
       //DELETE TETAPAN MEDIA
       D1 = 1;
       sessionStorage.control_tetapan_media_D1 = 1;
@@ -69,22 +77,22 @@ function settingCapaian() {
     let R2 = 0;
     let U2 = 0;
     let D2 = 0;
-    if (window.sessionStorage.FK_capaian.indexOf("C2") >= 0) {
+    if (FK_capaian_master.indexOf("C2") >= 0) {
       //CREATE TETAPAN MEDIA
       C2 = 1;
       sessionStorage.control_program_media_C2 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R2") >= 0) {
+    if (FK_capaian_master.indexOf("R2") >= 0) {
       //READ TETAPAN MEDIA
       R2 = 1;
       sessionStorage.control_program_media_R2 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("U2") >= 0) {
+    if (FK_capaian_master.indexOf("U2") >= 0) {
       //UPDATE TETAPAN MEDIA
       U2 = 1;
       sessionStorage.control_program_media_U2 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("D2") >= 0) {
+    if (FK_capaian_master.indexOf("D2") >= 0) {
       //DELETE TETAPAN MEDIA
       D2 = 1;
       sessionStorage.control_program_media_D2 = 1;
@@ -102,22 +110,22 @@ function settingCapaian() {
     let R3 = 0;
     let U3 = 0;
     let D3 = 0;
-    if (window.sessionStorage.FK_capaian.indexOf("C3") >= 0) {
+    if (FK_capaian_master.indexOf("C3") >= 0) {
       //CREATE TETAPAN MEDIA
       C3 = 1;
       sessionStorage.control_program_media_C3 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R3") >= 0) {
+    if (FK_capaian_master.indexOf("R3") >= 0) {
       //READ TETAPAN MEDIA
       R3 = 1;
       sessionStorage.control_program_media_R3 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("U3") >= 0) {
+    if (FK_capaian_master.indexOf("U3") >= 0) {
       //UPDATE TETAPAN MEDIA
       U3 = 1;
       sessionStorage.control_program_media_U3 = 1;
     }
-    if (window.sessionStorage.FK_capaian.indexOf("D3") >= 0) {
+    if (FK_capaian_master.indexOf("D3") >= 0) {
       //DELETE TETAPAN MEDIA
       D3 = 1;
       sessionStorage.control_program_media_D3 = 1;
@@ -129,38 +137,40 @@ function settingCapaian() {
       $("#control_med_permohonan").removeClass("hidden");
     }
 
-    // if(window.sessionStorage.FK_capaian.indexOf('R1') >= 0){
+    // if(FK_capaian_master.indexOf('R1') >= 0){
     //     $('#control_media').removeClass('hidden');
     //     $('#control_tetapan_media').removeClass('hidden');
     // }
-    // if (window.sessionStorage.FK_capaian.indexOf('R2') >= 0)    {
+    // if (FK_capaian_master.indexOf('R2') >= 0)    {
     //     $('#control_media').removeClass('hidden');
     //     $('#control_med_program').removeClass('hidden');
     // }
-    // if (window.sessionStorage.FK_capaian.indexOf('R3') >= 0)    {
+    // if (FK_capaian_master.indexOf('R3') >= 0)    {
     //     $('#control_media').removeClass('hidden');
     //     $('#control_med_permohonan').removeClass('hidden');
     // }
-    if (window.sessionStorage.FK_capaian.indexOf("R4") >= 0) {
+    if (FK_capaian_master.indexOf("R4") >= 0) {
       $("#control_media").removeClass("hidden");
       $("#control_laporan_media").removeClass("hidden");
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R5") >= 0) {
+    if (FK_capaian_master.indexOf("R5") >= 0) {
       $("#control_sysadmin").removeClass("hidden");
       $("#control_pentadbir_sistem").removeClass("hidden");
       $("#control_ttpn_sistem").removeClass("hidden");
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R6") >= 0) {
+    if (FK_capaian_master.indexOf("R6") >= 0) {
       $("#control_sysadmin").removeClass("hidden");
       $("#control_pentadbir_sistem").removeClass("hidden");
       $("#control_ttpn_peranancapaian").removeClass("hidden");
     }
-    if (window.sessionStorage.FK_capaian.indexOf("R7") >= 0) {
+    if (FK_capaian_master.indexOf("R7") >= 0) {
       $("#control_sysadmin").removeClass("hidden");
       $("#control_pentadbir_sistem").removeClass("hidden");
       $("#control_log").removeClass("hidden");
     }
-  });
+  } else {
+    console.log(obj);
+  }
 }
 
 $(document).ready(function () {
@@ -262,7 +272,7 @@ $("#home").click(function () {
 $("#ttpn_agama").click(function () {
   window.sessionStorage.content = "html/ttpn_agama";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Agama.",
     window.sessionStorage.browser
   );
@@ -272,7 +282,7 @@ $("#ttpn_agama").click(function () {
 $("#ttpn_bangsa").click(function () {
   window.sessionStorage.content = "html/ttpn_bangsa";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Bangsa.",
     window.sessionStorage.browser
   );
@@ -282,7 +292,7 @@ $("#ttpn_bangsa").click(function () {
 $("#ttpn_etnik").click(function () {
   window.sessionStorage.content = "html/ttpn_etnik";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Etnik.",
     window.sessionStorage.browser
   );
@@ -292,7 +302,7 @@ $("#ttpn_etnik").click(function () {
 $("#ttpn_gelaran").click(function () {
   window.sessionStorage.content = "html/ttpn_gelaran";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Gelaran.",
     window.sessionStorage.browser
   );
@@ -302,7 +312,7 @@ $("#ttpn_gelaran").click(function () {
 $("#ttpn_kampus").click(function () {
   window.sessionStorage.content = "html/ttpn_kampus";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Kampus.",
     window.sessionStorage.browser
   );
@@ -312,7 +322,7 @@ $("#ttpn_kampus").click(function () {
 $("#ttpn_kluster").click(function () {
   window.sessionStorage.content = "html/ttpn_kluster";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Kluster.",
     window.sessionStorage.browser
   );
@@ -322,7 +332,7 @@ $("#ttpn_kluster").click(function () {
 $("#ttpn_modul").click(function () {
   window.sessionStorage.content = "html/ttpn_modul";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Modul.",
     window.sessionStorage.browser
   );
@@ -332,7 +342,7 @@ $("#ttpn_modul").click(function () {
 $("#ttpn_negara").click(function () {
   window.sessionStorage.content = "html/ttpn_negara";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Negara.",
     window.sessionStorage.browser
   );
@@ -342,7 +352,7 @@ $("#ttpn_negara").click(function () {
 $("#ttpn_negeri").click(function () {
   window.sessionStorage.content = "html/ttpn_negeri";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Negeri.",
     window.sessionStorage.browser
   );
@@ -352,7 +362,7 @@ $("#ttpn_negeri").click(function () {
 $("#ttpn_unit").click(function () {
   window.sessionStorage.content = "html/ttpn_unit";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Unit.",
     window.sessionStorage.browser
   );
@@ -362,7 +372,7 @@ $("#ttpn_unit").click(function () {
 $("#ttpn_warganegara").click(function () {
   window.sessionStorage.content = "html/ttpn_warganegara";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Warganegara.",
     window.sessionStorage.browser
   );
@@ -372,7 +382,7 @@ $("#ttpn_warganegara").click(function () {
 $("#ttpn_useradmin").click(function () {
   window.sessionStorage.content = "html/ttpn_useradmin";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Admin Pengguna.",
     window.sessionStorage.browser
   );
@@ -382,7 +392,7 @@ $("#ttpn_useradmin").click(function () {
 $("#ttpn_peranancapaian").click(function () {
   window.sessionStorage.content = "html/ttpn_peranancapaian";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Peranan & Capaian.",
     window.sessionStorage.browser
   );
@@ -392,7 +402,7 @@ $("#ttpn_peranancapaian").click(function () {
 $("#log").click(function () {
   window.sessionStorage.content = "html/log";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Log Sistem.",
     window.sessionStorage.browser
   );
@@ -402,7 +412,7 @@ $("#log").click(function () {
 $("#ttpn_usersubmodul").click(function () {
   window.sessionStorage.content = "html/ttpn_usersubmodul";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Capaian.",
     window.sessionStorage.browser
   );
@@ -412,7 +422,7 @@ $("#ttpn_usersubmodul").click(function () {
 $("#ttpn_capaian").click(function () {
   window.sessionStorage.content = "html/ttpn_capaian";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Capaian.",
     window.sessionStorage.browser
   );
@@ -422,7 +432,7 @@ $("#ttpn_capaian").click(function () {
 $("#senarai_pengguna").click(function () {
   window.sessionStorage.content = "html/senarai_pengguna";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Senarai Pengguna.",
     window.sessionStorage.browser
   );
@@ -432,7 +442,7 @@ $("#senarai_pengguna").click(function () {
 $("#ttpn_nama_menu").click(function () {
   window.sessionStorage.content = "html/ttpn_nama_menu";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Senarai Menu.",
     window.sessionStorage.browser
   );
@@ -442,7 +452,7 @@ $("#ttpn_nama_menu").click(function () {
 $("#ttpn_sistem").click(function () {
   window.sessionStorage.content = "html/ttpn_sistem";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Sistem.",
     window.sessionStorage.browser
   );
@@ -452,7 +462,7 @@ $("#ttpn_sistem").click(function () {
 $("#ttpn_med_format").click(function () {
   window.sessionStorage.content = "html/ttpn_med_format";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Format Media.",
     window.sessionStorage.browser
   );
@@ -462,7 +472,7 @@ $("#ttpn_med_format").click(function () {
 $("#ttpn_med_kategori").click(function () {
   window.sessionStorage.content = "html/ttpn_med_kategori";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Kategori Media.",
     window.sessionStorage.browser
   );
@@ -472,7 +482,7 @@ $("#ttpn_med_kategori").click(function () {
 $("#ttpn_med_status").click(function () {
   window.sessionStorage.content = "html/ttpn_med_status";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Status Media.",
     window.sessionStorage.browser
   );
@@ -482,7 +492,7 @@ $("#ttpn_med_status").click(function () {
 $("#ttpn_med_tempoh").click(function () {
   window.sessionStorage.content = "html/ttpn_med_tempoh";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan Tempoh Media.",
     window.sessionStorage.browser
   );
@@ -492,7 +502,7 @@ $("#ttpn_med_tempoh").click(function () {
 $("#ttpn_vip").click(function () {
   window.sessionStorage.content = "html/ttpn_vip";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Tetapan VIP Media.",
     window.sessionStorage.browser
   );
@@ -502,7 +512,7 @@ $("#ttpn_vip").click(function () {
 $("#med_program").click(function () {
   window.sessionStorage.content = "html/med_program";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Program Media.",
     window.sessionStorage.browser
   );
@@ -512,7 +522,7 @@ $("#med_program").click(function () {
 $("#med_permohonan").click(function () {
   window.sessionStorage.content = "html/med_permohonan";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Permohonan Media.",
     window.sessionStorage.browser
   );
@@ -522,7 +532,7 @@ $("#med_permohonan").click(function () {
 $("#editprofile").click(function () {
   window.sessionStorage.content = "html/editprofile";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Profile.",
     window.sessionStorage.browser
   );
@@ -532,7 +542,7 @@ $("#editprofile").click(function () {
 $("#ubahkatalaluan").click(function () {
   window.sessionStorage.content = "html/ubahkatalaluan";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "Ubah Katalaluan.",
     window.sessionStorage.browser
   );
@@ -542,7 +552,7 @@ $("#ubahkatalaluan").click(function () {
 $("#med_laporan_program").click(function () {
   window.sessionStorage.content = "html/med_laporan_program";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Laporan Program.",
     window.sessionStorage.browser
   );
@@ -552,7 +562,7 @@ $("#med_laporan_program").click(function () {
 $("#med_laporan_permohonan").click(function () {
   window.sessionStorage.content = "html/med_laporan_permohonan";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Laporan Permohonan.",
     window.sessionStorage.browser
   );
@@ -562,7 +572,7 @@ $("#med_laporan_permohonan").click(function () {
 function viewPermohonan() {
   window.sessionStorage.content = "html/med_permohonan";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Permohonan Media.",
     window.sessionStorage.browser
   );
@@ -581,7 +591,7 @@ $("#logKeluar").click(function () {
     allowOutsideClick: false,
     html: false,
   }).then(function () {
-    saveLog(window.sessionStorage.id, "Logout.", window.sessionStorage.browser);
+    saveLog(id_users_master, "Logout.", window.sessionStorage.browser);
     window.sessionStorage.clear();
     window.location.replace("login/");
   });
@@ -622,7 +632,6 @@ function statBilProgram() {
       }
       jumProgram++;
     });
-    console.log(jumProgram);
     $("#bil_program").html(jumProgram);
     $("#program_media").html(
       ((program_media / jumProgram) * 100).toFixed(2) + "% Mempunyai Media"
