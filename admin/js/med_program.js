@@ -6,170 +6,12 @@ $(function () {
   });
   cekCapaian();
   tableProgram();
-  kampusList(function () {
-    $("#FK_kampus").empty();
-    $("#FK_kampus").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kampus",
-      })
-    );
-    $("#upt_FK_kampus").empty();
-    $("#upt_FK_kampus").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kampus",
-      })
-    );
-    if (obj_kampusList.success) {
-      $.each(obj_kampusList.data, function (i, item) {
-        $("#FK_kampus").append(
-          $("<option>", {
-            value: item.id_kampus,
-            text: item.nama_kampus,
-          })
-        );
-        $("#upt_FK_kampus").append(
-          $("<option>", {
-            value: item.id_kampus,
-            text: item.nama_kampus,
-          })
-        );
-      });
-    }
-  });
-  klusterList(function () {
-    $("#FK_kluster").empty();
-    $("#FK_kluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kluster",
-      })
-    );
-    $("#upt_FK_kluster").empty();
-    $("#upt_FK_kluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kluster",
-      })
-    );
-    if (obj_klusterList.success) {
-      $.each(obj_klusterList.data, function (i, item) {
-        $("#FK_kluster").append(
-          $("<option>", {
-            value: item.id_kluster,
-            text: item.nama_kluster,
-          })
-        );
-        $("#upt_FK_kluster").append(
-          $("<option>", {
-            value: item.id_kluster,
-            text: item.nama_kluster,
-          })
-        );
-      });
-    }
-  });
+  kampusList();
+  klusterList();
   //LIST OPTION
-  subklusterList(function () {
-    $("#FK_subkluster").empty();
-    $("#FK_subkluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Subkluster",
-      })
-    );
-    $("#upt_FK_subkluster").empty();
-    $("#upt_FK_subkluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Subkluster",
-      })
-    );
-
-    if (obj_subklusterList.success) {
-      $.each(obj_subklusterList.data, function (i, item) {
-        $("#FK_subkluster").append(
-          $("<option>", {
-            value: item.id_subkluster,
-            text: item.nama_subkluster,
-          })
-        );
-        $("#upt_FK_subkluster").append(
-          $("<option>", {
-            value: item.id_subkluster,
-            text: item.nama_subkluster,
-          })
-        );
-      });
-    }
-  });
-  unitList(function () {
-    $("#FK_unit").empty();
-    $("#FK_unit").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Unit",
-      })
-    );
-    $("#upt_FK_unit").empty();
-    $("#upt_FK_unit").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Unit",
-      })
-    );
-
-    if (obj_unitList.success) {
-      $.each(obj_unitList.data, function (i, item) {
-        $("#FK_unit").append(
-          $("<option>", {
-            value: item.id_unit,
-            text: item.nama_unit,
-          })
-        );
-        $("#upt_FK_unit").append(
-          $("<option>", {
-            value: item.id_unit,
-            text: item.nama_unit,
-          })
-        );
-      });
-    }
-  });
-  kategoriprogramList(function () {
-    $("#FK_kategori").empty();
-    $("#FK_kategori").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kategori",
-      })
-    );
-    $("#upt_FK_kategori").empty();
-    $("#upt_FK_kategori").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kategori",
-      })
-    );
-
-    if (obj_kategoriprogramList.success) {
-      $.each(obj_kategoriprogramList.data, function (i, item) {
-        $("#FK_kategori").append(
-          $("<option>", {
-            value: item.id_kategoriprogram,
-            text: item.nama_kategori,
-          })
-        );
-        $("#upt_FK_kategori").append(
-          $("<option>", {
-            value: item.id_kategoriprogram,
-            text: item.nama_kategori,
-          })
-        );
-      });
-    }
-  });
+  subklusterList();
+  unitList();
+  kategoriprogramList();
 });
 
 function cekCapaian() {
@@ -204,26 +46,17 @@ function tableProgram() {
 
   var settings = {};
   if (window.sessionStorage.FK_peranan != 2) {
-    settings = {
-      url: host + "programListAll",
-      method: "GET",
-      timeout: 0,
-    };
+    var obj = new get(host+`programListAll`,window.sessionStorage.token).execute();
   } else {
-    var settings = {
-      url: host + "programListKluster/" + window.sessionStorage.FK_kluster,
-      method: "GET",
-      timeout: 0,
-    };
+    var obj = new get(host+`programListKluster/`+FK_kluster_master,window.sessionStorage.token).execute();
   }
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataList").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       t_program = new Date(field.tarikh_program);
       var checked;
       if (field.programstatusrekod == "1") {
@@ -356,22 +189,23 @@ function tableProgram() {
         });
       }
     });
-    
-    $('#totalProgram').html(`<span id="" class="timeline-date">`+(list.length)+` Program</span>`)
-    $("#programList").footable({
-      columns: colums,
-      rows: list,
-      paging: {
-        enabled: true,
-        size: 5,
-      },
-      filtering: {
-        enabled: true,
-        placeholder: "Carian...",
-        dropdownTitle: "Carian untuk:",
-        class: "brown-700",
-      },
-    });
+  } else {
+
+  } 
+  $('.programList-length').html(list.length);
+  $("#programList").footable({
+    columns: colums,
+    rows: list,
+    paging: {
+      enabled: true,
+      size: 5,
+    },
+    filtering: {
+      enabled: true,
+      placeholder: "Carian...",
+      dropdownTitle: "Carian untuk:",
+      class: "brown-700",
+    },
   });
 }
 
@@ -386,7 +220,7 @@ function loadData(indexs) {
   $("#upt_FK_unit").val(data[indexs].id_unit);
   $("#upt_FK_kategori").val(data[indexs].id_kategoriprogram);
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Data of [id = " +
       data[indexs].id_program +
       "]" +
@@ -401,24 +235,15 @@ $("#reg-program").on("shown.bs.modal", function () {
   $(this).find("#nama_program").focus();
   var form = new FormData();
   form.append("no_kad_pengenalan", window.sessionStorage.no_kad_pengenalan);
-
-  var settings = {
-    url: host + "users",
-    method: "POST",
-    timeout: 0,
-    processData: false,
-    mimeType: "multipart/form-data",
-    contentType: false,
-    data: form,
-  };
-
-  $.ajax(settings).done(function (response) {
-    //   console.log(response);
-    result = JSON.parse(response);
-    $("#FK_kampus").val(result.data.FK_kampus);
-    $("#FK_kluster").val(result.data.FK_kluster);
-    $("#FK_subkluster").val(result.data.FK_subkluster);
-  });
+  var obj = new post(host+`users`,form,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
+    $("#FK_kampus").val(data.FK_kampus);
+    $("#FK_kluster").val(data.FK_kluster);
+    $("#FK_subkluster").val(data.FK_subkluster);
+  } else {
+    console.log(obj);
+  }
 });
 
 $("#update-program").on("shown.bs.modal", function () {
@@ -431,7 +256,7 @@ function detail(i, indexs) {
   window.sessionStorage.med_program_id = data.id_program;
   window.sessionStorage.content = "html/detail_med_program";
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Data of [id = " +
       data.id_program +
       "]" +
@@ -484,8 +309,8 @@ $("#register").on("submit", function (e) {
       form.append("FK_unit", FK_unit);
       form.append("FK_kategori", FK_kategori);
       form.append("FK_vip", FK_vip);
-      form.append("created_by", window.sessionStorage.id);
-      form.append("updated_by", window.sessionStorage.id);
+      form.append("created_by", id_users_master);
+      form.append("updated_by", id_users_master);
       form.append("statusrekod", "1");
 
       var param = {
@@ -500,65 +325,52 @@ $("#register").on("submit", function (e) {
       };
       // console.log(param)
 
-      var settings = {
-        url: host + "addProgram",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        // console.log(response);
-        result = JSON.parse(response);
-        if (!result.success) {
-          swal({
-            title: "Daftar Program",
-            text: result.message + " " + result.data,
-            type: "error",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                $("#reg-program").modal("hide");
-                tableProgram();
-              }
+      var obj = new post(host+`addProgram`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        swal({
+          title: "Daftar Program",
+          text: result.message,
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              saveLog(
+                id_users_master,
+                "Register Data [" +
+                  nama_program +
+                  "] at Tetapan Program Media.",
+                window.sessionStorage.browser
+              );
+              $("#register").trigger("reset");
+              $("#reg-program").modal("hide");
+              tableProgram();
             }
-          );
-        } else {
-          swal({
-            title: "Daftar Program",
-            text: result.message,
-            type: "success",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                saveLog(
-                  window.sessionStorage.id,
-                  "Register Data [" +
-                    nama_program +
-                    "] at Tetapan Program Media.",
-                  window.sessionStorage.browser
-                );
-                $("#register").trigger("reset");
-                $("#reg-program").modal("hide");
-                tableProgram();
-              }
+          }
+        );
+      } else {
+        swal({
+          title: "Daftar Program",
+          text: result.message + " " + result.data,
+          type: "error",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#reg-program").modal("hide");
+              tableProgram();
             }
-          );
-        }
-      });
+          }
+        );
+      }
     });
   }
 });
@@ -608,67 +420,54 @@ $("#update").on("submit", function (e) {
       form.append("FK_subkluster", upt_FK_subkluster);
       form.append("FK_unit", upt_FK_unit);
       form.append("FK_kategori", upt_FK_kategori);
-      form.append("updated_by", window.sessionStorage.id);
+      form.append("updated_by", id_users_master);
 
-      var settings = {
-        url: host + "programUpdate",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        // console.log(response)
-        result = JSON.parse(response);
-        if (!result.success) {
-          swal({
-            title: "Kemaskini Program",
-            text: "Kemaskini Gagal!",
-            type: "error",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                $("#update-program").modal("hide");
-                tableProgram();
-              }
+      var obj = new post(host+`programUpdate`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        swal({
+          title: "Kemaskini Program",
+          text: "Kemaskini Berjaya!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              saveLog(
+                id_users_master,
+                "Update Data for [id_program = " +
+                  upt_id +
+                  "]" +
+                  upt_nama_program +
+                  " at Tetapan Program Media.",
+                window.sessionStorage.browser
+              );
+              $("#update-program").modal("hide");
+              tableProgram();
             }
-          );
-        } else {
-          swal({
-            title: "Kemaskini Program",
-            text: "Kemaskini Berjaya!",
-            type: "success",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                saveLog(
-                  window.sessionStorage.id,
-                  "Update Data for [id_program = " +
-                    upt_id +
-                    "]" +
-                    upt_nama_program +
-                    " at Tetapan Program Media.",
-                  window.sessionStorage.browser
-                );
-                $("#update-program").modal("hide");
-                tableProgram();
-              }
+          }
+        );
+      } else {
+        swal({
+          title: "Kemaskini Program",
+          text: "Kemaskini Gagal!",
+          type: "error",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#update-program").modal("hide");
+              tableProgram();
             }
-          );
-        }
-      });
+          }
+        );
+      }
     });
   }
 });
@@ -681,49 +480,36 @@ function del_rekod(i) {
   var form = new FormData();
   form.append("id_program", id);
 
-  var settings = {
-    url: host + "programDelete",
-    method: "POST",
-    timeout: 0,
-    processData: false,
-    mimeType: "multipart/form-data",
-    contentType: false,
-    data: form,
-  };
-
-  $.ajax(settings).done(function (response) {
-    result = JSON.parse(response);
-    if (!result.success) {
-      // Swal(result.message, result.data, "error");
-      // return;
-      swal({
-        title: "Hapus Program",
-        text: "Gagal!",
-        type: "error",
-        closeOnConfirm: true,
-        allowOutsideClick: false,
-        html: false,
-      }).then(function () {
-        window.location.reload();
-      });
-    }
-    if (result.data.statusrekod == 1) {
-      $("#text_statusrekod" + result.data.id_program)
-        .text("Aktif")
-        .removeClass("badge-danger")
-        .addClass("badge-success");
-    } else {
-      $("#text_statusrekod" + result.data.id_program)
-        .text("Tidak Aktif")
-        .removeClass("badge-success")
-        .addClass("badge-danger");
-    }
+  var obj = new post(host+`programDelete`,form,window.sessionStorage.token).execute();
+  if(obj.success){
     saveLog(
-      window.sessionStorage.id,
+      id_users_master,
       "Change Record Status for [id = " + id + "] at Tetapan Program Media.",
       window.sessionStorage.browser
     );
-  });
+  } else {
+    swal({
+      title: "Hapus Program",
+      text: "Gagal!",
+      type: "error",
+      closeOnConfirm: true,
+      allowOutsideClick: false,
+      html: false,
+    }).then(function () {
+      window.location.reload();
+    });
+  }
+  if (result.data.statusrekod == 1) {
+    $("#text_statusrekod" + result.data.id_program)
+      .text("Aktif")
+      .removeClass("badge-danger")
+      .addClass("badge-success");
+  } else {
+    $("#text_statusrekod" + result.data.id_program)
+      .text("Tidak Aktif")
+      .removeClass("badge-success")
+      .addClass("badge-danger");
+  }
 }
 
 $("#FK_kampus").change(function () {
@@ -749,13 +535,9 @@ $("#FK_kampus").change(function () {
       text: "Pilih Kluster",
     })
   );
-  var settings = {
-    url: host + "klusters/" + $("#FK_kampus").val(),
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
+
+  var obj = new get(host+`klusters/` + $("#FK_kampus").val(),window.sessionStorage.token).execute();
+  if(obj.success){
     $.each(response.data, function (i, item) {
       if ($("#FK_kampus").val() != "11") {
         var selected = "selected";
@@ -765,26 +547,7 @@ $("#FK_kampus").change(function () {
             text: item.nama_kluster,
           }).attr(selected, true)
         );
-        subklusterListNonKiara(function () {
-          //Dropdown Subkluster List
-          $("#FK_subkluster").empty();
-          $("#FK_subkluster").append(
-            $("<option>", {
-              value: "",
-              text: "Pilih Subkluster",
-            })
-          );
-          if (obj_subklusterList.success) {
-            $.each(obj_subklusterList.data, function (i, item) {
-              $("#FK_subkluster").append(
-                $("<option>", {
-                  value: item.id_subkluster,
-                  text: item.nama_subkluster,
-                })
-              );
-            });
-          }
-        });
+        subklusterListNonKiara();
         // alert(selected)
       } else {
         $("#FK_kluster").append(
@@ -795,27 +558,22 @@ $("#FK_kampus").change(function () {
         );
       }
     });
-  });
-  // END Dropdown Kluster List
+  } else {
+    console.log(obj);
+  }
 });
 
 $("#FK_kluster").change(function () {
-  //Dropdown Subkluster List
-  var settings = {
-    url: host + "subklusters/" + $("#FK_kluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_subkluster").empty();
-    $("#FK_subkluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Subkluster",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#FK_subkluster").empty();
+  $("#FK_subkluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Subkluster",
+    })
+  );
+  var obj = new get(host+`subklusters/`+$("#FK_kluster").val(),window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#FK_subkluster").append(
         $("<option>", {
           value: item.id_subkluster,
@@ -823,32 +581,21 @@ $("#FK_kluster").change(function () {
         })
       );
     });
-  });
-  // END Dropdown Subkluster List
+  } else {
+    console.log(obj);
+  }
 }); //Dropdown Subkluster List
 
 $("#FK_subkluster").change(function () {
-  //Dropdown Unit List
-  var settings = {
-    url:
-      host +
-      "units/" +
-      $("#FK_kluster").val() +
-      "/" +
-      $("#FK_subkluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_unit").empty();
-    $("#FK_unit").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Unit",
-      })
-    );
+  $("#FK_unit").empty();
+  $("#FK_unit").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Unit",
+    })
+  );
+  var obj = new get(host+`units/`+$("#FK_kluster").val(),window.sessionStorage.token).execute();
+  if(obj.success){
     $.each(response.data, function (i, item) {
       $("#FK_unit").append(
         $("<option>", {
@@ -857,8 +604,9 @@ $("#FK_subkluster").change(function () {
         })
       );
     });
-  });
-  // END Dropdown Unit List
+  } else {
+
+  }
 });
 
 $("#upt_FK_kampus").change(function () {
@@ -869,15 +617,10 @@ $("#upt_FK_kampus").change(function () {
       text: "Pilih Kluster",
     })
   );
-  var settings = {
-    url: host + "klusters/" + $("#upt_FK_kampus").val(),
-    method: "GET",
-    timeout: 0,
-  };
 
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION UPDATE
-    $.each(response.data, function (i, item) {
+  var obj = new get(host+`klusters/`+$("#upt_FK_kampus").val()).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       if ($("#upt_FK_kampus").val() != "11") {
         var selected = "selected";
         $("#upt_FK_kluster").append(
@@ -886,26 +629,7 @@ $("#upt_FK_kampus").change(function () {
             text: item.nama_kluster,
           }).attr(selected, true)
         );
-        uptsubklusterListNonKiara(function () {
-          //Dropdown Subkluster List
-          $("#upt_FK_subkluster").empty();
-          $("#upt_FK_subkluster").append(
-            $("<option>", {
-              value: "",
-              text: "Pilih Subkluster",
-            })
-          );
-          if (obj_subklusterList.success) {
-            $.each(obj_subklusterList.data, function (i, item) {
-              $("#upt_FK_subkluster").append(
-                $("<option>", {
-                  value: item.id_subkluster,
-                  text: item.nama_subkluster,
-                })
-              );
-            });
-          }
-        });
+        uptsubklusterListNonKiara();
         // alert(selected)
       } else {
         var selected = "selected";
@@ -917,7 +641,9 @@ $("#upt_FK_kampus").change(function () {
         );
       }
     });
-  });
+  } else {
+
+  }
   // END Dropdown Kluster List
 });
 
@@ -929,22 +655,9 @@ $("#upt_FK_kluster").change(function () {
       text: "Pilih Subkluster",
     })
   );
-  //Dropdown Subkluster List
-  var settings = {
-    url: host + "subklusters/" + $("#upt_FK_kluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#upt_FK_subkluster").empty();
-    $("#upt_FK_subkluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Subkluster",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  var obj = new get(host+`subklusters/`+$("#upt_FK_kluster").val(),window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#upt_FK_subkluster").append(
         $("<option>", {
           value: item.id_subkluster,
@@ -952,33 +665,22 @@ $("#upt_FK_kluster").change(function () {
         })
       );
     });
-  });
-  // END Dropdown Subkluster List
+  } else {
+    
+  }
 }); //Dropdown Subkluster List
 
 $("#upt_FK_subkluster").change(function () {
-  //Dropdown Unit List
-  var settings = {
-    url:
-      host +
-      "units/" +
-      $("#upt_FK_kluster").val() +
-      "/" +
-      $("#upt_FK_subkluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#upt_FK_unit").empty();
-    $("#upt_FK_unit").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Unit",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#upt_FK_unit").empty();
+  $("#upt_FK_unit").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Unit",
+    })
+  );
+  var obj = new get(host+`units/`+$("#upt_FK_kluster").val(),window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#upt_FK_unit").append(
         $("<option>", {
           value: item.id_unit,
@@ -986,90 +688,222 @@ $("#upt_FK_subkluster").change(function () {
         })
       );
     });
-  });
-  // END Dropdown Unit List
+  } else {
+
+  }
 });
 
-function kampusList(returnValue) {
-  //Dropdown Kampus List
-  var settings = {
-    url: host + "kampusList",
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_kampusList = response;
-    returnValue();
-  });
-  // END Dropdown Kampus List
+function kampusList() {
+  $("#FK_kampus").empty();
+  $("#FK_kampus").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kampus",
+    })
+  );
+  $("#upt_FK_kampus").empty();
+  $("#upt_FK_kampus").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kampus",
+    })
+  );
+
+  var obj = new get(host+`kampusList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_kampusList = obj;
+    $.each(obj_kampusList.data, function (i, item) {
+      $("#FK_kampus").append(
+        $("<option>", {
+          value: item.id_kampus,
+          text: item.nama_kampus,
+        })
+      );
+      $("#upt_FK_kampus").append(
+        $("<option>", {
+          value: item.id_kampus,
+          text: item.nama_kampus,
+        })
+      );
+    });
+    if (obj_kampusList.success) {
+    }
+  } else {
+    obj_kampusList = obj;
+    console.log(obj_kampusList);
+  }
 }
 
-function klusterList(returnValue) {
-  //Dropdown Kluster List
-  var settings = {
-    url: host + "klustersList",
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_klusterList = response;
-    returnValue();
-  });
+function klusterList() {
+  $("#FK_kluster").empty();
+  $("#FK_kluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kluster",
+    })
+  );
+  $("#upt_FK_kluster").empty();
+  $("#upt_FK_kluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kluster",
+    })
+  );
+
+  var obj = new get(host+`klustersList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    console.log(obj);
+    obj_klusterList = obj;
+    $.each(obj_klusterList.data, function (i, item) {
+      $("#FK_kluster").append(
+        $("<option>", {
+          value: item.id_kluster,
+          text: item.nama_kluster,
+        })
+      );
+      $("#upt_FK_kluster").append(
+        $("<option>", {
+          value: item.id_kluster,
+          text: item.nama_kluster,
+        })
+      );
+    });
+  } else {
+
+  }
 }
 
-function subklusterListNonKiara(returnValue) {
-  //Dropdown Subkluster List
-  var settings = {
-    url: host + "subklusters/" + $("#FK_kluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_subklusterList = response;
-    returnValue();
-  });
+function subklusterListNonKiara() {
+  $("#FK_subkluster").empty();
+  $("#FK_subkluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Subkluster",
+    })
+  );
+  var obj = new get(host+`subklusters/` + $("#FK_kluster").val(),window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_subklusterList = obj;
+    $.each(obj_subklusterList.data, function (i, item) {
+      $("#FK_subkluster").append(
+        $("<option>", {
+          value: item.id_subkluster,
+          text: item.nama_subkluster,
+        })
+      );
+    });
+  } else {
+
+  }
 }
 
-function subklusterList(returnValue) {
-  //Dropdown Subkluster List
-  var settings = {
-    url: host + "subklustersList",
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_subklusterList = response;
-    returnValue();
-  });
-  // END Dropdown Subkluster List
+function subklusterList() {
+  $("#FK_subkluster").empty();
+  $("#FK_subkluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Subkluster",
+    })
+  );
+
+  var obj = new get(host+`subklustersList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_subklusterList = obj;
+    $("#upt_FK_subkluster").empty();
+    $("#upt_FK_subkluster").append(
+      $("<option>", {
+        value: "",
+        text: "Pilih Subkluster",
+      })
+    );
+    $.each(obj_subklusterList.data, function (i, item) {
+      $("#FK_subkluster").append(
+        $("<option>", {
+          value: item.id_subkluster,
+          text: item.nama_subkluster,
+        })
+      );
+      $("#upt_FK_subkluster").append(
+        $("<option>", {
+          value: item.id_subkluster,
+          text: item.nama_subkluster,
+        })
+      );
+    });
+  } else {
+    
+  }
 }
 
 function unitList(returnValue) {
-  var settings = {
-    url: host + "unitsList",
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_unitList = response;
-    returnValue();
-  });
+  $("#FK_unit").empty();
+  $("#FK_unit").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Unit",
+    })
+  );
+  $("#upt_FK_unit").empty();
+  $("#upt_FK_unit").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Unit",
+    })
+  );
+  var obj = new get(host+`unitsList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_unitList = obj;
+    $.each(obj_unitList.data, function (i, item) {
+      $("#FK_unit").append(
+        $("<option>", {
+          value: item.id_unit,
+          text: item.nama_unit,
+        })
+      );
+      $("#upt_FK_unit").append(
+        $("<option>", {
+          value: item.id_unit,
+          text: item.nama_unit,
+        })
+      );
+    });
+  } else {
+
+  }
 }
 
 function uptsubklusterListNonKiara(returnValue) {
-  var settings = {
-    url: host + "subklusters/" + $("#upt_FK_kluster").val(),
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_subklusterList = response;
-    returnValue();
-  });
-  // END Dropdown Subkluster List
+  //Dropdown Subkluster List
+  $("#upt_FK_subkluster").empty();
+  $("#upt_FK_subkluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Subkluster",
+    })
+  );
+  var obj = new get(host+`subklusters/`+$("#upt_FK_kluster").val()).execute();
+  if(obj.success){
+    obj_subklusterList = obj;
+    $.each(obj_subklusterList.data, function (i, item) {
+      $("#upt_FK_subkluster").append(
+        $("<option>", {
+          value: item.id_subkluster,
+          text: item.nama_subkluster,
+        })
+      );
+    });
+  } else {
+
+  }
 }
 
 function uptsubklusterList(returnValue) {
+  var obj = new post(host+`subklustersList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    obj_subklusterList = obj;
+  } else {
+    obj_subklusterList = obj;
+  }
   //Dropdown Subkluster List
 
   //Dropdown Subkluster List
@@ -1085,15 +919,39 @@ function uptsubklusterList(returnValue) {
 }
 
 function kategoriprogramList(returnValue) {
-  //Dropdown Kategori List
-  var settings = {
-    url: host + "kategoriprogramList",
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_kategoriprogramList = response;
-    returnValue();
-  });
-  // END Dropdown Kategori List
+  $("#FK_kategori").empty();
+  $("#FK_kategori").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kategori",
+    })
+  );
+  $("#upt_FK_kategori").empty();
+  $("#upt_FK_kategori").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kategori",
+    })
+  );
+  
+  var obj = new get(host+`kategoriprogramList`,window.sessionStorage.token).execute();
+  if (obj.success) {
+    obj_kategoriprogramList = obj;
+    $.each(obj_kategoriprogramList.data, function (i, item) {
+      $("#FK_kategori").append(
+        $("<option>", {
+          value: item.id_kategoriprogram,
+          text: item.nama_kategori,
+        })
+      );
+      $("#upt_FK_kategori").append(
+        $("<option>", {
+          value: item.id_kategoriprogram,
+          text: item.nama_kategori,
+        })
+      );
+    });
+  } else {
+    console.log(obj);
+  }
 }

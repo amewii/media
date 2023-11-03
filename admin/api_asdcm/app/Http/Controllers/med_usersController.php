@@ -266,7 +266,14 @@ class med_usersController extends Controller
         $obj = med_users::
                 join('med_capaian','med_capaian.FK_users','med_users.id_users')->
                 join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
-                where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+                where('no_kad_pengenalan',$no_kad_pengenalan)->first([
+                    'id_users',
+                    'med_users.nama',
+                    'med_peranan.FK_capaian',
+                    'med_peranan.nama_peranan',
+                    'med_capaian.FK_peranan',
+                    'med_capaian.FK_kluster',
+                ]);
         if($obj){
             $token = $this->getToken($obj->id_users);
             return response()->json([

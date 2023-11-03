@@ -27,13 +27,13 @@ $("#login").on("submit", function (e) {
     } else {
       swal({
         title: "Log Masuk",
-        text: result.data,
+        text: obj.data,
         type: "error",
         closeOnConfirm: true,
         allowOutsideClick: false,
         html: false,
       }).then(function () {
-        sessionStorage.token = result.token;
+        sessionStorage.token = obj.token;
         window.location.reload();
       });
     }

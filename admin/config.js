@@ -16,7 +16,7 @@ else if(window.location.port == "8081"){
     var host = window.location.protocol+"//"+window.location.hostname+"/media/admin/api_asdcm/public/";
 }
 
-var id_users_master, nama_master, capaian_master, peranan_master, FK_capaian_master, nama_peranan_master, listsubmodule_master = [], FK_peranan_master;
+var id_users_master, nama_master, FK_capaian_master, nama_peranan_master, listsubmodule_master = [], FK_peranan_master, FK_kluster_master;
 
 function getUrlVars() {
     var vars = {};

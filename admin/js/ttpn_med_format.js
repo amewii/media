@@ -23,37 +23,26 @@ function cekCapaian() {
 }
 
 function tableFormat() {
+  var columns = [
+    { name: "bil", title: "Bil" },
+    { name: "kod_format", title: "Nama" },
+    { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
+    // {"name":"status","title":"Status","breakpoints":"sm xs"}
+  ];
   if (window.sessionStorage.control_tetapan_media_U1 == 1) {
-    var colums = [
-      { name: "bil", title: "Bil" },
-      { name: "kod_format", title: "Nama" },
-      { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
+    columns.push(
       { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
-    ];
-  } else {
-    var colums = [
-      { name: "bil", title: "Bil" },
-      { name: "kod_format", title: "Nama" },
-      { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
-      // { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
-    ];
+    );
   }
 
-  var settings = {
-    url: host + "formatListAll",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`formatListAll`,window.sessionStorage.token).execute();
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataList").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       var checked;
       if (field.statusrekod == "1") {
         checked = "checked";
@@ -104,12 +93,13 @@ function tableFormat() {
       }
     });
 
+    $(".formatList-length").html(list.length);
     $("#formatList").footable({
-      columns: colums,
+      columns: columns,
       rows: list,
       paging: {
         enabled: true,
-        size: 5,
+        size: 10,
       },
       filtering: {
         enabled: true,
@@ -118,7 +108,9 @@ function tableFormat() {
         class: "brown-700",
       },
     });
-  });
+  } else {
+    console.log(obj);
+  }
 }
 
 function loadData(indexs) {
@@ -127,7 +119,7 @@ function loadData(indexs) {
   $("#upt_kod_format").val(data[indexs].kod_format);
   // jenisFormat('upt_jenis_format',data[indexs].jenis_format);
   saveLog(
-    window.sessionStorage.id,
+    id_users_master,
     "View Data of [id_format = " +
       data[indexs].id_format +
       "]" +
@@ -174,65 +166,55 @@ $("#register").on("submit", function (e) {
       form.append("kod_format", kod_format);
       // form.append("jenis_format",jenis_format);
       form.append("statusrekod", statusrekod);
-      form.append("created_by", window.sessionStorage.id);
-      form.append("updated_by", window.sessionStorage.id);
-      var settings = {
-        url: host + "addFormat",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
+      form.append("created_by", id_users_master);
+      form.append("updated_by", id_users_master);
 
-      $.ajax(settings).done(function (response) {
-        // console.log(response);
-        result = JSON.parse(response);
-        if (!result.success) {
-          swal({
-            title: "Daftar Format",
-            text: result.message,
-            type: "error",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                $("#reg-format").modal("hide");
-                tableFormat();
-              }
+      var obj = new post(host+`addFormat`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        var data = obj.data;
+        swal({
+          title: "Daftar Format",
+          text: obj.message,
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              // sessionStorage.token = obj.token;
+              saveLog(
+                id_users_master,
+                "Register Data [" + kod_format + "] at Tetapan Format Media.",
+                window.sessionStorage.browser
+              );
+              $("#reg-format").modal("hide");
+              tableFormat();
             }
-          );
-        } else {
-          swal({
-            title: "Daftar Format",
-            text: result.message,
-            type: "success",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                // sessionStorage.token = result.token;
-                saveLog(
-                  window.sessionStorage.id,
-                  "Register Data [" + kod_format + "] at Tetapan Format Media.",
-                  window.sessionStorage.browser
-                );
-                $("#reg-format").modal("hide");
-                tableFormat();
-              }
+          }
+        );
+      } else {
+        swal({
+          title: "Daftar Format",
+          text: obj.message,
+          type: "error",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#reg-format").modal("hide");
+              tableFormat();
             }
-          );
-        }
-      });
+          }
+        );
+
+      }
     });
   }
 });
@@ -265,66 +247,53 @@ $("#update").on("submit", function (e) {
       form.append("jenis_format", upt_jenis_format);
       form.append("updated_by", window.sessionStorage.no_kad_pengenalan);
 
-      var settings = {
-        url: host + "formatUpdate",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        // console.log(response)
-        result = JSON.parse(response);
-        if (!result.success) {
-          swal({
-            title: "Kemaskini Format",
-            text: "Kemaskini Gagal!",
-            type: "error",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                $("#update-format").modal("hide");
-                tableFormat();
-              }
+      var obj = new post(host+`formatUpdate`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        swal({
+          title: "Kemaskini Format",
+          text: "Kemaskini Berjaya!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              saveLog(
+                id_users_master,
+                "Update Data for [id = " +
+                  upt_id +
+                  "]" +
+                  upt_kod_format +
+                  " at Tetapan Format Media.",
+                window.sessionStorage.browser
+              );
+              $("#update-format").modal("hide");
+              tableFormat();
             }
-          );
-        } else {
-          swal({
-            title: "Kemaskini Format",
-            text: "Kemaskini Berjaya!",
-            type: "success",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                saveLog(
-                  window.sessionStorage.id,
-                  "Update Data for [id = " +
-                    upt_id +
-                    "]" +
-                    upt_kod_format +
-                    " at Tetapan Format Media.",
-                  window.sessionStorage.browser
-                );
-                $("#update-format").modal("hide");
-                tableFormat();
-              }
+          }
+        );
+      } else {
+        swal({
+          title: "Kemaskini Format",
+          text: "Kemaskini Gagal!",
+          type: "error",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#update-format").modal("hide");
+              tableFormat();
             }
-          );
-        }
-      });
+          }
+        );
+      }
     });
   }
 });
@@ -337,50 +306,34 @@ function del_rekod(i) {
   var form = new FormData();
   form.append("id_format", id);
 
-  var settings = {
-    url: host + "formatDelete",
-    method: "POST",
-    timeout: 0,
-    processData: false,
-    mimeType: "multipart/form-data",
-    contentType: false,
-    data: form,
-  };
-
-  $.ajax(settings).done(function (response) {
-    // console.log(response)
-    result = JSON.parse(response);
-    if (!result.success) {
-      // Swal(result.message, result.data, "error");
-      // return;
-      swal({
-        title: "Hapus Format",
-        text: "Gagal!",
-        type: "error",
-        closeOnConfirm: true,
-        allowOutsideClick: false,
-        html: false,
-      }).then(function () {
-        window.location.reload();
-      });
-    }
-    if (result.data.statusrekod == 1) {
-      $("#text_statusrekod" + result.data.id_format)
-        .text("Aktif")
-        .removeClass("badge-danger")
-        .addClass("badge-success");
-    } else {
-      $("#text_statusrekod" + result.data.id_format)
-        .text("Tidak Aktif")
-        .removeClass("badge-success")
-        .addClass("badge-danger");
-    }
+  var obj = new post(host+`formatDelete`,form,window.sessionStorage.token).execute();
+  if(obj.success){
     saveLog(
-      window.sessionStorage.id,
-      "Change Record Status for [id_format = " +
-        id_format +
-        "] at Tetapan Format Media.",
+      id_users_master,
+      "Delete Data [" + kod_format + "] at Tetapan Format Media.",
       window.sessionStorage.browser
     );
-  });
+  } else {
+    swal({
+      title: "Hapus Format",
+      text: "Gagal!",
+      type: "error",
+      closeOnConfirm: true,
+      allowOutsideClick: false,
+      html: false,
+    }).then(function () {
+      window.location.reload();
+    });
+  }
+  if (obj.data.statusrekod == 1) {
+    $("#text_statusrekod" + obj.data.id_format)
+      .text("Aktif")
+      .removeClass("badge-danger")
+      .addClass("badge-success");
+  } else {
+    $("#text_statusrekod" + obj.data.id_format)
+      .text("Tidak Aktif")
+      .removeClass("badge-success")
+      .addClass("badge-danger");
+  }
 }
