@@ -85,10 +85,10 @@ class med_programController extends Controller
             $med_program = $med_program -> where('tarikh_program','<=',date('Y-m-d',strtotime($tarikh_akhir)));
         }
         if($FK_kampus != '') {
-            $med_program = $med_program -> where('FK_kampus',$FK_kampus);
+            $med_program = $med_program -> where('med_program.FK_kampus',$FK_kampus);
         }
         if($FK_kluster != '') {
-            $med_program = $med_program -> where('FK_kluster',$FK_kluster);
+            $med_program = $med_program -> where('med_program.FK_kluster',$FK_kluster);
         }
         if($tahun_program != '') {
             $med_program = $med_program -> where(med_program::raw('substr(tarikh_program,1,4)'),date('Y',strtotime($tahun_program)));

@@ -50,26 +50,16 @@ $("#carian").on("submit", function (e) {
 });
 
 function kategoriList() {
-  //Dropdown Kategori List
-  var settings = {
-    url: host + "kategoriprogramList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_kategori").empty();
-    $("#FK_kategori").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kategori",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#FK_kategori").empty();
+  $("#FK_kategori").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kategori",
+    })
+  );
+  var obj = new get(host+`kategoriprogramList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#FK_kategori").append(
         $("<option>", {
           value: item.id_kategoriprogram,
@@ -77,31 +67,22 @@ function kategoriList() {
         })
       );
     });
-  });
-  // END Dropdown Kategori List
+  } else {
+
+  }
 }
 
 function kampusList() {
-  //Dropdown Kampus List
-  var settings = {
-    url: host + "kampusList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_kampus").empty();
-    $("#FK_kampus").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kampus",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#FK_kampus").empty();
+  $("#FK_kampus").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kampus",
+    })
+  );
+  var obj = new get(host+`kampusList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#FK_kampus").append(
         $("<option>", {
           value: item.id_kampus,
@@ -109,31 +90,22 @@ function kampusList() {
         })
       );
     });
-  });
-  // END Dropdown Kampus List
+  } else {
+
+  }
 }
 
 function klusterList() {
-  //Dropdown Kluster List
-  var settings = {
-    url: host + "klustersList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#FK_kluster").empty();
-    $("#FK_kluster").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kluster",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#FK_kluster").empty();
+  $("#FK_kluster").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Kluster",
+    })
+  );
+  var obj = new get(host+`klustersList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#FK_kluster").append(
         $("<option>", {
           value: item.id_kluster,
@@ -141,31 +113,22 @@ function klusterList() {
         })
       );
     });
-  });
-  // END Dropdown Kluster List
+  } else {
+
+  }
 }
 
 function tahunList() {
-  //Dropdown Kluster List
-  var settings = {
-    url: host + "programListTahun",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
-    $("#tahun_program").empty();
-    $("#tahun_program").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Tahun",
-      })
-    );
-    $.each(response.data, function (i, item) {
+  $("#tahun_program").empty();
+  $("#tahun_program").append(
+    $("<option>", {
+      value: "",
+      text: "Pilih Tahun",
+    })
+  );
+  var obj = new get(host+`programListTahun`,window.sessionStorage.token).execute();
+  if(obj.success){
+    $.each(obj.data, function (i, item) {
       $("#tahun_program").append(
         $("<option>", {
           value: item.tahun,
@@ -173,22 +136,16 @@ function tahunList() {
         })
       );
     });
-  });
-  // END Dropdown Kluster List
+  } else {
+
+  }
 }
 
 function programList() {
-  //Dropdown User List
-  var settings = {
-    url: host + "programList",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
+  var obj = new get(host+`programList`,window.sessionStorage.token).execute();
+  if(obj.success){
     $("#nama_programss").empty();
-    $.each(response.data, function (i, item) {
+    $.each(obj.data, function (i, item) {
       $("#nama_programss").append(
         $("<option>", {
           value: item.nama_program,
@@ -196,8 +153,9 @@ function programList() {
         })
       );
     });
-  });
-  // END Dropdown User List
+  } else {
+    
+  }
 }
 
 $("#nama_programs").change(function () {
@@ -261,7 +219,7 @@ $("#tarikh_akhir").change(function () {
 });
 
 function tableProgram() {
-  var colums = [
+  var columns = [
     { name: "bil", title: "Bil" },
     { name: "nama_program", title: "Nama Program" },
     { name: "t_program", title: "Tarikh Program", breakpoints: "md sm xs" },
@@ -271,19 +229,14 @@ function tableProgram() {
       breakpoints: "md sm xs",
     },
   ];
-  var settings = {
-    url: host + "programListAll",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`programListAll`,window.sessionStorage.token).execute();
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataList").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       t_program = new Date(field.tarikh_program);
       var checked;
       if (field.programstatusrekod == "1") {
@@ -311,8 +264,10 @@ function tableProgram() {
       });
     });
 
+    $(".listProgram").html(list.length);
+    $(".listProgram-length").html(list.length);
     $("#listProgram").footable({
-      columns: colums,
+      columns: columns,
       rows: list,
       paging: {
         enabled: true,
@@ -325,11 +280,13 @@ function tableProgram() {
         class: "brown-700",
       },
     });
-  });
+  } else {
+
+  }
 }
 
 function carianProgram(form) {
-  var colums = [
+  var columns = [
     { name: "bil", title: "Bil" },
     { name: "nama_program", title: "Nama Program" },
     { name: "t_program", title: "Tarikh Program", breakpoints: "md sm xs" },
@@ -343,22 +300,13 @@ function carianProgram(form) {
     { name: "tahun", title: "Tahun", breakpoints: "md sm xs" },
   ];
 
-  var settings = {
-    url: host + "programLaporan",
-    method: "POST",
-    timeout: 0,
-    processData: false,
-    contentType: false,
-    data: form,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new post(host+`programLaporan`,form,window.sessionStorage.token).execute();
+  if(obj.success){
+    let convertList = JSON.stringify(obj.data);
     $("#dataListProgram").val(convertList);
     var list = [];
     let bil = 1;
-    console.log(response);
-    $.each(response.data, function (i, field) {
+    $.each(obj.data, function (i, field) {
       t_program = new Date(field.tarikh_program);
       var checked;
       if (field.programstatusrekod == "1") {
@@ -390,8 +338,9 @@ function carianProgram(form) {
       // console.log(field)
     });
     $("#listProgram").empty();
+    $(".listProgram-length").html(list.length);
     $("#listProgram").footable({
-      columns: colums,
+      columns: columns,
       rows: list,
       paging: {
         enabled: true,
@@ -407,5 +356,7 @@ function carianProgram(form) {
 
     $("#collapseCarian").removeClass("show");
     $("#collapseMaklumat").addClass("show");
-  });
+  } else {
+
+  }
 }

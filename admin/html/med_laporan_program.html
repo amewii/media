@@ -80,9 +80,10 @@
                     <!--Collapse Start-->
                     <div id="collapseMaklumat" class="collapse" data-parent="#laporanProgram">
                         <div class="card-body">
-                            <div id="tableProgram">
+                            <div id="tableProgram" class="table-responsive">
                                 <textarea class="hidden" id="dataListProgram"></textarea>
-                                <table id="listProgram" class="table"></table>
+                                <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 listProgram-length"></span></h6>
+                                <table id="listProgram" class="table mb-3"></table>
                             </div>
                         </div>
                     </div>
@@ -103,33 +104,35 @@
                     <!--Collapse Start-->
                     <div id="collapseCarta" class="collapse" data-parent="#laporanProgram">
                         <div class="card-body">
-                            <!-- Bar Simple Start -->
-                            <div class="col-lg-4 col-md-6 col-12 mb-30">
-                                <div class="box">
-                                    <div class="box-head">
-                                        <h4 class="title">Carta Kategori Program</h4>
-                                    </div>
-                                    <div class="box-body">
-                                        <div id="example-echart-bar-simple" class="example-echart-bar-simple example-echarts">
-                                            <canvas id="example-echart-bar-simple"></canvas>
+                            <div class="row">
+                                <!-- Bar Simple Start -->
+                                <div class="col-lg-6 col-md-6 col-12 mb-30">
+                                    <div class="box">
+                                        <div class="box-head">
+                                            <h4 class="title">Carta Kategori Program</h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div id="example-echart-bar-simple" class="example-echart-bar-simple example-echarts">
+                                                <canvas id="example-echart-bar-simple"></canvas>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div><!-- Bar Simple End -->
-
-                            <!-- Market Trends Chart Start -->
-                            <div class="col-md-4 mb-30">
-                                <div class="box">
-                                    <div class="box-head">
-                                        <h4 class="title">Kategori Pengguna</h4>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="chartjs-market-trends-chart">
-                                            <canvas id="chartjs-market-trends-chart"></canvas>
+                                </div><!-- Bar Simple End -->
+    
+                                <!-- Market Trends Chart Start -->
+                                <div class="col-lg-6 col-md-6 col-12 mb-30">
+                                    <div class="box">
+                                        <div class="box-head">
+                                            <h4 class="title">Kategori Pengguna</h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chartjs-market-trends-chart">
+                                                <canvas id="chartjs-market-trends-chart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div><!-- Market Trends Chart End -->   
+                                </div><!-- Market Trends Chart End -->  
+                            </div> 
                         </div>
                     </div>
                     <!--Collapse End-->

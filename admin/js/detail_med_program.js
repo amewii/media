@@ -166,17 +166,7 @@ function saveImgList(varImg) {
   var form_upload = new FormData();
   form_upload.append("file", varImg);
   form_upload.append("updated_by", window.sessionStorage.id);
-  var settings = {
-    url: host + "programUpload2/" + window.sessionStorage.med_program_id,
-    method: "POST",
-    timeout: 0,
-    contentType: false,
-    processData: false,
-    data: form_upload,
-  };
-  $.ajax(settings).done(function (response) {
-    // window.location.reload();
-  });
+  var obj = new post(host+`programUpload2/`+window.sessionStorage.med_program_id,form,window.sessionStorage.token).execute();
 }
 
 // $.fileup({
@@ -268,108 +258,107 @@ function saveImgList(varImg) {
 
 function onPageLoad() {
   $("#loading_modal").modal("show");
-  var settings = {
-    url: host + "program/" + window.sessionStorage.med_program_id,
-    method: "GET",
-    timeout: 0,
-  };
+  var obj = new get(host+`program/`+window.sessionStorage.med_program_id,window.sessionStorage.token).execute();
+  if(obj.success){
+    response = obj;
+    t_program = new Date(response.data.tarikh_program);
 
-  $.ajax(settings)
-    .done(function (response) {
-      t_program = new Date(response.data.tarikh_program);
+    vip = response.data.FK_vip;
+    vip = vip.replace(/;/gi, " ,");
 
-      vip = response.data.FK_vip;
-      vip = vip.replace(/;/gi, " ,");
+    // let vip = "";
+    // console.log(JSON.parse(response.data.media_path));
+    // $.each(JSON.parse(response.data.media_path), function(i, item){
+    //     if (item.FK_vip != null){
+    //         if (vip != ""){
 
-      // let vip = "";
-      // console.log(JSON.parse(response.data.media_path));
-      // $.each(JSON.parse(response.data.media_path), function(i, item){
-      //     if (item.FK_vip != null){
-      //         if (vip != ""){
+    //         } else  {
 
-      //         } else  {
+    //         }
+    //     }
+    // });
 
-      //         }
-      //     }
-      // });
+    $("#disp_id").val(response.data.id_program);
+    $("#upt_id").val(response.data.id_program);
+    $("#disp_nama_program").text(response.data.nama_program);
+    $("#disp_tarikh_program").text(
+      t_program.getDate() +
+        "/" +
+        (t_program.getMonth() + 1) +
+        "/" +
+        t_program.getFullYear()
+    );
+    $("#disp_nama_kampus").text(response.data.nama_kampus);
+    $("#disp_nama_kluster").text(response.data.nama_kluster);
+    $("#disp_nama_unit").text(response.data.nama_unit);
+    $("#disp_vip").text(vip);
+    $("#disp_nama_kategori").text(response.data.nama_kategori);
+    $("#disp_bilangan_fail").text(response.data.bilangan_fail);
+    $("#disp_kod_format").text(response.data.kod_format);
+    $("#disp_saiz_fail").text(response.data.saiz_fail);
+    $("#uptid").val(response.data.id_program);
+    let convertList = JSON.stringify(response.data.media_path);
+    $("#dataList").val(convertList);
 
-      $("#disp_id").val(response.data.id_program);
-      $("#upt_id").val(response.data.id_program);
-      $("#disp_nama_program").text(response.data.nama_program);
-      $("#disp_tarikh_program").text(
-        t_program.getDate() +
-          "/" +
-          (t_program.getMonth() + 1) +
-          "/" +
-          t_program.getFullYear()
-      );
-      $("#disp_nama_kampus").text(response.data.nama_kampus);
-      $("#disp_nama_kluster").text(response.data.nama_kluster);
-      $("#disp_nama_unit").text(response.data.nama_unit);
-      $("#disp_vip").text(vip);
-      $("#disp_nama_kategori").text(response.data.nama_kategori);
-      $("#disp_bilangan_fail").text(response.data.bilangan_fail);
-      $("#disp_kod_format").text(response.data.kod_format);
-      $("#disp_saiz_fail").text(response.data.saiz_fail);
-      $("#uptid").val(response.data.id_program);
-      let convertList = JSON.stringify(response.data.media_path);
-      $("#dataList").val(convertList);
+    if (convertList == "null") {
+      $("#dataList").val("");
+    }
+    images = JSON.parse(response.data.media_path);
+    $.each(images, function (i, field) {
+      var preview = "";
+      ext = field.images.split(".");
 
-      if (convertList == "null") {
-        $("#dataList").val("");
+      var appendLoadData = "";
+
+      if (window.sessionStorage.control_program_media_U2 == 1) {
+        appendLoadData =
+          "onclick=\"loadData('" +
+          field.images +
+          "',2,'" +
+          field.FK_vip +
+          "')\"";
       }
-      images = JSON.parse(response.data.media_path);
-      $.each(images, function (i, field) {
-        var preview = "";
-        ext = field.images.split(".");
 
-        var appendLoadData = "";
-
-        if (window.sessionStorage.control_program_media_U2 == 1) {
-          appendLoadData =
-            "onclick=\"loadData('" +
-            field.images +
-            "',2,'" +
-            field.FK_vip +
-            "')\"";
-        }
-
-        if (ext[1] == "mp4" || ext[1] == "mov") {
-          preview =
-            '<span class="" style="font-size:80px" onclick="loadData(\'' +
-            field.images +
-            "',2,'" +
-            field.FK_vip +
-            '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
-          // preview = '<span class="" style="font-size:80px" onclick="loadData(\'' + field.images + '\',2)" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
-          // preview = '<img src="../api_asdcm/api_media//images/'+field.images+'" height="150px" alt="" onclick="loadData(\'' + field.images + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
-        } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="../api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
-
-        listImages =
-          '<div class="col-lg-3 col-12 mb-30 border">' +
-          '<div class="row adomx-checkbox-radio-group" style="padding: 10px;"><input class="" type="checkbox" name="media_selected[]" value="' +
+      if (ext[1] == "mp4" || ext[1] == "mov") {
+        preview =
+          '<span class="" style="font-size:80px" onclick="loadData(\'' +
           field.images +
-          ";" +
-          field.id_program +
-          '" id="' +
-          field.images +
-          '"/>' +
-          '<div class="col-12" align="center"> <br>' +
-          // '<div class="watermark">'+
-          preview +
-          "</div>" +
-          // '</div>'+
-          "</div>   " +
-          "</div> ";
-        $("#listImages").append(listImages);
-      });
-    })
-    .then(function () {
-      $("#loading_modal").modal("hide");
-      $("#finishButton").removeClass("button-dark");
-      $("#finishButton").addClass("button-primary");
-      $("#finishButton").removeAttr("disabled");
+          "',2,'" +
+          field.FK_vip +
+          '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
+        // preview = '<span class="" style="font-size:80px" onclick="loadData(\'' + field.images + '\',2)" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
+        // preview = '<img src="../api_asdcm/api_media//images/'+field.images+'" height="150px" alt="" onclick="loadData(\'' + field.images + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
+      } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="../api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
+
+      listImages =
+        '<div class="col-lg-3 col-12 mb-30 border">' +
+        '<div class="row adomx-checkbox-radio-group" style="padding: 10px;"><input class="" type="checkbox" name="media_selected[]" value="' +
+        field.images +
+        ";" +
+        field.id_program +
+        '" id="' +
+        field.images +
+        '"/>' +
+        '<div class="col-12" align="center"> <br>' +
+        // '<div class="watermark">'+
+        preview +
+        "</div>" +
+        // '</div>'+
+        "</div>   " +
+        "</div> ";
+      $("#listImages").append(listImages);
     });
+    $("#loading_modal").modal("hide");
+    $("#finishButton").removeClass("button-dark");
+    $("#finishButton").addClass("button-primary");
+    $("#finishButton").removeAttr("disabled");
+  }
+
+  // $.ajax(settings)
+  //   .done(function (response) {
+  //   })
+  //   .then(function () {
+  //   });
 }
 
 function loadData(indexs, varType, vip) {
@@ -444,33 +433,8 @@ $("#taggambar").on("submit", function (e) {
       form.append("FK_users", FK_users);
       form.append("updated_by", window.sessionStorage.id);
 
-      var settings = {
-        url: host + "programTagging",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        console.log(response);
-        result = JSON.parse(response);
-        if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
-          swal({
-            title: "Daftar Program",
-            text: "Gagal!",
-            type: "error",
-            closeOnConfirm: true,
-            allowOutsideClick: false,
-            html: false,
-          }).then(function () {
-            window.location.reload();
-          });
-        }
+      var obj = new post(host+`programTagging`,form,window.sessionStorage.token).execute();
+      if(obj.success){
         swal({
           title: "Tagging Media",
           text: "Berjaya!",
@@ -482,7 +446,18 @@ $("#taggambar").on("submit", function (e) {
           sessionStorage.token = result.token;
           window.location.reload();
         });
-      });
+      } else {
+        swal({
+          title: "Daftar Program",
+          text: "Gagal!",
+          type: "error",
+          closeOnConfirm: true,
+          allowOutsideClick: false,
+          html: false,
+        }).then(function () {
+          window.location.reload();
+        });
+      }
     });
   }
 });
@@ -530,33 +505,8 @@ $("#reg-permohonan").click(function () {
     form.append("updated_by", window.sessionStorage.id);
     form.append("statusrekod", "1");
 
-    var settings = {
-      url: host + "addPermohonan",
-      method: "POST",
-      timeout: 0,
-      processData: false,
-      mimeType: "multipart/form-data",
-      contentType: false,
-      data: form,
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      result = JSON.parse(response);
-      if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
-        swal({
-          title: "Muat Turun Media",
-          text: "Permohonan Gagal!",
-          type: "error",
-          closeOnConfirm: true,
-          allowOutsideClick: false,
-          html: false,
-        }).then(function () {
-          window.location.reload();
-        });
-      }
+    var obj = new post(host+`addPermohonan`,form,window.sessionStorage.token).execute();
+    if(obj.success){
       swal({
         title: "Muat Turun Media",
         text: "Permohonan Berjaya Direkod!",
@@ -568,7 +518,18 @@ $("#reg-permohonan").click(function () {
         sessionStorage.token = result.token;
         window.location.reload();
       });
-    });
+    } else {
+      swal({
+        title: "Muat Turun Media",
+        text: "Permohonan Gagal!",
+        type: "error",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        window.location.reload();
+      });
+    }
   });
 });
 

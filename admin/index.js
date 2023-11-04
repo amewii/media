@@ -30,6 +30,7 @@ $(function () {
   var matches = str.match(/\b(\w)/g); // ['J','S','O','N']
   var acronym = matches.join(""); // JSON
   $("#nama_pendek").text(acronym);
+  $(".user_nama").text(nama_master);
   $("#user_nama").text(nama_master);
   $("#user_namas").text(nama_master);
   $("#nama_peranan").text(nama_peranan_master);
