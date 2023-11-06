@@ -25,8 +25,9 @@ $("#registerswasta").on("submit", function (e) {
     form.append("FK_gelaran", FK_gelaran);
     form.append("katalaluan", katalaluan);
     // formData.append("token",window.sessionStorage.token);
+    
     var settingsregusers = {
-      url: host + "public/addUsers",
+      url: host + "addUsers",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -44,7 +45,7 @@ $("#registerswasta").on("submit", function (e) {
       }
 
       var settingsfetchusers = {
-        url: host + "public/users",
+        url: host + "users",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -67,7 +68,7 @@ $("#registerswasta").on("submit", function (e) {
         formswasta.append("statusrekod", "1");
 
         var settingsreguserswastas = {
-          url: host + "public/addUserswastas",
+          url: host + "addUserswastas",
           method: "POST",
           timeout: 0,
           processData: false,
@@ -110,7 +111,7 @@ $("#registerswasta").on("submit", function (e) {
 
 $("#poskod_rumah_swasta").blur(function () {
   var settings = {
-    url: host + "public/sysposkod/" + $("#poskod_rumah_swasta").val(),
+    url: host + "sysposkod/" + $("#poskod_rumah_swasta").val(),
     method: "GET",
     timeout: 0,
   };
@@ -123,7 +124,7 @@ $("#poskod_rumah_swasta").blur(function () {
 
 $("#poskod_organisasi_swasta").blur(function () {
   var settings = {
-    url: host + "public/sysposkod/" + $("#poskod_organisasi_swasta").val(),
+    url: host + "sysposkod/" + $("#poskod_organisasi_swasta").val(),
     method: "GET",
     timeout: 0,
   };
@@ -138,7 +139,7 @@ $("#poskod_organisasi_swasta").blur(function () {
 
 //Dropdown Gelaran List
 var settings = {
-  url: host + "public/gelaransList",
+  url: host + "gelaransList",
   method: "GET",
   timeout: 0,
   // "header":{

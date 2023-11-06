@@ -69,7 +69,7 @@ $("#checkusers").on("submit", function (e) {
             html: false,
           }).then(function () {
             sessionStorage.token = result.token;
-            window.location.replace("../login");
+            window.location.replace("../login/");
           });
         }
       } else {
@@ -102,7 +102,7 @@ $("#no_kad_pengenalan_daftar").change(function () {
           html: false,
         }).then(function () {
           // sessionStorage.token = result.token;
-          window.location.replace("../login");
+          window.location.replace("../login/");
         });
       } else {
         check_hrmis(no_kad_pengenalan, function () {
@@ -160,7 +160,7 @@ $("#checkusers2").on("submit", function (e) {
 
 //Dropdown Jenis Pengguna List
 var settings = {
-  url: host + "public/jenispenggunasList",
+  url: host + "jenispenggunasList",
   method: "GET",
   timeout: 0,
   // "header":{
@@ -193,7 +193,7 @@ function check_users(noic, returnValue) {
   form.append("no_kad_pengenalan", noic);
 
   var settings = {
-    url: host + "public/users",
+    url: host + "checkUsers",
     method: "POST",
     timeout: 0,
     processData: false,

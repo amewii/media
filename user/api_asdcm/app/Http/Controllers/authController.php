@@ -140,4 +140,28 @@ class authController extends Controller
             ],201);
         }
     }
+
+    public function show(Request $request)  {
+        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
+
+        $med_users = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
+                                leftjoin('med_usersswasta', 'med_usersswasta.FK_users', '=', 'med_users.id_users') -> 
+                                leftjoin('med_userspelajar', 'med_userspelajar.FK_users', '=', 'med_users.id_users') -> 
+                                where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+
+        if ($med_users)   {
+            return response()->json([
+                'success'=>'true',
+                'message'=>'Show Success!',
+                'data'=>$med_users
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ]);
+        }
+    }
 }
