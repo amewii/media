@@ -535,11 +535,11 @@ class med_permohonanController extends Controller
         $zip = new ZipArchive;
 
         $fileName = $tarikh_muatturun.'_'.$FK_program.'_'.$FK_users.'.zip';
-        if($zip->open('/olive/media/api_asdcm/public/uploads/'.$fileName,ZipArchive::CREATE) === TRUE)
+        if($zip->open('uploads/'.$fileName,ZipArchive::CREATE) === TRUE)
         // if($zip->open(public_path($fileName),ZipArchive::CREATE) === TRUE)
         {
             
-            $files = File::files('/olive/media/api_asdcm/public/uploads');
+            $files = File::files('uploads');
             // $files = File::files(public_path('uploads'));
             foreach($files as $key => $value){
                 
