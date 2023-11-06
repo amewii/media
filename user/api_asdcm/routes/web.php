@@ -29,6 +29,7 @@ $router->get('key', function () {
 $router->post('/login','authController@login');
 $router->post('/loginUser','authController@loginUser');
 $router->post('/checkUsers', 'authController@show');
+$router->post('/registerSiteAwam', 'authController@register');
 
 
 //Daripada api_pentadbir

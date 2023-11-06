@@ -27,7 +27,7 @@ $("#registerswasta").on("submit", function (e) {
     // formData.append("token",window.sessionStorage.token);
     
     var settingsregusers = {
-      url: host + "addUsers",
+      url: host + "registerSiteAwam",
       method: "POST",
       timeout: 0,
       processData: false,
