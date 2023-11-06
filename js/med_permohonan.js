@@ -74,6 +74,8 @@ function listPermohonan() {
     ];
   }
 
+  console.log(FK_peranan_master);
+
   if (FK_peranan_master == 1) {
     var settings = {
       url: host + "permohonanList",
