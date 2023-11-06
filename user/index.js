@@ -2,46 +2,7 @@ $(function () {
   $.ajaxSetup({
     cache: false,
   });
-  listNotification(function () {
-    if (obj_listNotification.success) {
-      if (JSON.stringify(obj_listNotification.data) != "[]") {
-        $.each(obj_listNotification.data, function (i, item) {
-          t_luput = new Date(item.tarikh_luput);
-          $("#icon_notification").show();
-          listnotification =
-            "<li>" +
-            '<div class="timeline-panel">' +
-            '<div class="media-body">' +
-            '<h6 class="mb-1">' +
-            item.nama_program +
-            "<br>Status: " +
-            item.nama_status +
-            "</h6>" +
-            '<small class="d-block">Sah Sehingga: ' +
-            t_luput.getDate() +
-            "/" +
-            (t_luput.getMonth() + 1) +
-            "/" +
-            t_luput.getFullYear() +
-            "</small>" +
-            "</div>" +
-            "</div>" +
-            "</li>";
-          $("#notification").append(listnotification);
-        });
-      } else {
-        listnotification =
-          "<li>" +
-          '<div class="timeline-panel">' +
-          '<div class="media-body">' +
-          '<h6 class="mb-1">Tiada Notifikasi</h6>' +
-          "</div>" +
-          "</div>" +
-          "</li>";
-        $("#notification").append(listnotification);
-      }
-    }
-  });
+  listNotification();
   loadHalamanUtama();
   kategoriProgram();
   listVip();
@@ -98,42 +59,30 @@ $("#nama").html(window.sessionStorage.nama);
 // });
 
 function kategoriProgram() {
-  var settings = {
-    url: host + "public/kategoriprogramList",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    $.each(response.data, function (i, field) {
-      $("#FK_kategori").empty();
-      $("#FK_kategori").append("<option>Kategori</option>");
-      $.each(response.data, function (i, item) {
-        $("#FK_kategori").append(
-          $("<option>", {
-            value: item.id_kategoriProgram,
-            text: item.nama_kategori,
-          })
-        );
-      });
+  var obj = new get(host+`kategoriprogramList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
+    $("#FK_kategori").empty();
+    $("#FK_kategori").append("<option>Kategori</option>");
+    $.each(data, function (i, item) {
+      $("#FK_kategori").append(
+        $("<option>", {
+          value: item.id_kategoriProgram,
+          text: item.nama_kategori,
+        })
+      );
     });
-  });
+  } else {
+    
+  }
 }
 
 function listVip() {
-  var settings = {
-    url: host + "public/vipsList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
+  var obj = new get(host+`vipsList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
     $("#FK_vip").empty();
-    $.each(response.data, function (i, item) {
+    $.each(data, function (i, item) {
       $("#FK_vip").append(
         $("<option>", {
           value:
@@ -153,23 +102,17 @@ function listVip() {
         })
       );
     });
-  });
+  } else {
+
+  }
 }
 
 function listProgram() {
-  var settings = {
-    url: host + "public/programList",
-    method: "GET",
-    timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
-  };
-
-  $.ajax(settings).done(function (response) {
-    //LIST OPTION
+  var obj = new get(host+`programList`,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
     $("#nama_program").empty();
-    $.each(response.data, function (i, item) {
+    $.each(data, function (i, item) {
       $("#nama_program").append(
         $("<option>", {
           value: item.nama_program,
@@ -177,7 +120,9 @@ function listProgram() {
         })
       );
     });
-  });
+  } else {
+
+  }
 }
 
 function loadHalamanUtama() {
@@ -221,14 +166,10 @@ function loadHalamanUtama() {
 // Carian
 
 function loadSenaraiProgramBergambar(varAPI, varAppend) {
-  var settings = {
-    url: host + "public/" + varAPI,
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    $.each(response.data, function (i, field) {
+  var obj = new get(host+varAPI,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
+    $.each(data, function (f, field) {
       imgsrc = "";
       if (field.media_path != null) {
         img = JSON.parse(field.media_path);
@@ -311,7 +252,9 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
         "</div>";
       $("#" + varAppend).append(data_programs);
     });
-  });
+  } else {
+    
+  }
 }
 
 $("#Search").on("keyup", function () {
@@ -403,13 +346,10 @@ function detail_media(indexs, varType) {
     '<li class="breadcrumb-item"><a href="javascript:void(0)" onclick="window.location.reload()">Laman Utama</a></li>' +
       '<li class="breadcrumb-item active"><a href="javascript:void(0)">Maklumat Program</a></li>'
   );
-  var settings = {
-    url: host + "public/program/" + indexs,
-    method: "GET",
-    timeout: 0,
-  };
-  // console.log(settings)
-  $.ajax(settings).done(function (response) {
+
+  var obj = new get(host+`program/`+indexs,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
     $("#data_load").append(
       '<div id="checkboxmedia" class="row  mt-110"></div>'
     );
@@ -417,10 +357,10 @@ function detail_media(indexs, varType) {
     $(":checkbox").attr("checked", false);
 
     $("#permohonan").show();
-    $("#disp_id").val(response.data.id_program);
-    $("#nama_program").text(response.data.nama_program);
-    $("#tarikh_program").text(response.data.tarikh_program);
-    media_path = JSON.parse(response.data.media_path);
+    $("#disp_id").val(data.id_program);
+    $("#nama_program").text(data.nama_program);
+    $("#tarikh_program").text(data.tarikh_program);
+    media_path = JSON.parse(data.media_path);
     size = media_path.length;
 
     let bil = 0;
@@ -436,7 +376,7 @@ function detail_media(indexs, varType) {
       if (varType == 1) {
         if (ext[1] != "mp4" && ext[1] != "mov") {
           preview =
-            '<img class="img-fluid"  style="height:225px" src="../api_asdcm/public/uploads/' +
+            '<img class="img-fluid"  style="height:225px" src="api_asdcm/public/uploads/' +
             field.images +
             '" alt="">';
 
@@ -529,7 +469,9 @@ function detail_media(indexs, varType) {
     else if (count_pic > 2)
       class_pic_length = "col-xl-3 col-lg-6 col-md-6 col-sm-6";
     $(".pic-view").addClass(class_pic_length);
-  });
+  } else {
+
+  }
 }
 
 function getThumbnail(images) {
@@ -566,14 +508,10 @@ function data_program() {
   $("#page_title").html(
     '<li class="breadcrumb-item active"><a href="javascript:void(0)">Laman Utama</a></li>'
   );
-  var settings = {
-    url: host + "public/programListBergambar",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    $.each(response.data, function (i, field) {
+  var obj = new get(host+`programListBergambar`,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
+    $.each(data, function (i, field) {
       imgsrc = "";
       if (field.media_path != null) {
         img = JSON.parse(field.media_path);
@@ -631,7 +569,9 @@ function data_program() {
         "</div>";
       $("#data_load").append(data_programs);
     });
-  });
+  } else {
+
+  }
 }
 
 function list() {
@@ -665,20 +605,15 @@ function list() {
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
 
-  var settings = {
-    url: host + "public/permohonanByUsers/" + window.sessionStorage.id,
-    method: "GET",
-    timeout: 0,
-  };
-  // console.log(settings);
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  var obj = new get(host+`permohonanByUsers/`+window.sessionStorage.id,window.sessionStorage.token).execute();
+  if(obj.success){
+    var data = obj.data;
+    let convertList = JSON.stringify(data);
     $("#dataList").val(convertList);
     var list = [];
     let bil = 1;
 
-    $.each(response.data, function (i, field) {
+    $.each(data, function (i, field) {
       t_permohonan = new Date(field.tarikh_permohonan);
       if (field.tarikh_luput == null) {
         t_luput_list = "-";
@@ -711,6 +646,12 @@ function list() {
           var form = new FormData();
           form.append("id_permohonan", field.id_permohonan);
           form.append("status_permohonan", "5");
+          var obj = new post(host+`permohonanLuput`,form,window.sessionStorage.token).execute();
+          if(obj.success){
+
+          } else {
+
+          }
           var settings = {
             url: host + "public/permohonanLuput",
             method: "POST",
@@ -795,7 +736,9 @@ function list() {
       columns: colums,
       data: list,
     });
-  });
+  } else {
+
+  }
 }
 
 function loadData(indexs) {
@@ -830,9 +773,9 @@ function download_media(indexs) {
     $("#data_load").append('<div id="checkboxmedia" class="row mt-110"></div>');
     // $("#permohonan").show();
     $("#muatturun").show();
-    $("#disp_id").val(response.data.FK_program);
-    media_path = JSON.parse(response.data.media_path);
-    // console.log(response.data.media_path);
+    $("#disp_id").val(data.FK_program);
+    media_path = JSON.parse(data.media_path);
+    // console.log(data.media_path);
 
     $.each(media_path, function (i, field) {
       data_programs =
@@ -946,33 +889,8 @@ $("#registerpermohonan").on("submit", function (e) {
       form.append("statusrekod", "1");
       form.append("flag_vip", flag_vip);
 
-      var settings = {
-        url: host + "public/addPermohonan",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        // console.log(response);
-        result = JSON.parse(response);
-        if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
-          swal({
-            title: "Muat Turun Media",
-            text: "Permohonan Gagal!",
-            type: "error",
-            closeOnConfirm: true,
-            allowOutsideClick: false,
-            html: false,
-          }).then(function () {
-            return false;
-          });
-        }
+      var obj = new post(host+`addPermohonan`,form,window.sessionStorage.token).execute();
+      if(obj.success){
         swal({
           title: "Muat Turun Media",
           text: "Permohonan Berjaya Didaftar!",
@@ -985,7 +903,18 @@ $("#registerpermohonan").on("submit", function (e) {
           // window.location.reload();
           loadHalamanUtama();
         });
-      });
+      } else {
+        swal({
+          title: "Muat Turun Media",
+          text: "Permohonan Gagal!",
+          type: "error",
+          closeOnConfirm: true,
+          allowOutsideClick: false,
+          html: false,
+        }).then(function () {
+          return false;
+        });
+      }
     });
   }
 });
@@ -1337,17 +1266,48 @@ $("#checkAll").click(function () {
 //MIMI : CHECKED ALL CHECKBOX END
 
 function listNotification(returnValue) {
-  var settings = {
-    url:
-      host + "public/permohonanByUsersNotification/" + window.sessionStorage.id,
-    method: "GET",
-    timeout: 0,
-  };
+  var obj = new get(host+`permohonanByUsersNotification/`+window.sessionStorage.id).execute();
+  if(obj.success){
+    obj_listNotification = obj;
+    if (JSON.stringify(obj_listNotification.data) != "[]") {
+      $.each(obj_listNotification.data, function (i, item) {
+        t_luput = new Date(item.tarikh_luput);
+        $("#icon_notification").show();
+        listnotification =
+          "<li>" +
+          '<div class="timeline-panel">' +
+          '<div class="media-body">' +
+          '<h6 class="mb-1">' +
+          item.nama_program +
+          "<br>Status: " +
+          item.nama_status +
+          "</h6>" +
+          '<small class="d-block">Sah Sehingga: ' +
+          t_luput.getDate() +
+          "/" +
+          (t_luput.getMonth() + 1) +
+          "/" +
+          t_luput.getFullYear() +
+          "</small>" +
+          "</div>" +
+          "</div>" +
+          "</li>";
+        $("#notification").append(listnotification);
+      });
+    } else {
+      listnotification =
+        "<li>" +
+        '<div class="timeline-panel">' +
+        '<div class="media-body">' +
+        '<h6 class="mb-1">Tiada Notifikasi</h6>' +
+        "</div>" +
+        "</div>" +
+        "</li>";
+      $("#notification").append(listnotification);
+    }
+  } else {
 
-  $.ajax(settings).done(function (response) {
-    obj_listNotification = response;
-    returnValue();
-  });
+  }
 }
 
 var timeoutSession;

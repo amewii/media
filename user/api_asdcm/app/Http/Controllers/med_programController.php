@@ -88,7 +88,7 @@ class med_programController extends Controller
             $med_program = $med_program -> where('med_program.FK_kampus',$FK_kampus);
         }
         if($FK_kluster != '') {
-            $med_program = $med_program -> where('FK_kluster',$FK_kluster);
+            $med_program = $med_program -> where('med_program.FK_kluster',$FK_kluster);
         }
         if($tahun_program != '') {
             $med_program = $med_program -> where(med_program::raw('substr(tarikh_program,1,4)'),date('Y',strtotime($tahun_program)));
@@ -476,24 +476,28 @@ class med_programController extends Controller
         $destinationPath = 'uploads'; // upload path
 
         $request->file('file')->move($destinationPath, $fileName);
-        $files = File::files(public_path());
-        foreach($files as $key => $value){
+        // $files = File::files(public_path());
+        $files = base_path('public');
+        // dd($files);
+
+        // foreach($files as $key => $value){
             
                 
-            $relativeNameInZipFile = basename($value);
+        //     $relativeNameInZipFile = basename($value);
             
-            if($fileName == $relativeNameInZipFile){
+        //     if($fileName == $relativeNameInZipFile){
             
-                return ;
+        //         return ;
 
-            }
+        //     }
 
-        }
+        // }
 
         // return 0;
-        // return response()->json([
-        //     'result'=>$flag_exist
-        // ],200);
+        return response()->json([
+            'success'=>true,
+            'result'=>$flag_exist
+        ],200);
     }
 
     public function upload2(Request $request, $id)    {

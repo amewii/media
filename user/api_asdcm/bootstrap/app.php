@@ -21,7 +21,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'Asia/Kuala_Lumpur'));
 |
 */
 
-$dotenv = Dotenv::createImmutable(__DIR__.'/../../../../../env_files','.media');
+$dotenv = Dotenv::createImmutable(__DIR__.'/../../../../env_files','.media');
 $dotenv->load();
 
 $app = new Laravel\Lumen\Application(

@@ -48,20 +48,20 @@ class med_randomizeController extends Controller
 
                    
         if (!empty($finalist))  {
-                    return response()->json([
-                        'success'=>'true',
-                        'message'=>'Pendaftaran Rekod Berjaya!',
-                        'data'=>$finalist
-                    ],201);
-                }
+            return response()->json([
+                'success'=>true,
+                'message'=>'Pendaftaran Rekod Berjaya!',
+                'data'=>$finalist
+            ],201);
+        }
         
-                else    {
-                    return response()->json([
-                        'success'=>'false',
-                        'message'=>'Bad Request',
-                        'data'=>$finalist
-                    ],400);
-                }
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$finalist
+            ],400);
+        }
         
     }
 

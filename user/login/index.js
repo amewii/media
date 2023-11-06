@@ -23,94 +23,80 @@ $("#login").on("submit", function (e) {
     var form = new FormData();
     form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("katalaluan", katalaluan);
-    var settings = {
-      url: host + "public/loginUser",
-      method: "POST",
-      timeout: 0,
-      processData: false,
-      mimeType: "multipart/form-data",
-      contentType: false,
-      data: form,
-    };
 
-    $.ajax(settings).done(function (response) {
-      // console.log(response);
-      result = JSON.parse(response);
-      console.log(result);
-      if (!result.success) {
-        swal({
-          title: "Log Masuk",
-          text: result.data,
-          type: "error",
-          closeOnConfirm: true,
-          allowOutsideClick: false,
-          html: false,
-        }).then(function () {
-          sessionStorage.token = result.token;
-          window.location.reload();
-        });
-      } else {
+    var obj = new post(host+`loginUser`,form,'').execute();
+    if(obj.success){
         // alert(result.data.PK);
-        sessionStorage.id = result.data.id_users;
-        sessionStorage.token = result.data.token;
-        sessionStorage.no_kad_pengenalan = result.data.no_kad_pengenalan;
-        sessionStorage.nama = result.data.nama;
-        sessionStorage.emel = result.data.emel;
+        var data = obj.data;
+        sessionStorage.id = data.id_users;
+        sessionStorage.token = data.token;
+        sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
+        sessionStorage.nama = data.nama;
+        sessionStorage.emel = data.emel;
         window.location.replace("../");
-      }
-    });
+    } else {
+      swal({
+        title: "Log Masuk",
+        text: obj.data,
+        type: "error",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        sessionStorage.token = obj.token;
+        window.location.reload();
+      });
+    }
   }
 });
 
 function load_image() {
-  var dir = "../../api_asdcm/public/uploads/";
+  var dir = "../api_asdcm/public/uploads/";
   // var dir = 'var/www/html/api_asdcm/public/uploads/';
+  var obj = new get(host+`randomGambar`,window.sessionStorage.token).execute();
+  console.log(obj);
+  if(obj.success){
+    let data = obj.data;
 
-  var settings = {
-    url: host + "public/randomGambar",
-    method: "GET",
-    timeout: 0,
-  };
-
-  $.ajax(settings).done(function (response) {
-    let list = response.data;
-
-    $("#bg_add").css("background-image", "url(" + dir + "" + list[9] + ")");
+    $("#bg_add").css("background-image", "url(" + dir + "" + data[9] + ")");
     $("#bg-img0").css(
       "background-image",
-      "url(" + dir + "" + response.data[0] + ")"
+      "url(" + dir + "" + data[0] + ")"
     );
     $("#bg-img1").css(
       "background-image",
-      "url(" + dir + "" + response.data[1] + ")"
+      "url(" + dir + "" + data[1] + ")"
     );
     $("#bg-img2").css(
       "background-image",
-      "url(" + dir + "" + response.data[2] + ")"
+      "url(" + dir + "" + data[2] + ")"
     );
     $("#bg-img3").css(
       "background-image",
-      "url(" + dir + "" + response.data[3] + ")"
+      "url(" + dir + "" + data[3] + ")"
     );
     $("#bg-img4").css(
       "background-image",
-      "url(" + dir + "" + response.data[4] + ")"
+      "url(" + dir + "" + data[4] + ")"
     );
     $("#bg-img5").css(
       "background-image",
-      "url(" + dir + "" + response.data[5] + ")"
+      "url(" + dir + "" + data[5] + ")"
     );
     $("#bg-img6").css(
       "background-image",
-      "url(" + dir + "" + response.data[6] + ")"
+      "url(" + dir + "" + data[6] + ")"
     );
     $("#bg-img7").css(
       "background-image",
-      "url(" + dir + "" + response.data[7] + ")"
+      "url(" + dir + "" + data[7] + ")"
     );
     $("#bg-img8").css(
       "background-image",
-      "url(" + dir + "" + response.data[8] + ")"
+      "url(" + dir + "" + data[8] + ")"
     );
-  });
+    
+  } else {
+
+  }
 }

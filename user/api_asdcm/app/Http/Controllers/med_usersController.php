@@ -14,6 +14,29 @@ use App\Models\med_tetapan;
 
 class med_usersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function getToken($id)  {
+        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $token     = hash("sha256", Str::random(32).$salt);
+        $obj = med_users::where('id_users',$id)->update([
+            'token' => $token
+        ]);
+
+        $token = false;
+
+        if($obj){
+            $obj = med_users::where('id_users',$id)->first(['token']);
+            $random = hash("sha256", Str::random(32)).'0L1v3';
+            $token = $random.$obj->token;
+        }
+
+        return $token;
+    }
+
     public function register(Request $request) {
         $katalaluan = $request->input('katalaluan');
         $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
@@ -207,7 +230,7 @@ class med_usersController extends Controller
                 if(!$mail->send()) {
                     // dd("Mailer Error: " . $mail->ErrorInfo);
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
                         'data'=>''
                     ],200);
@@ -216,14 +239,14 @@ class med_usersController extends Controller
                 if(!$mail->send()) {
                     // dd("Mailer Error: " . $mail->ErrorInfo);
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
                         'data'=>''
                     ],200);
                 } 
                 else {
                     return response()->json([
-                        'success'=>'true',
+                        'success'=>true,
                         'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
                         'data'=>''
                     ],200);
@@ -235,6 +258,36 @@ class med_usersController extends Controller
                 'message'=>"No Data!",
                 'data'=>''
             ]);
+        }
+    }
+
+    public function showSiteAdmin($no_kad_pengenalan){
+        
+        $obj = med_users::
+                join('med_capaian','med_capaian.FK_users','med_users.id_users')->
+                join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
+                where('no_kad_pengenalan',$no_kad_pengenalan)->first([
+                    'id_users',
+                    'med_users.nama',
+                    'med_peranan.FK_capaian',
+                    'med_peranan.nama_peranan',
+                    'med_capaian.FK_peranan',
+                    'med_capaian.FK_kluster',
+                ]);
+        if($obj){
+            $token = $this->getToken($obj->id_users);
+            return response()->json([
+                'success'=>true,
+                'message'=>'Show Success!',
+                'data'=>$obj,
+                'token'=>$token,
+            ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ],400);
         }
     }
 

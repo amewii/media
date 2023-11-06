@@ -98,19 +98,9 @@ $.fileup({
     var form_data = new FormData();
     form_data.append("file", file_data);
     form_data.append("updated_by", window.sessionStorage.id);
-
-    let check = $.ajax({
-      url: host + "programUpload/" + window.sessionStorage.med_program_id,
-      dataType: "text",
-      cache: false,
-      contentType: false,
-      processData: false,
-      data: form_data,
-      method: "post",
-      timeout: 0,
-    });
-
-    if (JSON.stringify(check.readyState) == 1) {
+    var obj = new post(host+`programUpload/`+window.sessionStorage.med_program_id,form_data,window.sessionStorage.token).execute();
+    console.log(obj);
+    if(obj.success){
       ++bil_upload;
       // alert(bil_upload);
       imglist = $("#dataList").val();
@@ -166,7 +156,7 @@ function saveImgList(varImg) {
   var form_upload = new FormData();
   form_upload.append("file", varImg);
   form_upload.append("updated_by", window.sessionStorage.id);
-  var obj = new post(host+`programUpload2/`+window.sessionStorage.med_program_id,form,window.sessionStorage.token).execute();
+  var obj = new post(host+`programUpload2/`+window.sessionStorage.med_program_id,form_upload,window.sessionStorage.token).execute();
 }
 
 // $.fileup({
@@ -328,21 +318,15 @@ function onPageLoad() {
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
         // preview = '<span class="" style="font-size:80px" onclick="loadData(\'' + field.images + '\',2)" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
         // preview = '<img src="../api_asdcm/api_media//images/'+field.images+'" height="150px" alt="" onclick="loadData(\'' + field.images + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
-      } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="../api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
+      } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
 
       listImages =
         '<div class="col-lg-3 col-12 mb-30 border">' +
-        '<div class="row adomx-checkbox-radio-group" style="padding: 10px;"><input class="" type="checkbox" name="media_selected[]" value="' +
-        field.images +
-        ";" +
-        field.id_program +
-        '" id="' +
-        field.images +
-        '"/>' +
-        '<div class="col-12" align="center"> <br>' +
+          '<div class="row adomx-checkbox-radio-group" style="padding: 10px;"><input class="" type="checkbox" name="media_selected[]" value="' + field.images + '";"' + field.id_program + '" id="' + field.images + '"/>' +
+          '<div class="col-12" align="center"> <br>' +
         // '<div class="watermark">'+
-        preview +
-        "</div>" +
+            preview +
+          "</div>" +
         // '</div>'+
         "</div>   " +
         "</div> ";

@@ -329,7 +329,7 @@ $("#register").on("submit", function (e) {
       if(obj.success){
         swal({
           title: "Daftar Program",
-          text: result.message,
+          text: obj.message,
           type: "success",
           showConfirmButton: false,
           allowOutsideClick: false,
@@ -355,7 +355,7 @@ $("#register").on("submit", function (e) {
       } else {
         swal({
           title: "Daftar Program",
-          text: result.message + " " + result.data,
+          text: obj.message + " " + obj.data,
           type: "error",
           showConfirmButton: false,
           allowOutsideClick: false,
@@ -499,13 +499,13 @@ function del_rekod(i) {
       window.location.reload();
     });
   }
-  if (result.data.statusrekod == 1) {
-    $("#text_statusrekod" + result.data.id_program)
+  if (obj.data.statusrekod == 1) {
+    $("#text_statusrekod" + obj.data.id_program)
       .text("Aktif")
       .removeClass("badge-danger")
       .addClass("badge-success");
   } else {
-    $("#text_statusrekod" + result.data.id_program)
+    $("#text_statusrekod" + obj.data.id_program)
       .text("Tidak Aktif")
       .removeClass("badge-success")
       .addClass("badge-danger");

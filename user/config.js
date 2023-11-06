@@ -5,7 +5,7 @@
 // var host = "http://localhost/media/api_asdcm/";
 if(window.location.hostname == "10.1.3.36"){
     var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
-} else if(window.location.hostname == "admin.media.intan.my"){
+} else if(window.location.hostname == "media.intan.my"){
     var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
 }
 else if(window.location.port == "8081"){
