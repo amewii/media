@@ -653,7 +653,7 @@ function list() {
 
           }
           var settings = {
-            url: host + "public/permohonanLuput",
+            url: host + "permohonanLuput",
             method: "POST",
             timeout: 0,
             processData: false,
@@ -764,7 +764,7 @@ function download_media(indexs) {
   );
 
   var settings = {
-    url: host + "public/permohonan/" + indexs,
+    url: host + "permohonan/" + indexs,
     method: "GET",
     timeout: 0,
   };
@@ -966,7 +966,7 @@ $("#updatepermohonan").on("submit", function (e) {
       form.append("id_permohonan", id);
 
       var settings = {
-        url: host + "public/permohonanUpdatePemohon",
+        url: host + "permohonanUpdatePemohon",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -1026,7 +1026,7 @@ $("#carianProgram").on("submit", function (e) {
     form.append("FK_vip", FK_vip);
 
     var settings = {
-      url: host + "public/searchProgram",
+      url: host + "searchProgram",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -1063,7 +1063,7 @@ function del_record() {
     form.append("id_permohonan", id);
 
     var settings = {
-      url: host + "public/permohonanCancel",
+      url: host + "permohonanCancel",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -1197,7 +1197,7 @@ function muatturun_permohonan(id) {
     form.append("id_permohonan", id);
     $("#loading_modal").modal("show");
     var settings = {
-      url: host + "public/permohonanDownload",
+      url: host + "permohonanDownload",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -1212,7 +1212,7 @@ function muatturun_permohonan(id) {
       $("#loading_modal").modal("hide");
 
       if (result.success) {
-        window.location = "../api_asdcm/public/" + result.data;
+        window.location = "api_asdcm/public/" + result.data;
         swal({
           title: "Muat Turun Media",
           text: "Muat turun media berjaya!",
@@ -1244,7 +1244,7 @@ function removeZip(file_name) {
   formDel.append("file_name", file_name);
 
   var settingPadam = {
-    url: host + "public/permohonanRemove",
+    url: host + "permohonanRemove",
     method: "POST",
     timeout: 0,
     processData: false,
