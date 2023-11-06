@@ -45,7 +45,7 @@ $("#registerswasta").on("submit", function (e) {
       }
 
       var settingsfetchusers = {
-        url: host + "users",
+        url: host + "checkUsers",
         method: "POST",
         timeout: 0,
         processData: false,
