@@ -74,21 +74,21 @@ function listPermohonan() {
     ];
   }
 
-  if (window.sessionStorage.FK_peranan == 1) {
+  if (FK_peranan_master == 1) {
     var settings = {
       url: host + "permohonanList",
       method: "GET",
       timeout: 0,
     };
   } else if (
-    window.sessionStorage.FK_peranan == 2 ||
-    window.sessionStorage.FK_peranan == 3
+    FK_peranan_master == 2 ||
+    FK_peranan_master == 3
   ) {
     var settings = {
       url:
         host +
         "permohonanListFilter/" +
-        window.sessionStorage.FK_peranan +
+        FK_peranan_master +
         "/" +
         window.sessionStorage.FK_kluster,
       method: "GET",
