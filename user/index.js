@@ -1212,7 +1212,7 @@ function muatturun_permohonan(id) {
       $("#loading_modal").modal("hide");
 
       if (result.success) {
-        window.location = "api_asdcm/public/" + result.data;
+        // window.location = "api_asdcm/public/" + result.data;
         swal({
           title: "Muat Turun Media",
           text: "Muat turun media berjaya!",
