@@ -318,7 +318,7 @@ function onPageLoad() {
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
         // preview = '<span class="" style="font-size:80px" onclick="loadData(\'' + field.images + '\',2)" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
         // preview = '<img src="../api_asdcm/api_media//images/'+field.images+'" height="150px" alt="" onclick="loadData(\'' + field.images + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
-      } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
+      } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="user/api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
 
       listImages =
         '<div class="col-lg-3 col-12 mb-30 border">' +
@@ -352,10 +352,10 @@ function loadData(indexs, varType, vip) {
 
   if (varType == 1) {
     var img = new Image();
-    img.src = "../api_asdcm/public/uploads/" + indexs;
+    img.src = "user/api_asdcm/public/uploads/" + indexs;
   } else {
     var img = document.createElement("video");
-    img.src = "../api_asdcm/public/uploads/" + indexs;
+    img.src = "user/api_asdcm/public/uploads/" + indexs;
     img.width = 450;
     img.autoplay = false;
     img.controls = true;
