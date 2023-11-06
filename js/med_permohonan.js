@@ -92,7 +92,7 @@ function listPermohonan() {
         "permohonanListFilter/" +
         FK_peranan_master +
         "/" +
-        window.sessionStorage.FK_kluster,
+        FK_kluster_master,
       method: "GET",
       timeout: 0,
     };
