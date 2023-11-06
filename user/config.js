@@ -7,6 +7,8 @@ if(window.location.hostname == "10.1.3.36"){
     var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
 } else if(window.location.hostname == "media.intan.my"){
     var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
+} else if(window.location.hostname == "www.ctmg.intan.my" || window.location.hostname == "10.1.3.92"){
+    var host = window.location.protocol+"//"+window.location.hostname+"/media/user/api_asdcm/public/";
 }
 else if(window.location.port == "8081"){
     var host = window.location.protocol+"//"+window.location.hostname+":8081/media/user/api_asdcm/public/";
