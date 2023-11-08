@@ -3,142 +3,132 @@ $(function () {
     cache: false,
   });
   // $("#loading_modal").modal('show');
-  kampusList();
-  klusterList();
-  subklusterList();
-  unitList();
-  kementerianList(function () {
-    $("#FK_kementerian").empty();
-    $("#FK_kementerian").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Kementerian",
-      })
-    );
-    if (obj_kementerianList.success) {
-      $.each(obj_kementerianList.data, function (i, item) {
+  if(window.sessionStorage.token && window.sessionStorage.no_kad_pengenalan){
+    users(function(){
+      if(objUsers.success){
+        $("#displayno_kad_pengenalan").val(window.sessionStorage.no_kad_pengenalan);
+        $("#displayemel").val(emel_master);
+        $("#displaytarikhlahir").val(objUsers.data.tarikh_lahir);
+        $("#notel").val(notel_master);
+        $("#FK_jenis_pengguna").val(FK_jenis_pengguna_master);
+        $("#id_users").val(id_users_master);
+        if (id_usersgov_master != null) {
+          $("#divKerajaan").show();
+          $("#id_usersgov").val(id_usersgov_master);
+          $("#emel_kerajaan").val(emel_kerajaan_master);
+          $("#notel_kerajaan").val(notel_kerajaan_master);
+          $("#nama_jawatan").val(nama_jawatan_master);
+          if(objUsers.data.detail_pengguna.kategori_perkhidmatan.nama_kategoriperkhidmatan){
+            $("#kategori_perkhidmatan").val(objUsers.data.detail_pengguna.kategori_perkhidmatan.nama_kategoriperkhidmatan);
+            $("#skim").val(objUsers.data.detail_pengguna.skim.kod_skim + objUsers.data.detail_pengguna.gred);
+          }
+          // $("#gred").val(objUsers.data.gred);
+          $("#users_intan").val(objUsers.data.detail_pengguna.users_intan);
+          $("#usersluar").show();
+          $("#FK_kementerian").val(objUsers.data.detail_pengguna.FK_kementerian);
+          $("#FK_agensi").val(objUsers.data.detail_pengguna.FK_agensi);
+          $("#FK_bahagian").val(objUsers.data.detail_pengguna.FK_bahagian);
+          // if (result.data.users_intan == 1)   {
+          //     $('#usersintan').show();
+          //     $('#FK_kampus').val(result.data.id_kampus);
+          //     $('#FK_kluster').val(result.data.id_kluster);
+          //     $('#FK_subkluster').val(result.data.id_subkluster);
+          //     $('#FK_unit').val(result.data.id_unit);
+          // } else {
+          //     $('#usersluar').show();
+          //     $('#FK_kementerian').val(result.data.FK_kementerian);
+          //     $('#FK_agensi').val(result.data.FK_agensi);
+          //     $('#FK_bahagian').val(result.data.FK_bahagian);
+          //     $('#FK_ila').val(result.data.id_ilawam);
+          //     $('#alamat1_pejabat').val(result.data.alamat1_pejabat);
+          //     $('#alamat2_pejabat').val(result.data.alamat2_pejabat);
+          //     $('#poskod_pejabat').val(result.data.poskod_pejabat);
+          //     $('#daerah_pejabat').val(result.data.daerah_pejabat);
+          //     $('#negeri_pejabat').val(result.data.negeri_pejabat);
+          // }
+        } else if (objUsers.data.id_usersswasta != null) {
+          $("#divSwasta").show();
+          $("#divNotel_kerajaan").hide();
+          $("#divEmel_kerajaan").hide();
+          $("#divNotel").show();
+          $("#id_usersswasta").val(id_usersswasta_master);
+          $("#nama_majikan").val(objUsers.data.nama_majikan);
+          $("#jawatan").val(objUsers.data.jawatan);
+        } else if (objUsers.data.id_userspelajar != null) {
+          $("#divPelajar").show();
+          $("#divNotel_kerajaan").hide();
+          $("#divEmel_kerajaan").hide();
+          $("#divNotel").show();
+          $("#id_userspelajar").val(objUsers.data.id_userspelajar);
+          $("#nama_sekolah").val(objUsers.data.nama_sekolah);
+        }
+
+      }
+      kampusList();
+      klusterList();
+      subklusterList();
+      unitList();
+      kementerianList(function () {
+        $("#FK_kementerian").empty();
         $("#FK_kementerian").append(
           $("<option>", {
-            value: item.kod_kementerian,
-            text: item.nama_kementerian + " (" + item.kod_kementerian + ")",
+            value: "",
+            text: "Pilih Kementerian",
           })
         );
+        if (obj_kementerianList.success) {
+          $.each(obj_kementerianList.data, function (i, item) {
+            $("#FK_kementerian").append(
+              $("<option>", {
+                value: item.kod_kementerian,
+                text: item.nama_kementerian + " (" + item.kod_kementerian + ")",
+              })
+            );
+          });
+        }
       });
-    }
-  });
-  agensiList(function () {
-    $("#FK_agensi").empty();
-    $("#FK_agensi").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Agensi",
-      })
-    );
-    if (obj_agensiList.success) {
-      $.each(obj_agensiList.data, function (i, item) {
+      agensiList(function () {
+        $("#FK_agensi").empty();
         $("#FK_agensi").append(
           $("<option>", {
-            value: item.kod_agensi,
-            text: item.nama_agensi + " (" + item.kod_agensi + ")",
+            value: "",
+            text: "Pilih Agensi",
           })
         );
+        if (obj_agensiList.success) {
+          $.each(obj_agensiList.data, function (i, item) {
+            $("#FK_agensi").append(
+              $("<option>", {
+                value: item.kod_agensi,
+                text: item.nama_agensi + " (" + item.kod_agensi + ")",
+              })
+            );
+          });
+        }
       });
-    }
-  });
-  bahagianList(function () {
-    $("#FK_bahagian").empty();
-    $("#FK_bahagian").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Bahagian",
-      })
-    );
-    if (obj_bahagianList.success) {
-      $.each(obj_bahagianList.data, function (i, item) {
+      bahagianList(function () {
+        $("#FK_bahagian").empty();
         $("#FK_bahagian").append(
           $("<option>", {
-            value: item.kod_bahagian,
-            text: item.nama_bahagian + " (" + item.kod_bahagian + ")",
+            value: "",
+            text: "Pilih Bahagian",
           })
         );
+        if (obj_bahagianList.success) {
+          $.each(obj_bahagianList.data, function (i, item) {
+            $("#FK_bahagian").append(
+              $("<option>", {
+                value: item.kod_bahagian,
+                text: item.nama_bahagian + " (" + item.kod_bahagian + ")",
+              })
+            );
+          });
+        }
       });
-    }
-  });
-  skimList();
-  gredList();
-  users_info(window.sessionStorage.id, function () {
-    if (result.data.users_intan == 1) {
-      $("#displayjawatan").text(
-        result.data.nama_kluster +
-          ", " +
-          result.data.nama_subkluster +
-          ", " +
-          result.data.nama_unit
-      );
-    } else {
-      $("#displayjawatan").text(
-        result.data.nama_kementerian +
-          ", " +
-          result.data.nama_agensi +
-          ", " +
-          result.data.nama_bahagian
-      );
-    }
-    $("#displayno_kad_pengenalan").val(result.data.no_kad_pengenalan);
-    $("#displayemel").val(result.data.emel);
-    $("#displaytarikhlahir").val(result.data.tarikh_lahir);
-    $("#notel").val(result.data.notel);
-    $("#FK_jenis_pengguna").val(result.data.FK_jenis_pengguna);
-    $("#id_users").val(result.data.id_users);
-    if (result.data.id_usersgov != null) {
-      $("#divKerajaan").show();
-      $("#id_usersgov").val(result.data.id_usersgov);
-      $("#emel_kerajaan").val(result.data.emel_kerajaan);
-      $("#notel_kerajaan").val(result.data.notel_kerajaan);
-      $("#nama_jawatan").val(result.data.nama_jawatan);
-      $("#kategori_perkhidmatan").val(result.data.nama_kategoriperkhidmatan);
-      $("#skim").val(result.data.skim);
-      $("#gred").val(result.data.gred);
-      $("#users_intan").val(result.data.users_intan);
-      $("#usersluar").show();
-      $("#FK_kementerian").val(result.data.FK_kementerian);
-      $("#FK_agensi").val(result.data.FK_agensi);
-      $("#FK_bahagian").val(result.data.FK_bahagian);
-      // if (result.data.users_intan == 1)   {
-      //     $('#usersintan').show();
-      //     $('#FK_kampus').val(result.data.id_kampus);
-      //     $('#FK_kluster').val(result.data.id_kluster);
-      //     $('#FK_subkluster').val(result.data.id_subkluster);
-      //     $('#FK_unit').val(result.data.id_unit);
-      // } else {
-      //     $('#usersluar').show();
-      //     $('#FK_kementerian').val(result.data.FK_kementerian);
-      //     $('#FK_agensi').val(result.data.FK_agensi);
-      //     $('#FK_bahagian').val(result.data.FK_bahagian);
-      //     $('#FK_ila').val(result.data.id_ilawam);
-      //     $('#alamat1_pejabat').val(result.data.alamat1_pejabat);
-      //     $('#alamat2_pejabat').val(result.data.alamat2_pejabat);
-      //     $('#poskod_pejabat').val(result.data.poskod_pejabat);
-      //     $('#daerah_pejabat').val(result.data.daerah_pejabat);
-      //     $('#negeri_pejabat').val(result.data.negeri_pejabat);
-      // }
-    } else if (result.data.id_usersswasta != null) {
-      $("#divSwasta").show();
-      $("#divNotel_kerajaan").hide();
-      $("#divEmel_kerajaan").hide();
-      $("#divNotel").show();
-      $("#id_usersswasta").val(result.data.id_usersswasta);
-      $("#nama_majikan").val(result.data.nama_majikan);
-      $("#jawatan").val(result.data.jawatan);
-    } else if (result.data.id_userspelajar != null) {
-      $("#divPelajar").show();
-      $("#divNotel_kerajaan").hide();
-      $("#divEmel_kerajaan").hide();
-      $("#divNotel").show();
-      $("#id_userspelajar").val(result.data.id_userspelajar);
-      $("#nama_sekolah").val(result.data.nama_sekolah);
-    }
-  });
+      skimList();
+      gredList();
+    });
+  }
   $("#loading_modal").modal("hide");
 });
 var confirmed = false;
@@ -159,7 +149,7 @@ $("#update").on("submit", function (e) {
     // form.append("katalaluan", katalaluan);
     // formData.append("token",window.sessionStorage.token);
     var settingseditprofileusers = {
-      url: host + "public/usersEditProfile",
+      url: host + "usersEditProfile",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -219,7 +209,7 @@ $("#update").on("submit", function (e) {
       formgov.append("updated_by", window.sessionStorage.id);
 
       var settingseditprofileusersgovs = {
-        url: host + "public/usersgovsEditProfile",
+        url: host + "usersgovsEditProfile",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -274,7 +264,7 @@ $("#update").on("submit", function (e) {
       formgov.append("updated_by", window.sessionStorage.id);
 
       var settingseditprofileusersswastas = {
-        url: host + "public/userswastasEditProfile",
+        url: host + "userswastasEditProfile",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -315,7 +305,7 @@ $("#update").on("submit", function (e) {
       formgov.append("updated_by", window.sessionStorage.id);
 
       var settingseditprofileuserspelajars = {
-        url: host + "public/userspelajarsEditProfile",
+        url: host + "userspelajarsEditProfile",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -352,7 +342,7 @@ $("#update").on("submit", function (e) {
 
 function users_info(id, returnValue) {
   var settings = {
-    url: host + "public/usersEditProfile/" + id,
+    url: host + "usersEditProfile/" + id,
     method: "GET",
     timeout: 0,
   };
@@ -379,7 +369,7 @@ $("#tutupubahkatalaluan").click(function () {
 function kampusList() {
   //Dropdown Kampus List
   var settings = {
-    url: host + "public/kampusList",
+    url: host + "kampusList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -430,7 +420,7 @@ function ezxsKampus(id_kampus) {
   var form = new FormData();
   form.append("id_kampus", id_kampus);
   var settings = {
-    url: host + "public/kampus",
+    url: host + "kampus",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -461,7 +451,7 @@ function ezxsKampus(id_kampus) {
 function klusterList() {
   //Dropdown Kluster List
   var settings = {
-    url: host + "public/klustersList",
+    url: host + "klustersList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -512,7 +502,7 @@ function ezxsKluster(id_kluster) {
   var form = new FormData();
   form.append("id_kluster", id_kluster);
   var settings = {
-    url: host + "public/klusters",
+    url: host + "klusters",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -544,7 +534,7 @@ function ezxsKluster(id_kluster) {
 function subklusterList() {
   //Dropdown Subkluster List
   var settings = {
-    url: host + "public/subklustersList",
+    url: host + "subklustersList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -595,7 +585,7 @@ function ezxsSubKluster(id_subkluster) {
   var form = new FormData();
   form.append("id_subkluster", id_subkluster);
   var settings = {
-    url: host + "public/subklusters",
+    url: host + "subklusters",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -626,7 +616,7 @@ function ezxsSubKluster(id_subkluster) {
 function unitList() {
   //Dropdown Unit List
   var settings = {
-    url: host + "public/unitsList",
+    url: host + "unitsList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -675,7 +665,7 @@ function unitList() {
 function skimList() {
   //Dropdown Skim List
   var settings = {
-    url: host + "public/skimsList",
+    url: host + "skimsList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -707,7 +697,7 @@ function skimList() {
 function gredList() {
   //Dropdown Gred List
   var settings = {
-    url: host + "public/gredsList",
+    url: host + "gredsList",
     method: "GET",
     timeout: 0,
     // "header":{
@@ -739,7 +729,7 @@ function gredList() {
 function kementerianList(returnValue) {
   //Dropdown Kementerian List
   var settings = {
-    url: host + "public/kementeriansList",
+    url: host + "kementeriansList",
     method: "GET",
     timeout: 0,
   };
@@ -754,7 +744,7 @@ function kementerianList(returnValue) {
 function agensiList(returnValue) {
   //Dropdown Agensi List
   var settings = {
-    url: host + "public/agensisList",
+    url: host + "agensisList",
     method: "GET",
     timeout: 0,
   };
@@ -768,7 +758,7 @@ function agensiList(returnValue) {
 
 function bahagianList(returnValue) {
   var settings = {
-    url: host + "public/bahagiansList",
+    url: host + "bahagiansList",
     method: "GET",
     timeout: 0,
   };

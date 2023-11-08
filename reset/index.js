@@ -22,7 +22,7 @@ if (queryString != "") {
         allowOutsideClick: false,
         html: "Pautan ini telah luput.",
       }).then(function () {
-        window.location.replace("../login");
+        window.location.replace("../login/");
       });
     }
   });
@@ -96,7 +96,7 @@ $("#checkusers").on("submit", function (e) {
           html: result.message,
         }).then(function () {
           sessionStorage.no_kad_pengenalan = no_kad_pengenalan;
-          window.location.replace("../login");
+          window.location.replace("../login/");
         });
       }
     });
@@ -219,7 +219,7 @@ $("#checkusers3").on("submit", function (e) {
         }).then(function () {
           window.sessionStorage.removeItem("no_kad_pengenalan");
           window.sessionStorage.removeItem("emel");
-          window.location.replace("../login");
+          window.location.replace("../login/");
         });
       }
     });

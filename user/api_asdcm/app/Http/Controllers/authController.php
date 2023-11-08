@@ -200,7 +200,7 @@ class authController extends Controller
                 ]);
     
                 if($user){
-    
+                    $token = $this->getToken($userS->id_users);
                     return response()->json([
                         'success'=>true,
                         'token'=>$token,
@@ -258,6 +258,128 @@ class authController extends Controller
                 'message'=>"No Data!",
                 'data'=>''
             ]);
+        }
+    }
+
+    public function resetpasswordtomail(Request $request)  {
+        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
+        $masa = $request->input('masa');
+        $landing_page = $request->input('landing_page');
+
+        $med_users_search = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
+                                        where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_link     = hash("sha256", $masa.$salt);
+        
+        if ($med_users_search)  {
+            $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan) -> update([
+                'resetkatalaluan' => $enc_link
+            ]);
+            if ($med_users)   {
+                $tetapan_mail = med_tetapan::first();
+                $emel = $med_users_search->emel;
+                $mail = new PHPMailer();
+                $mail->SMTPDebug = 0;
+                $mail->isSMTP();
+                $mail->Host       = $tetapan_mail->mail_gateway;
+                // $mail->SMTPAuth   = true;
+                // $mail->Username   = $tetapan_mail->mail_username;
+                // $mail->Password   = $tetapan_mail->mail_password;
+                // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
+                $mail->Port       = $tetapan_mail->mail_port;
+                
+                $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
+                $mail->addAddress($med_users_search->emel_kerajaan);
+                $mail->addAddress($med_users_search->emel);
+                    
+                $mail->isHTML(true);                                  
+                $mail->Subject = 'PENGURUSAN MEDIA - SET SEMULA KATALALUAN';
+                $mail->Body    = '<b>Set Semula Katalaluan</b><br><br>
+                                    Assalamualaikum dan salam sejahtera<br>
+                                    '.$med_users_search->nama.'<br><br>
+                                    Anda telah membuat permintaan menetapkan semula kata laluan. <br>
+                                    Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
+                                    Sekiranya anda membuat permintaan ini, sila klik pautan dibawah untuk tetapkan semula katalaluan anda:<br><br>
+                                    <a href="'.$tetapan_mail->link_sistem.$landing_page.'/?temp='.$enc_link.'">Set Semula Katalaluan</a><br><br>
+                                    Terima kasih.';
+                $mail->AltBody = 'Alternate Message';
+                // if(!$mail->send()) {
+                //     // dd("Mailer Error: " . $mail->ErrorInfo);
+                //     return response()->json([
+                //         'success'=>true,
+                //         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
+                //         'data'=>''
+                //     ],200);
+                //     // exit;
+                // }
+                // else {
+                //     return response()->json([
+                //         'success'=>true,
+                //         'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                //         'data'=>''
+                //     ],200);
+                // }
+                return response()->json([
+                    'success'=>true,
+                    'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                    'data'=>''
+                ],200);
+            }
+        } else  {
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ],400);
+        }
+    }
+
+    public function showGetResetKatalaluan($resetkatalaluan)  {
+
+        $med_users = med_users::where('resetkatalaluan',$resetkatalaluan)->first();
+
+        if ($med_users)   {
+            return response()->json([
+                'success'=>true,
+                'message'=>'Show Success!',
+                'data'=>$med_users
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ],400);
+        }
+    }
+
+    public function resetpassword(Request $request)  {
+        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
+        $katalaluan = $request->input('katalaluan');
+
+        $med_users_search = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+        
+        if ($med_users_search)  {
+            $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan) -> update([
+                'katalaluan' => $enc_katalaluan,
+                'resetkatalaluan' => NULL
+            ]);
+            if ($med_users)   {
+                return response()->json([
+                    'success'=>true,
+                    'message'=>'Show Success!',
+                    'data'=>''
+                ],200);
+            }
+        } else  {
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ],400);
         }
     }
 }

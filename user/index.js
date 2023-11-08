@@ -2,6 +2,13 @@ $(function () {
   $.ajaxSetup({
     cache: false,
   });
+  if(window.sessionStorage.token && window.sessionStorage.no_kad_pengenalan){
+    users(function(){
+      
+    });
+  } else {
+    window.location.replace('login/');
+  }
   listNotification();
   loadHalamanUtama();
   kategoriProgram();
@@ -209,9 +216,13 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
         '<div class="col-md-5 col-xxl-12">' +
         '<div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">' +
         '<div class="new-arrivals-img-contnent">' +
-        '<img class="img-fluid" src="../api_asdcm/public/uploads/' +
+        '<img class="img-fluid" src="api_asdcm/public/uploads/' +
         imgsrc +
-        '" alt="">' +
+        '" onclick="detail_media(' +
+        field.PK +
+        "," +
+        flag +
+        ')" alt="">' +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -243,7 +254,7 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
         field.PK +
         "," +
         flag +
-        ')"><i class="fa fa-view"></i> Lihat</button>' +
+        ')"><i class="la la-image"></i> <span style="font-size: 12px;">Lihat</span></button>' +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -382,7 +393,8 @@ function detail_media(indexs, varType) {
 
           data_programs =
             '<div class="pic-view">' +
-            '<div class="card p-0-7">' +
+            '<label for="'+field.images+'">' +
+            `<div class="card p-0-7">` +
             '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="' +
             field.images +
             ";" +
@@ -402,6 +414,7 @@ function detail_media(indexs, varType) {
             "</div>" +
             "</div>" +
             "</div>" +
+            '</label>' +
             "</div>";
           $("#bilangan_media").text(bil);
           $("#checkboxmedia").append(data_programs);
@@ -424,7 +437,7 @@ function detail_media(indexs, varType) {
           data_programs =
             '<div class="vid-view">' +
             '<div class="card p-0-7">' +
-            '<div class="card-body p-0"><input class="" type="checkbox" name="media_selected[]" value="' +
+            `<div class="card-body p-0" onclick="$('#`+field.images+`').prop('checked',true)"><input class="" type="checkbox" name="media_selected[]" value="` +
             field.images +
             ";" +
             field.FK_vip +
@@ -587,21 +600,21 @@ function list() {
     '<div class="card-body">' +
     '<div id="tablePermohonan">' +
     '<textarea style="display: none;" id="dataList"></textarea>' +
-    '<table id="permohonanList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;"></table>' +
+    '<table id="permohonanList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; font-size: 12px;"></table>' +
     "</div>" +
     "</div>" +
     "</div>" +
     "</div>";
   $("#data_load").append(data_programs);
   var colums = [
-    { data: "bil", title: "Bil" },
-    { data: "nama_program", title: "Nama Program", class: "desktop" },
+    { data: "bil", title: "<span style='font-size: 12px;'>Bil</span>" },
+    { data: "nama_program", title: "<span style='font-size: 12px;'>Nama Program</span>", class: "desktop" },
     // { "data": "nama", "title": "Nama Pemohon", class: "desktop" },
-    { data: "tarikh_permohonan", title: "Tarikh Permohonan", class: "desktop" },
-    { data: "tarikh_pengesahan", title: "Tarikh Pengesahan", class: "desktop" },
-    { data: "tarikh_luput", title: "Tarikh Luput", class: "desktop" },
-    { data: "nama_status", title: "Status", class: "desktop" },
-    { data: "upt_btn", title: "Tindakan", class: "desktop" },
+    { data: "tarikh_permohonan", title: "<span style='font-size: 12px;'>Tarikh Permohonan</span>", class: "desktop" },
+    { data: "tarikh_pengesahan", title: "<span style='font-size: 12px;'>Tarikh Pengesahan</span>", class: "desktop" },
+    { data: "tarikh_luput", title: "<span style='font-size: 12px;'>Tarikh Luput</span>", class: "desktop" },
+    { data: "nama_status", title: "<span style='font-size: 12px;'>Status</span>", class: "desktop" },
+    { data: "upt_btn", title: "<span style='font-size: 12px;'>Tindakan</span>", class: "desktop" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
 
@@ -790,7 +803,7 @@ function download_media(indexs) {
         '<div class="new-arrivals-img-contnent">' +
         '<label for="' +
         field.images +
-        '"><img class="img-fluid" src="../api_asdcm/public/uploads/' +
+        '"><img class="img-fluid" src="api_asdcm/public/uploads/' +
         field.images +
         '" alt=""></label>' +
         "</div>" +

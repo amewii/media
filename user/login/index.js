@@ -8,9 +8,6 @@ $(function () {
   });
 
   load_image();
-  //    student_info(noic,function(){
-  //   	data = obj_student.data;
-  //    });
 });
 
 $("#login").on("submit", function (e) {
@@ -25,11 +22,12 @@ $("#login").on("submit", function (e) {
     form.append("katalaluan", katalaluan);
 
     var obj = new post(host+`loginUser`,form,'').execute();
+    console.log(obj);
     if(obj.success){
         // alert(result.data.PK);
         var data = obj.data;
         sessionStorage.id = data.id_users;
-        sessionStorage.token = data.token;
+        sessionStorage.token = obj.token;
         sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
         sessionStorage.nama = data.nama;
         sessionStorage.emel = data.emel;

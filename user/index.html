@@ -68,6 +68,24 @@
       type="text/css"
     />
   </head>
+  <style>
+      .dashboard_cards_overall {
+      height: 41vh;
+      /* overflow-y: auto; */
+      }
+      .dashboard_cards_per_fas {
+      height: 20vh;
+      overflow-y: auto;
+      }
+      @media screen and (max-width: 600px) {
+
+      /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+        .mobile-hide {
+          display: none !important;
+        }
+
+      }
+  </style>
 
   <body style="display: none" oncontextmenu="return false;">
     <!--*******************
@@ -93,7 +111,7 @@
         ***********************************-->
       <div class="nav-header">
         <a href="index.html" class="brand-logo">
-          <img class="logo-abbr" src="./images/DCM.png" alt="" />
+          <img class="logo-abbr mobile-hide" src="./images/DCM.png" alt="" />
           <!-- <img class="logo-compact" src="./images/logo-text.png" alt=""> -->
           <!-- <img class="brand-title" src="./images/logo-text.png" alt=""> -->
         </a>
@@ -162,11 +180,6 @@
                         fill="#0B2A97"
                       />
                     </svg>
-                    <div
-                      class="pulse-css"
-                      id="icon_notification"
-                      style="display: none"
-                    ></div>
                   </a>
                   <div class="dropdown-menu rounded dropdown-menu-right">
                     <div
@@ -179,38 +192,26 @@
                 </li>
 
                 <li class="nav-item dropdown notification_dropdown">
-                  <a
-                    class="nav-link fa fa-2x fa-user-circle-o"
-                    role="button"
-                    data-toggle="dropdown"
-                  ></a>
+                  <a class="nav-link ai-icon bg-white" role="button" data-toggle="dropdown" href="javascript:void(0);">
+                    <label class="text_nama mt-2"></label>
+                    <!-- <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg> -->
+                  </a>
                   <div class="dropdown-menu dropdown-menu-right">
-                    <a id="profil" class="dropdown-item ai-icon">
-                      <svg
-                        id="icon-user1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="text-primary"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path
-                          d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                        ></path>
+                    <a id="profil" class="dropdown-item ai-icon mt-2" href="javascript:void(0);">
+                      <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                       </svg>
                       <span class="ml-2" id="nama"> </span>
                     </a>
-                    <a id="ubahkatalaluan" class="dropdown-item ai-icon">
+                    <a id="ubahkatalaluan" class="dropdown-item ai-icon" href="javascript:void(0);">
                       <span><i class="mdi mdi-settings"></i></span>
                       <span class="ml-2">Ubah Katalaluan </span>
                     </a>
-                    <a id="logKeluar" class="dropdown-item ai-icon">
+                    <a id="logKeluar" class="dropdown-item ai-icon" href="javascript:void(0);">
                       <svg
                         id="icon-logout"
                         xmlns="http://www.w3.org/2000/svg"
@@ -270,12 +271,7 @@
               </a>
             </li>
             <li>
-              <a
-                class="ai-icon"
-                id="list"
-                href="javascript:void()"
-                aria-expanded="false"
-              >
+              <a class="ai-icon" id="list" href="javascript:void()" aria-expanded="false" >
                 <i class="flaticon-381-list"></i>
                 <span class="nav-text">Senarai Permohonan</span>
               </a>
@@ -313,20 +309,12 @@
             </ol>
             <span id="permohonan">
               <input type="text" id="disp_id" style="display: none" />
-              <button
-                type="button"
-                class="btn btn-success mb-3 btn-download-r"
-                id="modal-permohonan"
-              >
-                <i class="fa fa-download mb-2"></i> Muat Turun
-              </button>
-              <div align="left">
-                <input type="checkbox" id="checkAll" /><label for="checkAll">
-                  &nbsp;&nbsp;Pilih Semua Media</label
-                ><br /><br />
+              <button type="button" class="btn btn-success mb-3 btn-download-r" id="modal-permohonan"><i class="fa fa-download mb-1" style="margin-top: 3px;"></i> Muat Turun</button>
+              <div align="left" style="margin-top: 20px;">
+                <input type="checkbox" id="checkAll" /><label for="checkAll">&nbsp;&nbsp;Pilih Semua Media</label><br /><br />
               </div>
               <a
-                href="../api_asdcm/public/myZip.zip"
+                href="api_asdcm/public/myZip.zip"
                 download="myZip.zip"
                 id="download-item-media"
                 class="hidden"
@@ -336,19 +324,8 @@
 
           <!-- MIMI : TAMBAH BUTTON MUAT TURUN ZIP START -->
           <div align="right" id="muatturun" style="display: none">
-            <!-- <div align="left">
-                        <input type="checkbox" id="checkAll"> &nbsp;&nbsp;Cek Semua Media
-                    </div>
-                    
-                    <a href="../api_asdcm/public/myZip.zip" download="myZip.zip" id="download-item-media" class="hidden"></a> -->
             <input type="text" id="disp_id" style="display: none" />
-            <button
-              type="button"
-              class="btn btn-success mb-3"
-              id="muatturun-permohonan"
-            >
-              <i class="fa fa-download mb-2"></i> Muat Turun
-            </button>
+            <button type="button" class="btn btn-success mb-3" id="muatturun-permohonan"><i class="fa fa-download mb-2"></i> Muat Turun</button>
           </div>
           <!-- TAMBAH BUTTON MUAT TURUN ZIP END -->
           <div class="row mt-5" id="data_load">

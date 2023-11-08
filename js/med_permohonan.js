@@ -74,39 +74,19 @@ function listPermohonan() {
     ];
   }
 
-  console.log(FK_peranan_master);
-
+  var obj = new get(host+`permohonanListFilter/`+FK_peranan_master+`/`+FK_kluster_master,window.sessionStorage.token);
   if (FK_peranan_master == 1) {
-    var settings = {
-      url: host + "permohonanList",
-      method: "GET",
-      timeout: 0,
-    };
-  } else if (
-    FK_peranan_master == 2 ||
-    FK_peranan_master == 3
-  ) {
-    var settings = {
-      url:
-        host +
-        "permohonanListFilter/" +
-        FK_peranan_master +
-        "/" +
-        FK_kluster_master,
-      method: "GET",
-      timeout: 0,
-    };
+    obj = new get(host+`permohonanList`,window.sessionStorage.token);
   }
-
-  $.ajax(settings).done(function (response) {
-    let convertList = JSON.stringify(response.data);
+  obj = obj.execute();
+  if(obj.success){
+    console.log(obj.data);
+    let convertList = JSON.stringify(obj.data);
 
     $("#dataList").val(convertList);
     var list = [];
     let bil = 1;
-
-    $.each(response.data, function (i, field) {
-    
+    $.each(obj.data, function (f, field) {
       t_permohonan = new Date(field.tarikh_permohonan);
       if (field.tarikh_luput == null) {
         t_luput_list = "-";
@@ -128,16 +108,7 @@ function listPermohonan() {
           var form = new FormData();
           form.append("id", field.id_permohonan);
           form.append("status_permohonan", "5");
-          var settings = {
-            url: host + "permohonanLuput",
-            method: "POST",
-            timeout: 0,
-            processData: false,
-            mimeType: "multipart/form-data",
-            contentType: false,
-            data: form,
-          };
-          $.ajax(settings).done(function (response) {});
+          objLuput = new post(host+`permohonanLuput`,form,window.sessionStorage.token).execute();
           badge_status = '<span class="badge badge-danger">Luput</span>';
           disabled_button = "disabled";
           button_class = "button-dark";
@@ -188,31 +159,31 @@ function listPermohonan() {
           '" ' +
           disabled_button +
           " onclick=\"loadData('" +
-          i +
+          f +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ' +
           ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
           field.id_permohonan +
           '\')"><i class="ti-trash"></i>',
       });
     });
+  } else {
 
-      // totalpermohonan = field.length;
-
-      $('#totalpermohonan').html(`<span class="timeline-date">`+(list.length)+` Permohonan</span>`);
-    $("#permohonanList").footable({
-      columns: colums,
-      rows: list,
-      paging: {
-        enabled: true,
-        size: 5,
-      },
-      filtering: {
-        enabled: true,
-        placeholder: "Carian...",
-        dropdownTitle: "Carian untuk:",
-        class: "brown-700",
-      },
-    });
+  }
+  $('#totalpermohonan').html(`<span class="timeline-date">`+(list.length)+` Permohonan</span>`);
+  $("#permohonanList").html('');
+  $("#permohonanList").footable({
+    columns: colums,
+    rows: list,
+    paging: {
+      enabled: true,
+      size: 5,
+    },
+    filtering: {
+      enabled: true,
+      placeholder: "Carian...",
+      dropdownTitle: "Carian untuk:",
+      class: "brown-700",
+    },
   });
 }
 
@@ -272,13 +243,13 @@ function loadData(indexs) {
     ) {
       append_media =
         '<div class="col-lg-6 col-md-6 col-sm-12 mb-3">' +
-        '<img src="../api_asdcm/public/uploads/' +
+        '<img src="user/api_asdcm/public/uploads/' +
         item +
         '" >' +
         "</div>";
     } else {
       append_media =
-        '<div class="col-lg-6 col-md-6 col-sm-12 mb-3"><video src="../api_asdcm/public/uploads/' +
+        '<div class="col-lg-6 col-md-6 col-sm-12 mb-3"><video src="user/api_asdcm/public/uploads/' +
         item +
         '" width="450" controls=""></video></div>';
     }
@@ -347,55 +318,42 @@ $("#update").on("submit", function (e) {
       form.append("pegawai_pelulus", upt_pegawai_pelulus);
       form.append("updated_by", upt_updated_by);
 
-      var settings = {
-        url: host + "permohonanUpdate",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        console.log(response);
-        result = JSON.parse(response);
-        if (!result.success) {
-          swal({
-            title: "Kemaskini Permohonan",
-            text: "Kemaskini Gagal!",
-            type: "error",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                window.location.reload();
-              }
+      var obj = new post(host+`permohonanUpdate`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        swal({
+          title: "Kemaskini Permohonan",
+          text: "Kemaskini Berjaya!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              window.location.reload();
             }
-          );
-        } else {
-          swal({
-            title: "Kemaskini Permohonan",
-            text: "Kemaskini Berjaya!",
-            type: "success",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            html: false,
-            timer: 1000,
-          }).then(
-            function () {},
-            function (dismiss) {
-              if (dismiss === "timer") {
-                window.location.reload();
-              }
+          }
+        );
+      } else {
+        swal({
+          title: "Kemaskini Permohonan",
+          text: "Kemaskini Gagal!",
+          type: "error",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              window.location.reload();
             }
-          );
-        }
-      });
+          }
+        );
+      }
     });
   }
 });

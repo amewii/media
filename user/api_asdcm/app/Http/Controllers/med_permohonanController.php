@@ -42,70 +42,70 @@ class med_permohonanController extends Controller
             'flag_vip' => $flag_vip,
         ]);
         if ($register)  {
-            $med_permohonan_search = med_permohonan::join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
-                                                    join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
-                                                    orderBy('med_permohonan.id_permohonan','desc') ->
-                                                    first();
-            if ($flag_vip == 1) {
-                $pelulus = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
-                                        where('med_capaian.FK_peranan','3') -> get();
-            } else  {
-                $pelulus = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
-                                        join('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') ->
-                                        where('med_capaian.FK_peranan','2') -> 
-                                        where('med_usersgov.FK_kluster',$med_permohonan_search->FK_kluster) -> get();
-            }
-            $tetapan_mail = med_tetapan::first();
-            $success = "";
-            foreach($pelulus AS $peluluses) {
-                $emelreceiver = $peluluses->emel;
-                $mail = new PHPMailer();
-                // $mail->SMTPAuth = true;
-                $mail->SMTPDebug = 0;
-                $mail->isSMTP();
-                $mail->Host       = $tetapan_mail->mail_gateway;
-                // $mail->SMTPAuth   = true;
-                // $mail->Username   = $tetapan_mail->mail_username;
-                // $mail->Password   = $tetapan_mail->mail_password;
-                // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
-                $mail->Port       = $tetapan_mail->mail_port;
+            // $med_permohonan_search = med_permohonan::join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+            //                                         join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+            //                                         orderBy('med_permohonan.id_permohonan','desc') ->
+            //                                         first();
+            // if ($flag_vip == 1) {
+            //     $pelulus = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
+            //                             where('med_capaian.FK_peranan','3') -> get();
+            // } else  {
+            //     $pelulus = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
+            //                             join('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') ->
+            //                             where('med_capaian.FK_peranan','2') -> 
+            //                             where('med_usersgov.FK_kluster',$med_permohonan_search->FK_kluster) -> get();
+            // }
+            // $tetapan_mail = med_tetapan::first();
+            // $success = "";
+            // foreach($pelulus AS $peluluses) {
+            //     $emelreceiver = $peluluses->emel;
+            //     $mail = new PHPMailer();
+            //     // $mail->SMTPAuth = true;
+            //     $mail->SMTPDebug = 0;
+            //     $mail->isSMTP();
+            //     $mail->Host       = $tetapan_mail->mail_gateway;
+            //     // $mail->SMTPAuth   = true;
+            //     // $mail->Username   = $tetapan_mail->mail_username;
+            //     // $mail->Password   = $tetapan_mail->mail_password;
+            //     // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
+            //     $mail->Port       = $tetapan_mail->mail_port;
                 
-                $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
-                $mail->addAddress($emelreceiver);
-                $mail->isHTML(true);                                  
-                $mail->Subject = 'PENGURUSAN MEDIA - PERMOHONAN MUAT TURUN MEDIA';
-                $mail->Body    = '<b>Permohonan Muat Turun Media</b><br><br>
-                                    Assalamualaikum dan salam sejahtera<br>
-                                    '.$peluluses->nama.'<br><br>
-                                    Permohonan memuat turun media di Sistem Galeri INTAN <br>
-                                    Nama Pemohon: '. $med_permohonan_search->nama .'<br>
-                                    Nama Program: '. $med_permohonan_search->nama_program .'<br><br>
-                                    <a href="'.$tetapan_mail->link_sistem.'/admin">Galeri Media INTAN Malaysia (Admin)</a><br><br>
-                                    Terima kasih.';
-                $mail->AltBody = 'Alternate Message';
-                if ($mail->send())  {
-                    $success = "success";
-                } else  {
-                    $success = "Mailer Error: " . $mail->ErrorInfo;
-                }
-            }
-            if($success != "success") {
-                dd($success);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-                // exit;
-            }
-            else {
-                // dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Permohonan Berjaya!',
-                    'data'=>''
-                ],200);
-            }
+            //     $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
+            //     $mail->addAddress($emelreceiver);
+            //     $mail->isHTML(true);                                  
+            //     $mail->Subject = 'PENGURUSAN MEDIA - PERMOHONAN MUAT TURUN MEDIA';
+            //     $mail->Body    = '<b>Permohonan Muat Turun Media</b><br><br>
+            //                         Assalamualaikum dan salam sejahtera<br>
+            //                         '.$peluluses->nama.'<br><br>
+            //                         Permohonan memuat turun media di Sistem Galeri INTAN <br>
+            //                         Nama Pemohon: '. $med_permohonan_search->nama .'<br>
+            //                         Nama Program: '. $med_permohonan_search->nama_program .'<br><br>
+            //                         <a href="'.$tetapan_mail->link_sistem.'/admin">Galeri Media INTAN Malaysia (Admin)</a><br><br>
+            //                         Terima kasih.';
+            //     $mail->AltBody = 'Alternate Message';
+            //     if ($mail->send())  {
+            //         $success = "success";
+            //     } else  {
+            //         $success = "Mailer Error: " . $mail->ErrorInfo;
+            //     }
+            // }
+            // if($success != "success") {
+            //     dd($success);
+            //     return response()->json([
+            //         'success'=>'true',
+            //         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
+            //         'data'=>''
+            //     ],200);
+            //     // exit;
+            // }
+            // else {
+            //     // dd("Mailer Error: " . $mail->ErrorInfo);
+            //     return response()->json([
+            //         'success'=>'true',
+            //         'message'=>'Permohonan Berjaya!',
+            //         'data'=>''
+            //     ],200);
+            // }
             return response()->json([
                 'success'=>'true',
                 'message'=>'Pendaftaran Rekod Berjaya!',
@@ -192,17 +192,17 @@ class med_permohonanController extends Controller
     }
 
     public function list()  {
-        $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
-                                            join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
-                                            join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
-                                            where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
+        $med_permohonan = med_permohonan::  leftjoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
+                                            leftjoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+                                            leftjoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
+                                            leftjoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
+                                            where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
                                             orderBy('id_permohonan', 'desc') ->
                                             get(); // list all data
 
                                             
 
-        if ($med_permohonan)   {
+        if (sizeof($med_permohonan)>0)   {
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
@@ -342,67 +342,67 @@ class med_permohonanController extends Controller
         ]);
 
         if ($med_permohonan)  {
-            $med_permohonan_search = med_permohonan::join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                              join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
-                                              join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
-                                              where('id_permohonan',$id) -> first();
-            $tetapan_mail = med_tetapan::first();
-            $emelreceiver = $med_permohonan_search->emel;
-            $mail = new PHPMailer();
-            // $mail->SMTPAuth = true;
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->Host       = $tetapan_mail->mail_gateway;
-            // $mail->SMTPAuth   = true;
-            // $mail->Username   = $tetapan_mail->mail_username;
-            // $mail->Password   = $tetapan_mail->mail_password;
-            // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
-            $mail->Port       = $tetapan_mail->mail_port;
+            // $med_permohonan_search = med_permohonan::join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
+            //                                   join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+            //                                   join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
+            //                                   where('id_permohonan',$id) -> first();
+            // $tetapan_mail = med_tetapan::first();
+            // $emelreceiver = $med_permohonan_search->emel;
+            // $mail = new PHPMailer();
+            // // $mail->SMTPAuth = true;
+            // $mail->SMTPDebug = 0;
+            // $mail->isSMTP();
+            // $mail->Host       = $tetapan_mail->mail_gateway;
+            // // $mail->SMTPAuth   = true;
+            // // $mail->Username   = $tetapan_mail->mail_username;
+            // // $mail->Password   = $tetapan_mail->mail_password;
+            // // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
+            // $mail->Port       = $tetapan_mail->mail_port;
             
-            $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
-            $mail->addAddress($emelreceiver);
-            if ($med_permohonan_search->status_permohonan == '2')  {
-                $sahsehingga = 'Sah Sehingga: '. $date;
-            } else {
-                $sahsehingga = '';
-            }
-            $mail->isHTML(true);                                  
-            $mail->Subject = 'PENGURUSAN MEDIA - PERMOHONAN MUAT TURUN MEDIA';
-            $mail->Body    = '<b>Permohonan Muat Turun Media</b><br><br>
-                                Assalamualaikum dan salam sejahtera<br>
-                                '.$med_permohonan_search->nama.'<br><br>
-                                Permohonan memuat turun media di Sistem Galeri INTAN <br>
-                                Nama Program: '. $med_permohonan_search->nama_program .'<br>
-                                Status: '. $med_permohonan_search->nama_status .'<br>'. 
-                                $sahsehingga .'<br><br>
-                                <a href="'.$tetapan_mail->link_sistem.'/user">Galeri Media INTAN Malaysia</a><br><br>
-                                Terima kasih.';
-            $mail->AltBody = 'Alternate Message';
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-                // exit;
-            }
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-            } 
-            else {
-                // dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Berjaya Menghantar Emel.',
-                    'data'=>''
-                ],200);
-            }
+            // $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
+            // $mail->addAddress($emelreceiver);
+            // if ($med_permohonan_search->status_permohonan == '2')  {
+            //     $sahsehingga = 'Sah Sehingga: '. $date;
+            // } else {
+            //     $sahsehingga = '';
+            // }
+            // $mail->isHTML(true);                                  
+            // $mail->Subject = 'PENGURUSAN MEDIA - PERMOHONAN MUAT TURUN MEDIA';
+            // $mail->Body    = '<b>Permohonan Muat Turun Media</b><br><br>
+            //                     Assalamualaikum dan salam sejahtera<br>
+            //                     '.$med_permohonan_search->nama.'<br><br>
+            //                     Permohonan memuat turun media di Sistem Galeri INTAN <br>
+            //                     Nama Program: '. $med_permohonan_search->nama_program .'<br>
+            //                     Status: '. $med_permohonan_search->nama_status .'<br>'. 
+            //                     $sahsehingga .'<br><br>
+            //                     <a href="'.$tetapan_mail->link_sistem.'/user">Galeri Media INTAN Malaysia</a><br><br>
+            //                     Terima kasih.';
+            // $mail->AltBody = 'Alternate Message';
+            // if(!$mail->send()) {
+            //     dd("Mailer Error: " . $mail->ErrorInfo);
+            //     return response()->json([
+            //         'success'=>'true',
+            //         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
+            //         'data'=>''
+            //     ],200);
+            //     // exit;
+            // }
+            // if(!$mail->send()) {
+            //     dd("Mailer Error: " . $mail->ErrorInfo);
+            //     return response()->json([
+            //         'success'=>'true',
+            //         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
+            //         'data'=>''
+            //     ],200);
+            // } 
+            // else {
+            //     // dd("Mailer Error: " . $mail->ErrorInfo);
+            //     return response()->json([
+            //         'success'=>'true',
+            //         'message'=>'Berjaya Menghantar Emel.',
+            //         'data'=>''
+            //     ],200);
+            // }
             return response()->json([
                 'success'=>true,
                 'message'=>"Kemaskini Berjaya!",
@@ -414,7 +414,7 @@ class med_permohonanController extends Controller
                 'success'=>false,
                 'message'=>"Kemaskini Gagal!",
                 'data'=>''
-            ],404);
+            ],400);
         }
     }
 

@@ -8801,7 +8801,7 @@ a {
   padding-left: 40px; }
   @media only screen and (max-width: 1600px) {
     .content-body .container-fluid, .content-body .container-sm, .content-body .container-md, .content-body .container-lg, .content-body .container-xl {
-      padding-top: 30px;
+      padding-top: 0px;
       padding-right: 30px;
       padding-left: 30px; } }
   @media only screen and (max-width: 767px) {
@@ -9602,8 +9602,8 @@ a {
   left: auto; }
 
 .nav-header {
-  height: 7.5rem;
-  width: 21.563rem;
+  height: 4.5rem;
+  width: 15.563rem;
   display: inline-block;
   text-align: left;
   position: absolute;
@@ -9613,7 +9613,7 @@ a {
   transition: all .2s ease;
   z-index: 5; }
   .nav-header .logo-abbr {
-    max-width: 52px; }
+    max-width: 100px; }
     @media only screen and (max-width: 575px) {
       .nav-header .logo-abbr {
         max-width: 40px; } }
@@ -9631,7 +9631,7 @@ a {
     font-size: 1.125rem;
     color: #fff;
     text-decoration: none;
-    padding-left: 50px;
+    padding-left: 25px;
     padding-right: 50px;
     font-weight: 700; }
     @media only screen and (max-width: 1400px) {
@@ -9657,7 +9657,7 @@ a {
 @media only screen and (max-width: 1199px) {
   .nav-header {
     width: 5rem;
-    height: 5rem; }
+    height: 4.5rem; }
     .nav-header .brand-title {
       display: none; } }
 .nav-control {
@@ -9772,20 +9772,20 @@ a {
     display: none; }
 
 .header {
-  height: 7.5rem;
+  height: 4.5rem;
   z-index: 1;
   position: relative;
   padding: 0rem;
   background-color: #fff;
   z-index: 4;
-  padding-left: 21.563rem;
+  padding-left: 20.563rem;
   transition: all .2s ease; }
   @media only screen and (max-width: 1400px) {
     .header {
       padding-left: 17rem; } }
   .header .header-content {
     height: 100%;
-    padding-left: 5.3125rem;
+    /* padding-left: 0.3125rem; */
     padding-right: 2.4rem;
     align-items: center;
     display: flex; }
@@ -9803,7 +9803,7 @@ a {
       width: 100%; }
   @media only screen and (max-width: 1199px) {
     .header {
-      height: 5rem; } }
+      height: 4.5rem; } }
 
 /* pulse in SVG */
 svg.pulse-svg {
@@ -9916,7 +9916,7 @@ svg.pulse-svg {
   top: 0;
   width: 100%; }
 [data-header-position="fixed"] .content-body {
-  padding-top: 7.5rem; }
+  padding-top: 3.5rem; }
   @media only screen and (max-width: 1199px) {
     [data-header-position="fixed"] .content-body {
       padding-top: 5rem; } }
@@ -10083,8 +10083,8 @@ svg.pulse-svg {
     position: relative;
     color: #0B2A97;
     background: rgba(11, 42, 151, 0.1);
-    border-radius: 1.25rem;
-    padding: 12px;
+    border-radius: .55rem;
+    padding: 8px;
     line-height: 1; }
     @media only screen and (max-width: 1400px) {
       .header-right .notification_dropdown .nav-link {
@@ -12082,7 +12082,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   top: 0.625rem; }
 
 .content-body {
-  margin-left: 21.563rem;
+  margin-left: 15.563rem;
   z-index: 0;
   transition: all .2s ease; }
   @media only screen and (min-width: 1200px) and (max-width: 1400px) {
@@ -12244,12 +12244,12 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   100% {
     transform: rotate(0); } }
 .deznav {
-  width: 21.563rem;
+  width: 15.563rem;
   padding-bottom: 0;
   height: 100%;
   position: absolute;
   top: 0;
-  padding-top: 120px;
+  padding-top: 70px;
   z-index: 4;
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(120, 130, 140, 0.13);
@@ -12603,10 +12603,10 @@ The smaller device rules always should write below the bigger device rules
 Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Component
 */
 [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li {
-  padding: 0 0 0 40px; }
+  padding: 0 0 0 10px; }
   [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
-    font-size: 16px;
-    padding: 20px 20px;
+    font-size: 14px;
+    padding: 15px 20px;
     border-top-left-radius: 1.25rem;
     border-bottom-left-radius: 1.25rem;
     -webkit-transition: all 0.5s;
@@ -24701,8 +24701,8 @@ button {
   color: #fff; }
 
 .btn {
-  padding: 0.938rem 1.5rem;
-  border-radius: 1.25rem;
+  padding: 0.5rem .8rem 0.5rem 0.5rem;
+  border-radius: 0.25rem;
   font-weight: 500;
   font-size: 1rem; }
   .btn:hover, .btn:focus, .btn:active, .btn.active {
@@ -31202,7 +31202,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 .page-titles {
   position: fixed !important;
-  top: 120px !important;
+  top: 30px !important;
   z-index: 1 !important;
   width: 100% !important;
   padding: 15px 30px !important;

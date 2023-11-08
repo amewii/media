@@ -30,6 +30,9 @@ $router->post('/login','authController@login');
 $router->post('/loginUser','authController@loginUser');
 $router->post('/checkUsers', 'authController@show');
 $router->post('/registerSiteAwam', 'authController@register');
+$router->post('/usersResetToEmail', 'authController@resetpasswordtomail');
+$router->get('/usersResetKatalaluan/{resetkatalaluan}', 'authController@showGetResetKatalaluan');
+$router->post('/usersReset', 'authController@resetpassword');
 
 
 //Daripada api_pentadbir
@@ -40,9 +43,6 @@ $router->post('/addUsers', 'med_usersController@register');
 $router->post('/users', 'med_usersController@show');
 $router->post('/usersIcEmel', 'med_usersController@showIcEmel');
 $router->post('/usersSemakKatalaluan', 'med_usersController@checkpassword');
-$router->post('/usersReset', 'med_usersController@resetpassword');
-$router->post('/usersResetToEmail', 'med_usersController@resetpasswordtomail');
-$router->get('/usersResetKatalaluan/{resetkatalaluan}', 'med_usersController@showGetResetKatalaluan');
 $router->post('/usersResetPassword', 'med_usersController@resetpassword');
 $router->get('/usersSiteAdmin/{no_kad_pengenalan}', 'med_usersController@showSiteAdmin');
 $router->get('/usersGetIc/{no_kad_pengenalan}', 'med_usersController@showGetIc');
