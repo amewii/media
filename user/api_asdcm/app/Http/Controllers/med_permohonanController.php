@@ -467,7 +467,7 @@ class med_permohonanController extends Controller
                 'success'=>false,
                 'message'=>"Kemaskini Gagal!",
                 'data'=>''
-            ],404);
+            ],400);
         }
     }
 

@@ -3,7 +3,6 @@ $(function () {
     cache: false,
   });
   var obj = new get(host+`usersSiteAdmin/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
-  console.log(obj);
   if(obj.success){
     window.sessionStorage.token = obj.token;
     var data = obj.data;
@@ -13,9 +12,8 @@ $(function () {
     nama_peranan_master = data.nama_peranan;
     FK_peranan_master = data.FK_peranan;
     FK_kluster_master = data.FK_kluster;
-    console.log(obj.data);
   } else {
-    console.log(obj);
+    // console.log(obj);
     // window.location.replace('login/');
   }
   if (window.sessionStorage.content == null) {

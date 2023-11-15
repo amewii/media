@@ -752,7 +752,7 @@ function klusterList() {
 
   var obj = new get(host+`klustersList`,window.sessionStorage.token).execute();
   if(obj.success){
-    console.log(obj);
+    // console.log(obj);
     obj_klusterList = obj;
     $.each(obj_klusterList.data, function (i, item) {
       $("#FK_kluster").append(

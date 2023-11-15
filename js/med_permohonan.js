@@ -80,7 +80,7 @@ function listPermohonan() {
   }
   obj = obj.execute();
   if(obj.success){
-    console.log(obj.data);
+    // console.log(obj.data);
     let convertList = JSON.stringify(obj.data);
 
     $("#dataList").val(convertList);

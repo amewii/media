@@ -6,28 +6,28 @@ $(function () {
   statusList();
   tahunList();
 
-  users_info(window.sessionStorage.id, function () {
-    if (result.data.users_intan == 1) {
-      $("#displayjawatan").text(
-        result.data.nama_kluster +
-          ", " +
-          result.data.nama_subkluster +
-          ", " +
-          result.data.nama_unit
-      );
-    } else {
-      $("#displayjawatan").text(
-        result.data.nama_kementerian +
-          ", " +
-          result.data.nama_agensi +
-          ", " +
-          result.data.nama_bahagian
-      );
-    }
-    $("#displayno_kad_pengenalan").val(result.data.no_kad_pengenalan);
-    $("#displayjantina").val(result.data.nama_jantina);
-    $("#displayemel").val(result.data.emel);
-  });
+  // users_info(window.sessionStorage.id, function () {
+  //   if (result.data.users_intan == 1) {
+  //     $("#displayjawatan").text(
+  //       result.data.nama_kluster +
+  //         ", " +
+  //         result.data.nama_subkluster +
+  //         ", " +
+  //         result.data.nama_unit
+  //     );
+  //   } else {
+  //     $("#displayjawatan").text(
+  //       result.data.nama_kementerian +
+  //         ", " +
+  //         result.data.nama_agensi +
+  //         ", " +
+  //         result.data.nama_bahagian
+  //     );
+  //   }
+  //   $("#displayno_kad_pengenalan").val(result.data.no_kad_pengenalan);
+  //   $("#displayjantina").val(result.data.nama_jantina);
+  //   $("#displayemel").val(result.data.emel);
+  // });
 });
 
 function kategoriList() {

@@ -142,7 +142,7 @@ $("#send_noic").on("submit", function (e) {
                 });
                 $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
                 $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
-                  console.log(item);
+                  // console.log(item);
                   // if(item == )
                 });
                 $("#nama_text_add").text(obj_hrmis.peribadi.nama);
@@ -350,7 +350,7 @@ $("#registergov").on("submit", function (e) {
               data: formPeranan,
             };
             $.ajax(settings).done(function (response) {
-              console.log(response);
+              // console.log(response);
               result = JSON.parse(response);
               if (!result.success) {
                 // Swal(result.message, result.data, "error");
@@ -650,7 +650,7 @@ function tablePentadbir() {
   
   var obj = new get(host+`usersListPentadbir`,window.sessionStorage.token).execute();
   if(obj.success){
-    console.log(obj);
+    // console.log(obj);
     let convertList = JSON.stringify(obj.data);
     $("#dataListPentadbir").val(convertList);
     var list = [];
@@ -747,7 +747,7 @@ function tableByPeranan(peranan) {
   ];
 
   var obj = new get(host+`usersListPentadbir/byPeranan/`+peranan,window.sessionStorage.token).execute();
-  console.log(obj);
+  // console.log(obj);
   if(obj.success){
     let convertList = JSON.stringify(obj.data);
     $("#dataList"+callPeranan).val(convertList);
@@ -818,7 +818,7 @@ function tableByPeranan(peranan) {
       },
     });
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
 }
 
@@ -2209,7 +2209,7 @@ function ezxsSubKluster(id_subkluster) {
 function load_select_peranan_capaian(){
   var obj = new get(host+`usersgovsIntanList`,window.sessionStorage.token).execute();
   if(obj.success){
-    console.log(obj);
+    // console.log(obj);
     $("#FK_userss").empty();
     $.each(obj.data, function (i, item) {
       $("#FK_userss").append(
@@ -2237,7 +2237,7 @@ function load_select_peranan_capaian(){
       );
     });
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
 
   //Checkbox Submodul List
@@ -2355,7 +2355,7 @@ function load_select_peranan_capaian(){
         text: "Pilih Peranan",
       })
     );
-    console.log(obj.data);
+    // console.log(obj.data);
     $.each(obj.data,function(i,item){
       if (FK_peranan_master == 1) {
         $("#FK_peranan_add").append(
