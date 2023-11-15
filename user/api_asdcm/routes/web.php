@@ -17,7 +17,9 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    // return $router->app->version();
+    header('Location: https://media.intan.my');
+    die();
 });
 
 $router->get('key', function () {
