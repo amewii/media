@@ -26,8 +26,8 @@ class med_usersController extends Controller
     }
 
     public function getToken($id)  {
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $token     = hash("sha256", Str::random(32).$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $token     = hash("sha256", Str::random(32).$ajinomoto);
         $obj = med_users::where('id_users',$id)->update([
             'token' => $token
         ]);
@@ -45,8 +45,8 @@ class med_usersController extends Controller
 
     public function register(Request $request) {
         $katalaluan = $request->input('katalaluan');
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
         // dd($enc_katalaluan);
         $nama = $request->input('nama');
         $emel = $request->input('emel');
@@ -142,8 +142,8 @@ class med_usersController extends Controller
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
         $katalaluan = $request->input('katalaluan');
 
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
         $med_users_search = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->where('katalaluan',$enc_katalaluan)->first();
         
         if ($med_users_search)   {

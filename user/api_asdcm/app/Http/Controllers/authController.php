@@ -13,8 +13,8 @@ class authController extends Controller
 {
 
     public function getToken($id)  {
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $token     = hash("sha256", Str::random(32).$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $token     = hash("sha256", Str::random(32).$ajinomoto);
         $obj = med_users::where('id_users',$id)->update([
             'token' => $token
         ]);
@@ -32,8 +32,8 @@ class authController extends Controller
 
     public function register(Request $request) {
         $katalaluan = $request->input('katalaluan');
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
         // dd($enc_katalaluan);
         $nama = $request->input('nama');
         $emel = $request->input('emel');
@@ -132,8 +132,8 @@ class authController extends Controller
                         join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
                         where('no_kad_pengenalan',$no_kad_pengenalan)->where('FK_jenis_pengguna','1')->first();
         if($userS){
-            $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-            $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+            $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+            $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
             
             // dd($enc_katalaluan);
             if($userS->katalaluan === $enc_katalaluan){
@@ -188,8 +188,8 @@ class authController extends Controller
         $userS = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
                         where('no_kad_pengenalan',$no_kad_pengenalan)->first();
         if($userS){
-            $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-            $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+            $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+            $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
             
             // dd($enc_katalaluan);
             if($userS->katalaluan === $enc_katalaluan){
@@ -268,8 +268,8 @@ class authController extends Controller
 
         $med_users_search = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
                                         where('no_kad_pengenalan',$no_kad_pengenalan)->first();
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_link     = hash("sha256", $masa.$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_link     = hash("sha256", $masa.$ajinomoto);
         
         if ($med_users_search)  {
             $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan) -> update([
@@ -359,8 +359,8 @@ class authController extends Controller
         $katalaluan = $request->input('katalaluan');
 
         $med_users_search = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->first();
-        $salt = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$salt);
+        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
+        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
         
         if ($med_users_search)  {
             $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan) -> update([
