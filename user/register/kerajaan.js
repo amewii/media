@@ -315,7 +315,7 @@ $("#registergov").on("submit", function (e) {
     form.append("katalaluan", katalaluan);
     // formData.append("token",window.sessionStorage.token);
     var settingsregusers = {
-      url: host + "public/addUsers",
+      url: host + "addUsers",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -333,7 +333,7 @@ $("#registergov").on("submit", function (e) {
       }
 
       var settingsfetchusers = {
-        url: host + "public/users",
+        url: host + "users",
         method: "POST",
         timeout: 0,
         processData: false,
@@ -394,7 +394,7 @@ $("#registergov").on("submit", function (e) {
         formgov.append("statusrekod", "1");
 
         var settingsregusersgovs = {
-          url: host + "public/addUsersgovs",
+          url: host + "addUsersgovs",
           method: "POST",
           timeout: 0,
           processData: false,
@@ -473,7 +473,7 @@ $("#FK_kampus").change(function () {
 
 $("#poskod_pejabat").blur(function () {
   var settings = {
-    url: host + "public/sysposkod/" + $("#poskod_pejabat").val(),
+    url: host + "sysposkod/" + $("#poskod_pejabat").val(),
     method: "GET",
     timeout: 0,
   };
@@ -486,7 +486,7 @@ $("#poskod_pejabat").blur(function () {
 
 $("#FK_kampus").change(function () {
   var settings = {
-    url: host + "public/klusters/" + $("#FK_kampus").val(),
+    url: host + "klusters/" + $("#FK_kampus").val(),
     method: "GET",
     timeout: 0,
   };
@@ -527,7 +527,7 @@ $("#FK_kampus").change(function () {
 $("#FK_kluster").change(function () {
   //Dropdown Subkluster List
   var settings = {
-    url: host + "public/subklusters/" + $("#FK_kluster").val(),
+    url: host + "subklusters/" + $("#FK_kluster").val(),
     method: "GET",
     timeout: 0,
   };
@@ -557,7 +557,7 @@ $("#FK_subkluster").change(function () {
   var settings = {
     url:
       host +
-      "public/units/" +
+      "units/" +
       $("#FK_kluster").val() +
       "/" +
       $("#FK_subkluster").val(),
@@ -590,7 +590,7 @@ $("#FK_agensi").change(function () {
   var settings = {
     url:
       host +
-      "public/bahagians/" +
+      "bahagians/" +
       $("#FK_kementerian").val() +
       "/" +
       $("#FK_agensi").val(),
@@ -622,7 +622,7 @@ $("#FK_agensi").change(function () {
 
 $("#FK_bahagian").change(function () {
   var settings = {
-    url: host + "public/ilawams/" + $("#FK_bahagian").val(),
+    url: host + "ilawams/" + $("#FK_bahagian").val(),
     method: "GET",
     timeout: 0,
   };
@@ -652,7 +652,7 @@ $("#FK_bahagian").change(function () {
 function kampusList(returnValue) {
   //Dropdown Kampus List
   var settings = {
-    url: host + "public/kampusList",
+    url: host + "kampusList",
     method: "GET",
     timeout: 0,
   };
@@ -666,7 +666,7 @@ function kampusList(returnValue) {
 
 function klusterList(returnValue) {
   var settings = {
-    url: host + "public/klustersList",
+    url: host + "klustersList",
     method: "GET",
     timeout: 0,
   };
@@ -689,7 +689,7 @@ function subklusterListNonKiara() {
 
   //Dropdown Subkluster List
   var settings = {
-    url: host + "public/subklusters/" + $("#FK_kluster").val(),
+    url: host + "subklusters/" + $("#FK_kluster").val(),
     method: "GET",
     timeout: 0,
   };
@@ -716,7 +716,7 @@ function subklusterListNonKiara() {
 
 function subklusterList(returnValue) {
   var settings = {
-    url: host + "public/subklustersList",
+    url: host + "subklustersList",
     method: "GET",
     timeout: 0,
   };
@@ -728,7 +728,7 @@ function subklusterList(returnValue) {
 
 function unitList(returnValue) {
   var settings = {
-    url: host + "public/unitsList",
+    url: host + "unitsList",
     method: "GET",
     timeout: 0,
   };
@@ -741,7 +741,7 @@ function unitList(returnValue) {
 function gelaranList(returnValue) {
   //Dropdown Gelaran List
   var settings = {
-    url: host + "public/gelaransList",
+    url: host + "gelaransList",
     method: "GET",
     timeout: 0,
   };
@@ -756,7 +756,7 @@ function gelaranList(returnValue) {
 function skimList(returnValue) {
   //Dropdown Skim List
   var settings = {
-    url: host + "public/skimsList",
+    url: host + "skimsList",
     method: "GET",
     timeout: 0,
   };
@@ -771,7 +771,7 @@ function skimList(returnValue) {
 function gredList(returnValue) {
   //Dropdown Gred List
   var settings = {
-    url: host + "public/gredsList",
+    url: host + "gredsList",
     method: "GET",
     timeout: 0,
   };
@@ -786,7 +786,7 @@ function gredList(returnValue) {
 function kategoriperkhidmatanList(returnValue) {
   //Dropdown Kategori Perkhidmatan List
   var settings = {
-    url: host + "public/kategoriperkhidmatansList",
+    url: host + "kategoriperkhidmatansList",
     method: "GET",
     timeout: 0,
   };
@@ -800,7 +800,7 @@ function kategoriperkhidmatanList(returnValue) {
 function kementerianList(returnValue) {
   //Dropdown Kementerian List
   var settings = {
-    url: host + "public/kementeriansList",
+    url: host + "kementeriansList",
     method: "GET",
     timeout: 0,
   };
@@ -815,7 +815,7 @@ function kementerianList(returnValue) {
 function agensiList(returnValue) {
   //Dropdown Agensi List
   var settings = {
-    url: host + "public/agensisList",
+    url: host + "agensisList",
     method: "GET",
     timeout: 0,
   };
@@ -829,7 +829,7 @@ function agensiList(returnValue) {
 
 function bahagianList(returnValue) {
   var settings = {
-    url: host + "public/bahagiansList",
+    url: host + "bahagiansList",
     method: "GET",
     timeout: 0,
   };
@@ -841,7 +841,7 @@ function bahagianList(returnValue) {
 
 function ilaList(returnValue) {
   var settings = {
-    url: host + "public/ilawamsList",
+    url: host + "ilawamsList",
     method: "GET",
     timeout: 0,
   };
@@ -858,7 +858,7 @@ function check_users(noic, returnValue) {
   form.append("no_kad_pengenalan", noic);
 
   var settings = {
-    url: host + "public/users",
+    url: host + "users",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -904,7 +904,7 @@ function ezxsKampus(id_kampus) {
   var form = new FormData();
   form.append("id_kampus", id_kampus);
   var settings = {
-    url: host + "public/kampus",
+    url: host + "kampus",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -937,7 +937,7 @@ function ezxsKluster(id_kluster) {
   var form = new FormData();
   form.append("id_kluster", id_kluster);
   var settings = {
-    url: host + "public/klusters",
+    url: host + "klusters",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -971,7 +971,7 @@ function ezxsSubKluster(id_subkluster) {
   var form = new FormData();
   form.append("id_subkluster", id_subkluster);
   var settings = {
-    url: host + "public/subklusters",
+    url: host + "subklusters",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1004,7 +1004,7 @@ function hrmisKementerianList(nama_kementerian) {
   var form = new FormData();
   form.append("nama_kementerian", nama_kementerian);
   var settings = {
-    url: host + "public/kementeriansName",
+    url: host + "kementeriansName",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1034,7 +1034,7 @@ function hrmisAgensiList(kod_agensi) {
   var form = new FormData();
   form.append("kod_agensi", kod_agensi);
   var settings = {
-    url: host + "public/agensisKod",
+    url: host + "agensisKod",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1073,7 +1073,7 @@ function hrmisBahagianList() {
     var settings = {
       url:
         host +
-        "public/bahagians/" +
+        "bahagians/" +
         $("#FK_kementerian").val() +
         "/" +
         $("#FK_agensi").val(),
@@ -1108,7 +1108,7 @@ function hrmisGelaran(nama_gelaran, returnValue) {
   var form = new FormData();
   form.append("nama_gelaran", nama_gelaran);
   var settings = {
-    url: host + "public/gelaransHrmis",
+    url: host + "gelaransHrmis",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1126,7 +1126,7 @@ function hrmisKategoriPerkhidmatan(nama_kategoriperkhidmatan, returnValue) {
   var form = new FormData();
   form.append("nama_kategoriperkhidmatan", nama_kategoriperkhidmatan);
   var settings = {
-    url: host + "public/kategoriperkhidmatansHrmis",
+    url: host + "kategoriperkhidmatansHrmis",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1145,7 +1145,7 @@ function hrmisKementerian(nama_kementerian, returnValue) {
   var form = new FormData();
   form.append("nama_kementerian", nama_kementerian);
   var settings = {
-    url: host + "public/kementeriansHrmis",
+    url: host + "kementeriansHrmis",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1167,7 +1167,7 @@ function hrmisAgensi(kod_agensi, returnValue) {
   var form = new FormData();
   form.append("kod_agensi", kod_agensi);
   var settings = {
-    url: host + "public/agensisKod",
+    url: host + "agensisKod",
     method: "POST",
     timeout: 0,
     processData: false,
@@ -1186,7 +1186,7 @@ function hrmisAgensi(kod_agensi, returnValue) {
 
 function hrmisBahagian(kod_kementerian, kod_agensi, returnValue) {
   var settings = {
-    url: host + "public/bahagians/" + kod_kementerian + "/" + kod_agensi,
+    url: host + "bahagians/" + kod_kementerian + "/" + kod_agensi,
     method: "GET",
     timeout: 0,
   };
