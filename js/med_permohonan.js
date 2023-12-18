@@ -141,8 +141,8 @@ function listPermohonan() {
       list.push({
         id: field.id_permohonan,
         FK_users: field.FK_users,
-        nama_program: field.nama_program,
-        nama_kampus: field.nama_kampus,
+        nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
+        nama_kampus: `<p style="white-space: pre-line;">`+field.nama_kampus + `</p>`,
         nama: field.nama,
         tarikh_permohonan:
           t_permohonan.getDate() +

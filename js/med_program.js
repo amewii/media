@@ -105,10 +105,10 @@ function tableProgram() {
             (t_program.getMonth() + 1) +
             "/" +
             t_program.getFullYear(),
-          nama_program: field.nama_program,
+          nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
           saiz_fail: field.saiz_fail,
           bil: bil++,
-          nama_kampus: field.nama_kampus,
+          nama_kampus: `<p style="white-space: pre-line;">`+field.nama_kampus + `</p>`,
           status_rekod:
             '<label class="adomx-switch-2 success"><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
             checked +
@@ -169,7 +169,7 @@ function tableProgram() {
             (t_program.getMonth() + 1) +
             "/" +
             t_program.getFullYear(),
-          nama_program: field.nama_program,
+          nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
           saiz_fail: field.saiz_fail,
           bil: bil++,
           status_rekod:
@@ -193,12 +193,13 @@ function tableProgram() {
 
   } 
   $('.programList-length').html(list.length);
+  $("#programList").html('');
   $("#programList").footable({
     columns: colums,
     rows: list,
     paging: {
       enabled: true,
-      size: 5,
+      size: 10,
     },
     filtering: {
       enabled: true,
