@@ -20,7 +20,21 @@ class med_program extends Model implements AuthenticatableContract, Authorizable
      */
     protected $table = 'med_program';
     protected $fillable = [
-        'id_program', 'nama_program', 'tarikh_program', 'FK_kategori', 'FK_kluster', 'FK_subkluster', 'FK_kampus', 'FK_unit', 'FK_vip', 'media_path', 'created_by', 'updated_by', 'last_uploaded_at', 'statusrekod'
+        'id_program', 
+        'nama_program', 
+        'tarikh_program', 
+        'FK_kategori', 
+        'FK_kluster', 
+        'FK_subkluster', 
+        'FK_kampus', 
+        'FK_unit', 
+        'FK_vip', 
+        'media_path', 
+        'status_publish', 
+        'created_by', 
+        'updated_by', 
+        'last_uploaded_at', 
+        'statusrekod'
     ];
 
     /**

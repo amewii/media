@@ -129,6 +129,40 @@ class med_programController extends Controller
                                     where('med_program.id_program',$id)->first();
 
         if ($med_program)   {
+            if($_SERVER['SERVER_PORT'] == "8081"){
+                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+            } else {
+                if($_SERVER["HTTP_HOST"] == "localhost"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else {
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                }
+            }
+            $new_file = array();
+            if($med_program->media_path){
+                $file = json_decode($med_program->media_path);
+                if(sizeof($file)>0){
+                    for($j=0;$j<sizeof($file);$j++){
+                        $url = $host.$file[$j]->images;
+                        $handle = curl_init($url);
+                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+                        
+                        /* Get the HTML or whatever is linked in $url. */
+                        $response = curl_exec($handle);
+                        
+                        /* Check for 404 (file not found). */
+                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                        if($httpCode != 404) {
+                            array_push($new_file,$file[$j]->images);
+                        }
+                        
+                        curl_close($handle);
+                    }
+                }
+            }
+            $med_program->media_path_2 = $new_file;
             return response()->json([
                 'success'=>'true',
                 'message'=>'Show Success!',
@@ -146,12 +180,47 @@ class med_programController extends Controller
                                     where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> where('med_unit.statusrekod','1') -> 
                                     get(); // list all data
 
-        if ($med_program)   {
+        if (sizeof($med_program)>0)   {
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_program
             ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
+        }
+        
+    }
+
+    public function list_publish()  {
+        $med_program = med_program::join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+                                    join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
+                                    join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
+                                    join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
+                                    leftjoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
+                                    where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> where('med_unit.statusrekod','1') -> where('med_program.status_publish','1') -> 
+                                    get(); // list all data
+
+        if (sizeof($med_program)>0)   {
+            return response()->json([
+                'success'=>true,
+                'message'=>'List Success!',
+                'data'=>$med_program
+            ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
         }
         
     }
@@ -211,17 +280,62 @@ class med_programController extends Controller
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
                                     leftjoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-                                    where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-                                    where('med_program.media_path','LIKE','%JPEG%')->orWhere('med_program.media_path','LIKE','%JPG%')->orWhere('med_program.media_path','LIKE','%PNG%')->orWhere('med_program.media_path','LIKE','%BMP%')->orWhere('med_program.media_path','LIKE','%GIF%')->
+                                    where('med_program.status_publish','1') -> 
+                                    where(function($q){
+                                        $q = $q->where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
+                                        where('med_program.media_path','LIKE','%JPEG%')->orWhere('med_program.media_path','LIKE','%JPG%')->orWhere('med_program.media_path','LIKE','%PNG%')->orWhere('med_program.media_path','LIKE','%BMP%')->orWhere('med_program.media_path','LIKE','%GIF%');
+                                    })->
                                     orderBy('last_uploaded_at', 'desc') ->
                                     get(); // list all data (MIMI)
 
-        if ($med_program)   {
+        if (sizeof($med_program)>0)   {
+            if($_SERVER['SERVER_PORT'] == "8081"){
+                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+            } else {
+                if($_SERVER["HTTP_HOST"] == "localhost"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else {
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                }
+            }
+            for($i=0;$i<sizeof($med_program);$i++){
+                $file = json_decode($med_program[$i]->media_path);
+                $new_file = array();
+                if(sizeof($file)>0){
+                    for($j=0;$j<sizeof($file);$j++){
+                        $url = $host.$file[$j]->images;
+                        $handle = curl_init($url);
+                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+                        
+                        /* Get the HTML or whatever is linked in $url. */
+                        $response = curl_exec($handle);
+                        
+                        /* Check for 404 (file not found). */
+                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                        if($httpCode != 404) {
+                            array_push($new_file,$file[$j]->images);
+                        }
+                        
+                        curl_close($handle);
+                    }
+                }
+                $med_program[$i]->media_path_2 = $new_file;
+            }
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_program
             ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
         }
         
     }
@@ -242,17 +356,62 @@ class med_programController extends Controller
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
                                     leftjoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-                                    where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-                                    where('med_program.media_path','LIKE','%MP4%')->whereOr('med_program.media_path','LIKE','%MOV%')->whereOr('med_program.media_path','LIKE','%3GP%') ->
+                                    where('med_program.status_publish','1') -> 
+                                    where(function($q){
+                                        $q = $q->where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
+                                        where('med_program.media_path','LIKE','%MP4%')->whereOr('med_program.media_path','LIKE','%MOV%')->whereOr('med_program.media_path','LIKE','%3GP%');
+                                    })->
                                     orderBy('last_uploaded_at', 'desc') ->
                                     get(); // list all data (MIMI)
 
-        if ($med_program)   {
+        if (sizeof($med_program)>0)   {
+            if($_SERVER['SERVER_PORT'] == "8081"){
+                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+            } else {
+                if($_SERVER["HTTP_HOST"] == "localhost"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else {
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                }
+            }
+            for($i=0;$i<sizeof($med_program);$i++){
+                $file = json_decode($med_program[$i]->media_path);
+                $new_file = array();
+                if(sizeof($file)>0){
+                    for($j=0;$j<sizeof($file);$j++){
+                        $url = $host.$file[$j]->images;
+                        $handle = curl_init($url);
+                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+                        
+                        /* Get the HTML or whatever is linked in $url. */
+                        $response = curl_exec($handle);
+                        
+                        /* Check for 404 (file not found). */
+                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                        if($httpCode != 404) {
+                            array_push($new_file,$file[$j]->images);
+                        }
+                        
+                        curl_close($handle);
+                    }
+                }
+                $med_program[$i]->media_path_2 = $new_file;
+            }
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_program
             ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
         }
         
     }
@@ -350,6 +509,56 @@ class med_programController extends Controller
                     'data'=>''
                 ],404);
             }
+        }
+    }
+
+    public function publish(Request $request)    {
+        $id = $request->input('id_program');
+        $updated_by = $request->input('updated_by');
+
+        $med_program = med_program::where('id_program',$id) -> update([
+            'status_publish' => 1,
+            'updated_by' => $updated_by
+        ]);
+
+        if ($med_program)  {
+            return response()->json([
+                'success'=>true,
+                'message'=>"Kemaskini Berjaya!",
+                'data' => $med_program
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'=>false,
+                'message'=>"Kemaskini Gagal!",
+                'data'=>''
+            ],404);
+        }
+    }
+
+    public function unpublish(Request $request)    {
+        $id = $request->input('id_program');
+        $updated_by = $request->input('updated_by');
+
+        $med_program = med_program::where('id_program',$id) -> update([
+            'status_publish' => 0,
+            'updated_by' => $updated_by
+        ]);
+
+        if ($med_program)  {
+            return response()->json([
+                'success'=>true,
+                'message'=>"Kemaskini Berjaya!",
+                'data' => $med_program
+            ],200);
+        }
+        else{
+            return response()->json([
+                'success'=>false,
+                'message'=>"Kemaskini Gagal!",
+                'data'=>''
+            ],404);
         }
     }
 
@@ -467,7 +676,7 @@ class med_programController extends Controller
 
         $flag_exist = 0;
         $fileName = $request->file('file')->getClientOriginalName();
-        $fileName = $id . '_' . $fileName;
+        $fileName = $id . '_' . rand();
 
         // $path = 'programUpload';
         // $path = '/uploads';
@@ -496,7 +705,8 @@ class med_programController extends Controller
         // return 0;
         return response()->json([
             'success'=>true,
-            'result'=>$flag_exist
+            'result'=>$flag_exist,
+            'file'=>$fileName
         ],200);
     }
 

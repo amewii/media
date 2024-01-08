@@ -840,7 +840,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .box .box-body {
-  padding: 25px;
+  padding: 5px;
 }
 
 .box .box-foot {
@@ -9074,7 +9074,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
 }
 
 .side-header.show + .content-body, .side-header.show ~ .footer-section {
-  margin-left: 270px;
+  margin-left: 240px;
 }
 
 .side-header .side-header-close {

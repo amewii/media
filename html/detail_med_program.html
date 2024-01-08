@@ -2,7 +2,7 @@
 <div class="row justify-content-between align-items-center mb-10">
 
     <!-- Page Heading Start -->
-    <div class="col-12 col-lg-auto mb-20">
+    <div class="col-12 col-lg-auto mb-20 ml-3">
         <div class="page-heading">
             <div class="row">
                 <a id="back"><i class="ti-arrow-left" style="margin-left: 10px; margin-right: 10px; margin-top: 5px;"></i></a> <h3 class="title">Media <span>/ Program</span></h3>
@@ -126,33 +126,29 @@
         <div class="box">
             <div class="box-head">
                 <!-- Page Heading Start -->
-                <div class="col-12 col-lg-auto mb-20">
+                <div class="col-12 col-lg-auto">
                     <div class="page-heading">
                         <div class="row">
                             <h4 class="title">Senarai Media</h4>
                         </div>
                     </div>
                 </div><!-- Page Heading End -->
-                <!-- Page Heading Start -->
-                <div class="col-12 col-lg-auto mb-20">
-                    <button class="button button-primary hidden" id="control_program_media_U2" data-toggle="modal" data-target="#reg-media"><span><i class="ti-plus"></i>Muatnaik</span></button>
-                    <!-- <button class="button button-primary" id="reg-permohonan"><span><i class="ti-download"></i>Permohonan Muat Turun</span></button>
-                    <button class="button button-success" id="muatturun"><span><i class="ti-download"></i>Muat Turun</span></button> -->
-                </div><!-- Page Heading End -->
             </div>
             <div class="box-body">
-                <div class="row justify-content-between align-items-center mb-10">
+                <div class="row justify-content-between align-items-center m-1">
 
                     <!-- Page Heading Start -->
                     <div class="col-12 col-lg-auto mb-20">
-                        <div align="left" class="row">
+                        <div class="row">
                             <input type="checkbox" id="checkAll"><label for="checkAll"> Pilih Semua Media</label>
                             <!-- <br/><br/> -->
                         </div>
                     </div><!-- Page Heading End -->
                     <!-- Page Heading Start -->
                     <div class="col-12 col-lg-auto mb-20">
-                        <div align="right" class="row">
+                        <div class="row">
+                            <button class="button button-sm button-primary hidden" id="control_program_media_U2" data-toggle="modal" data-target="#reg-media"><span><i class="ti-plus"></i>Muatnaik</span></button>
+                            <a class="button button-sm button-success hidden" id="control_program_media_U2" href="javascript:void(0);" onclick="publish();"><span><i class="ti-share"></i>Siar</span></a>
                             <button type="button" class="button button-sm button-danger" id="hapusgambar" onclick="del_media_multiple()"><i class="fa fa-trash"></i> Hapus</button>
                         </div>
                     </div><!-- Page Heading End -->

@@ -107,14 +107,14 @@ $.fileup({
       if (imglist == "") {
         imglist = [];
         imglist.push({
-          images: window.sessionStorage.med_program_id + "_" + file.name,
+          images: obj.file,
         });
         $("#dataList").val(JSON.stringify(JSON.stringify(imglist)));
         saveImgList(JSON.stringify(imglist));
       } else {
         imglist = JSON.parse(JSON.parse($("#dataList").val()));
         imglist.push({
-          images: window.sessionStorage.med_program_id + "_" + file.name,
+          images: obj.file,
         });
         $("#dataList").val(JSON.stringify(JSON.stringify(imglist)));
         saveImgList(JSON.stringify(imglist));
@@ -710,3 +710,45 @@ function del_media_multi(value) {
 $("#checkAll").click(function () {
   $("input:checkbox").not(this).prop("checked", this.checked);
 });
+
+function publish(){
+  swal({
+    title: "Siar Program",
+    text: "Anda Pasti Untuk Siar?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+    closeOnConfirm: true,
+    allowOutsideClick: false,
+    html: false,
+  }).then(function () {
+    var form = new FormData();
+    form.append('id_program',window.sessionStorage.med_program_id);
+    form.append('updated_by',id_users_master);
+    var obj = new post(host+`program/publish`,form,window.sessionStorage.token).execute();
+    if(obj.success){
+      swal({
+        title: "Siar Program",
+        text: "Program Berjaya Disiarkan.",
+        type: "success",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        window.location.reload();
+      });
+    } else {
+      swal({
+        title: "Daftar Program",
+        text: "Program Gagal Disiarkan.",
+        type: "error",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        window.location.reload();
+      });
+    }
+  });
+}

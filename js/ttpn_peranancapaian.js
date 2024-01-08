@@ -550,10 +550,11 @@ function tablePengguna() {
     { name: "bil", title: "Bil" },
     { name: "nama", title: "Nama" },
     { name: "jenis_pengguna", title: "Sektor" },
-    { name: "users_intan", title: "Staff INTAN" },
-    { name: "emel", title: "Emel", breakpoints: "lg md sm xs" },
-    { name: "no_kad_pengenalan", title: "No. K/P", breakpoints: "md sm xs" },
-    { name: "status_rekod", title: "Status", breakpoints: "lg md sm xs" },
+    // { name: "users_intan", title: "Staff INTAN" },
+    { name: "emel", title: "Emel"},
+    { name: "no_kad_pengenalan", title: "No. K/P"},
+    { name: "status_rekod", title: "Status"},
+    { name: "reset_password", title: "Tindakan"},
     // { "name": "upt_btn", "title": "Tindakan", "breakpoints": "lg md sm xs" },
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
@@ -580,12 +581,13 @@ function tablePengguna() {
       } else {
         usersintan = "Tidak";
       }
-
+      var ic = field.no_kad_pengenalan.split('');
+      var no_kad_pengenalan = ic[0]+ic[1]+ic[2]+ic[3]+ic[4]+ic[5]+ic[6]+ic[7]+'****';
       list.push({
         id: field.id_users,
         nama: field.nama,
         emel: field.emel,
-        no_kad_pengenalan: field.no_kad_pengenalan,
+        no_kad_pengenalan: no_kad_pengenalan,
         notel: field.notel,
         jenis_pengguna: field.jenis_pengguna,
         nama_peranan: field.nama_peranan,
@@ -609,6 +611,8 @@ function tablePengguna() {
           '<button class="button button-box button-sm button-primary" onclick="loadDataCapaian(\'' +
           i +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
+        reset_password: `
+          <button class="btn btn-box btn-danger btn-sm" data-ui-toggle-class="zoom" data-ui-target="#animate" onclick="resetPassword('`+field.no_kad_pengenalan+`','`+field.nama+`')"><i class="ti-unlock"></i> Set Semula Katalaluan</button>`
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
@@ -735,14 +739,14 @@ function tableByPeranan(peranan) {
   var colums = [
     { name: "bil", title: "Bil" },
     { name: "nama", title: "Nama" },
-    { name: "jenis_pengguna", title: "Sektor", breakpoints: "lg md sm xs" },
-    { name: "nama_peranan", title: "Peranan" },
+    // { name: "jenis_pengguna", title: "Sektor"},
+    // { name: "nama_peranan", title: "Peranan" },
     { name: "nama_kampus", title: "Kampus" },
     // { name: "data_intan", title: "Kluster" },
-    { name: "emel", title: "Emel", breakpoints: "lg md sm xs" },
+    { name: "emel", title: "Emel"},
     { name: "no_kad_pengenalan", title: "No. K/P", breakpoints: "md sm xs" },
-    { name: "status_rekod", title: "Status", breakpoints: "lg md sm xs" },
-    { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
+    { name: "status_rekod", title: "Status"},
+    { name: "upt_btn", title: "Tindakan"},
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
 
@@ -765,11 +769,13 @@ function tableByPeranan(peranan) {
         badge = "badge-danger";
         text_statusrekod = "Tidak Aktif";
       }
+      var ic = field.no_kad_pengenalan.split('');
+      var no_kad_pengenalan = ic[0]+ic[1]+ic[2]+ic[3]+ic[4]+ic[5]+ic[6]+ic[7]+'****';
       list.push({
         id: field.id_users,
         nama: field.nama,
         emel: field.emel,
-        no_kad_pengenalan: field.no_kad_pengenalan,
+        no_kad_pengenalan: no_kad_pengenalan,
         notel: field.notel,
         jenis_pengguna: field.jenis_pengguna,
         nama_peranan: field.nama_peranan,
@@ -832,9 +838,17 @@ function checknoic(){
 
 function loadData(indexs) {
   let data = JSON.parse($("#dataListPeranan").val());
-
   $("#upt_id").val(data[indexs].id_peranan);
   $("#upt_nama_peranan").val(data[indexs].nama_peranan);
+  var FK_capaian = JSON.parse(data[indexs].FK_capaian);
+
+  $("#update-peranan").modal("show");
+
+  $("input[type=checkbox]").prop("checked", false);
+
+  $.each(FK_capaian,function(i,item){
+    $("#upt_" + item.FK_capaian).prop("checked", true);
+  });
 
   saveLog(
     window.sessionStorage.id,
@@ -843,27 +857,23 @@ function loadData(indexs) {
       "] at Tetapan Admin Pengguna.",
     window.sessionStorage.browser
   );
+  // var upt_FK_capaian = [];
 
-  $("#update-peranan").modal("show");
+  // listmodul = sessionStorage.listsubmodule.split(",");
+  // listcapaian = data[indexs].FK_capaian.split(",");
+  // listproses = ["C", "R", "U", "D"];
 
-  $("input[type=checkbox]").prop("checked", false);
-  var upt_FK_capaian = [];
+  // for (var c = 0; c < listcapaian.length; c++) {
+  //   for (var m = 0; m < listmodul.length; m++) {
+  //     for (var p = 0; p < listproses.length; p++) {
+  //       var curprocess = listproses[p] + "" + listmodul[m];
 
-  listmodul = sessionStorage.listsubmodule.split(",");
-  listcapaian = data[indexs].FK_capaian.split(",");
-  listproses = ["C", "R", "U", "D"];
-
-  for (var c = 0; c < listcapaian.length; c++) {
-    for (var m = 0; m < listmodul.length; m++) {
-      for (var p = 0; p < listproses.length; p++) {
-        var curprocess = listproses[p] + "" + listmodul[m];
-
-        if (listcapaian[c].indexOf(curprocess) >= 0) {
-          $("#upt_" + curprocess).prop("checked", true);
-        }
-      }
-    }
-  }
+  //       if (listcapaian[c].indexOf(curprocess) >= 0) {
+  //         $("#upt_" + curprocess).prop("checked", true);
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 function loadDataCapaian(indexs) {
@@ -1222,7 +1232,16 @@ $("#updatePeranan").on("submit", function (e) {
               "],  at Tetapan Peranan & Capaian.",
             window.sessionStorage.browser
           );
-          window.location.reload();
+          swal({
+            title: "Kemaskini Peranan Pengguna",
+            text: "Kemaskini Berjaya!",
+            type: "success",
+            closeOnConfirm: true,
+            allowOutsideClick: false,
+            html: false,
+          }).then(function () {
+            window.location.reload();
+          });
         }
       });
     });
@@ -2416,4 +2435,34 @@ function makeid(length) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
+}
+
+function resetPassword(no_kad_pengenalan, nama) {    
+  swal({
+      title: "Set Semula Katalaluan",
+      text: "Anda Pasti Untuk Set Semula?",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      closeOnConfirm: true,
+      allowOutsideClick: false,
+      html: false
+  }).then(function () {
+      var form = new FormData();
+      form.append('no_kad_pengenalan',no_kad_pengenalan);
+      form.append('katalaluan',no_kad_pengenalan);
+      var obj = new post(host+`usersReset`,form,window.sessionStorage.token).execute();
+      if(obj.success){
+        swal({
+            title: "Set Semula Katalaluan",
+            text: "",
+            type: "success",
+            closeOnConfirm: true,
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            html: "Berjaya!<br><br>Nama: " + nama + "<br>No. Kad Pengenalan: " + no_kad_pengenalan,
+        }).then(function () {});
+      }
+  });
 }

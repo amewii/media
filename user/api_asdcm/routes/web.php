@@ -332,6 +332,7 @@ $router->post('/programMediaRemove/{id}', 'med_programController@removemedia');
 $router->post('/programMediaBunchRemove/{id}', 'med_programController@removebunchmedia');
 $router->post('/programLaporan', 'med_programController@laporan');
 $router->get('/programList', 'med_programController@list');
+$router->get('/programListPublish', 'med_programController@list_publish');
 $router->get('/programListTahun', 'med_programController@listtahun');
 $router->get('/programListPdf', 'med_programController@listpdf');
 $router->get('/programListBergambar', 'med_programController@listbergambar');
@@ -344,7 +345,9 @@ $router->post('/programUpload/{id}', 'med_programController@upload');
 $router->post('/programUpload2/{id}', 'med_programController@upload2');
 // $router->post('/programUploadExt/{id}', 'med_programController@extension');
 $router->post('/programDelete', 'med_programController@delete');
-$router->post('/searchProgram', 'med_programContrller@search');
+$router->post('/searchProgram', 'med_programController@search');
+$router->post('/program/publish', 'med_programController@publish');
+$router->post('/program/unpublish', 'med_programController@unpublish');
 
 // kategoriprogram api
 $router->post('/addKategoriprogram', 'med_kategoriprogramController@register');

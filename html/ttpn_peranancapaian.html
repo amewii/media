@@ -2,7 +2,7 @@
 <div class="row justify-content-between align-items-center mb-10">
 
     <!-- Page Heading Start -->
-    <div class="col-12 col-lg-auto mb-20">
+    <div class="col-12 col-lg-auto mb-20 ml-3">
         <div class="page-heading">
             <h3 class="title">Pentadbir <span>/ Tetapan</span><span>/ Peranan & Capaian</span></h3>
         </div>
@@ -94,12 +94,12 @@
             <form role="form" id="registerPeranan">
                 <div class="modal-header">
                     <h5 class="modal-title">Daftar Rekod Peranan</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <p>
                         <div class="col-12 mb-20">
-                            <label for="nama_peranan">Nama Peranan</label>
+                            <label for="nama_peranan"><small class="text-danger">*</small>&nbsp;Nama Peranan</label>
                             <input type="text" class="form-control" id="nama_peranan">
                         </div>
                         <div class="col-6 mb-20">
@@ -110,7 +110,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
-                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                    <button class="button button-danger" data-dismiss="modal"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
         </div>
@@ -124,12 +124,12 @@
             <form role="form" id="updatePeranan">
                 <div class="modal-header">
                     <h5 class="modal-title">Kemaskini Rekod Peranan</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <p>
                         <div class="col-12 mb-20">
-                            <label for="nama_peranan">Nama Peranan</label>
+                            <label for="nama_peranan"><small class="text-danger">*</small>&nbsp;Nama Peranan</label>
                             <input type="text" class="form-control hidden" id="upt_id">
                             <input type="text" class="form-control" id="upt_nama_peranan">
                         </div>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
-                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                    <button class="button button-danger" data-dismiss="modal"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
         </div>
@@ -154,7 +154,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 Semak Pengguna
-                <button type="button" class="close"  data-dismiss="modal" onclick="resetForm();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -256,7 +256,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit" id="daftar"><i id="icon_Ya" class="ti-check"></i> Simpan</button>
-                    <button class="button button-white" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                    <button class="button button-white" data-dismiss="modal"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
         </div>
@@ -271,7 +271,7 @@
             <form role="form" id="registerCapaian">
                 <div class="modal-header">
                     <h5 class="modal-title">Daftar Rekod Capaian</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -282,36 +282,36 @@
                     <hr>
                     <div class="row">
                         <div class="col-6 mb-20">
-                            <label for="FK_users">Pegawai</label>
+                            <label for="FK_users"><small class="text-danger">*</small>&nbsp;Pegawai</label>
                             <input list="FK_userss" id="FK_users" class="form-control">
                             <datalist id="FK_userss"></datalist>
                             <input type="text" id="FK_user" class="hidden">
                         </div>
                         <div class="col-md-6 mb-20">
-                            <label for="FK_kampus">Kampus</label>
+                            <label for="FK_kampus"><small class="text-danger">*</small>&nbsp;Kampus</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_kampus"></select>
                         </div>
                         <div class="col-md-6 mb-20">
-                            <label for="FK_kluster">Kluster</label>
+                            <label for="FK_kluster"><small class="text-danger">*</small>&nbsp;Program / Pusat</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_kluster"></select>
                         </div>
-                        <div class="col-md-6 mb-20">
-                            <label for="FK_subkluster">Sub Kluster</label>
+                        <div class="col-md-6 mb-20 hidden">
+                            <label for="FK_subkluster"><small class="text-danger">*</small>&nbsp;Sub Kluster</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_subkluster"></select>
                         </div>
-                        <div class="col-md-6 mb-20">
-                            <label for="FK_unit">Unit</label>
+                        <div class="col-md-6 mb-20 hidden">
+                            <label for="FK_unit"><small class="text-danger">*</small>&nbsp;Unit</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="FK_unit"></select>
                         </div>
                         <div class="col-md-6 mb-20">
-                            <label for="FK_peranan">Peranan</label>
+                            <label for="FK_peranan"><small class="text-danger">*</small>&nbsp;Peranan</label>
                             <select class="form-control c-select" required id="FK_peranan"></select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
-                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                    <button class="button button-danger" data-dismiss="modal"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
         </div>
@@ -324,27 +324,27 @@
             <form role="form" id="updateCapaian">
                 <div class="modal-header">
                     <h5 class="modal-title">Kemaskini Rekod Capaian</h5>
-                    <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <p>
                         <div class="col-12 mb-20">
-                            <label for="FK_users">Pegawai</label>
+                            <label for="FK_users"><small class="text-danger">*</small>&nbsp;Pegawai</label>
                             <input list="FK_userss" id="upt_FK_users" class="form-control" readonly>
                             <datalist id="FK_userss"></datalist>
                             <input type="text" id="upt_FK_user_capaian" class="hidden">
                             <input type="text" id="upt_id_capaian" class="hidden">
                         </div>
                         <div class="col-12 mb-20">
-                            <label for="FK_kampus">Kampus</label>
+                            <label for="FK_kampus"><small class="text-danger">*</small>&nbsp;Kampus</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_kampus"></select>
                         </div>
                         <div class="col-12 mb-20">
-                            <label for="FK_kluster">Kluster</label>
+                            <label for="FK_kluster"><small class="text-danger">*</small>&nbsp;Program / Pusat</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_kluster"></select>
                         </div>
-                        <div class="col-12 mb-20">
-                            <label for="FK_subkluster">Subkluster</label>
+                        <div class="col-12 mb-20 hidden">
+                            <label for="FK_subkluster"><small class="text-danger">*</small>&nbsp;Subkluster</label>
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_subkluster"></select>
                         </div>
                         <div class="col-12 mb-20 hidden">
@@ -352,14 +352,14 @@
                             <select tabindex="-1" aria-disabled="true" class="form-control c-select" id="upt_FK_unit"></select>
                         </div>
                         <div class="col-12 mb-20">
-                            <label for="FK_peranan">Peranan</label>
+                            <label for="FK_peranan"><small class="text-danger">*</small>&nbsp;Peranan</label>
                             <select class="form-control c-select" required id="upt_FK_peranan"></select>
                         </div>
                     </p>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
-                    <button class="button button-danger" data-dismiss="modal" onclick="resetForm();"><i class="ti-close"></i>Tutup</button>
+                    <button class="button button-danger" data-dismiss="modal"><i class="ti-close"></i>Tutup</button>
                 </div>
             </form>
         </div>

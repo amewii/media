@@ -115,8 +115,9 @@ function listVip() {
 }
 
 function listProgram() {
-  var obj = new get(host+`programList`,window.sessionStorage.token).execute();
+  var obj = new get(host+`programListPublish`,window.sessionStorage.token).execute();
   if(obj.success){
+    console.log(obj);
     var data = obj.data;
     $("#nama_program").empty();
     $.each(data, function (i, item) {
@@ -175,20 +176,13 @@ function loadHalamanUtama() {
 function loadSenaraiProgramBergambar(varAPI, varAppend) {
   var obj = new get(host+varAPI,window.sessionStorage.token).execute();
   if(obj.success){
+    console.log(obj);
     var data = obj.data;
     $.each(data, function (f, field) {
       imgsrc = "";
       if (field.media_path != null) {
         img = JSON.parse(field.media_path);
-        bil = 0;
-        $.each(img, function (i2, field2) {
-          while (bil < 1) {
-            imgsrc = field2.images;
-            // console.log(imgsrc);
-            bil++;
-          }
-        });
-        // console.log(img);
+        imgsrc = img[0].images;
       }
       t_program = new Date(field.tarikh_program);
 
@@ -375,9 +369,9 @@ function detail_media(indexs, varType) {
     size = media_path.length;
 
     let bil = 0;
-    $.each(media_path, function (i, field) {
+    $.each(media_path, function (f, field) {
       var preview = "";
-      bil++;
+      // bil++;
       let ext = field.images.split(".");
       let vip = "";
       if (field.FK_vip != undefined) {
@@ -387,9 +381,9 @@ function detail_media(indexs, varType) {
       if (varType == 1) {
         if (ext[1] != "mp4" && ext[1] != "mov") {
           preview =
-            '<img class="img-fluid"  style="height:225px" src="api_asdcm/public/uploads/' +
+            '<img class="img-fluid"  style="height:50%" src="api_asdcm/public/uploads/' +
             field.images +
-            '" alt="">';
+            '" alt="JING">';
 
           data_programs =
             '<div class="pic-view">' +
@@ -416,8 +410,15 @@ function detail_media(indexs, varType) {
             "</div>" +
             '</label>' +
             "</div>";
-          $("#bilangan_media").text(bil);
-          $("#checkboxmedia").append(data_programs);
+          if(data.media_path_2){
+            $.each(data.media_path_2,function(i,item){
+              if(item == field.images){
+                bil++;
+                $("#bilangan_media").text(bil);
+                $("#checkboxmedia").append(data_programs);
+              }
+            })
+          }
         }
       } else {
         if (ext[1] == "mp4" || ext[1] == "mov") {
@@ -455,9 +456,15 @@ function detail_media(indexs, varType) {
             "</div>" +
             "</div>" +
             "</div>";
-
-          $("#bilangan_media").text(bil);
-          $("#checkboxmedia").append(data_programs);
+          if(data.media_path_2){
+            $.each(data.media_path_2,function(i,item){
+              if(item == field.images){
+                bil++;
+                $("#bilangan_media").text(bil);
+                $("#checkboxmedia").append(data_programs);
+              }
+            })
+          }
           getThumbnail(field.images);
         }
       }
