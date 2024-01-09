@@ -23,7 +23,21 @@ $("#login").on("submit", function (e) {
       window.sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
       sessionStorage.browser = getBrowser();
       saveLog(data.id_users, "Login.", window.sessionStorage.browser);
-      window.location.replace("../");
+      if(no_kad_pengenalan == katalaluan){
+        swal({
+            title: "Keselamatan Akaun",
+            text: "Katalaluan Anda Tidak Selamat. Sila Ubah Katalaluan Untuk Meneruskan Sesi",
+            type: "info",
+            closeOnConfirm: true,
+            allowOutsideClick: false,
+            html: false
+        }).then(function () {
+            $("#no_kad_pengenalan_update_password").val(no_kad_pengenalan);
+            $("#modal_updatePassword").modal('show');
+        });
+      } else {
+          window.location.replace("../"); 
+      }
     } else {
       swal({
         title: "Log Masuk",
@@ -82,3 +96,72 @@ function getBrowser() {
   })(window.navigator.userAgent.toLowerCase());
   return browserName;
 }
+
+$("#updatePassword").on('submit',function(e){
+  let $this = $(this);
+  if (!confirmed) {
+      e.preventDefault();
+      let no_kad_pengenalan = $("#no_kad_pengenalan_update_password").val();
+      let katalaluan = $("#katalaluan_update_password").val();
+
+      var form = new FormData();
+      form.append("no_kad_pengenalan",no_kad_pengenalan);
+      form.append("katalaluan",katalaluan);
+
+      // console.log(nama_user)
+      var settings = {
+          "url": host+"usersReset",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+              "Authorization": "media " + window.sessionStorage.token
+          },
+          "processData": false,
+          "mimeType": "multipart/form-data",
+          "contentType": false,
+          "data": form
+      };
+
+      $.ajax(settings).done(function (response) {
+          // console.log(response);
+          result = JSON.parse(response);
+          // console.log(result);
+          if (!result.success) {            
+              swal({
+                  title: "Kemaskini Katalaluan",
+                  text: "Gagal!",
+                  type: "error",
+                  closeOnConfirm: true,
+                  allowOutsideClick: false,
+                  html: false
+              }).then(function(){
+                  sessionStorage.token = result.token;
+                  window.location.reload();
+              });
+          } else  {    
+              swal({
+                  title: "Kemaskini Katalaluan",
+                  text: "Katalaluan telah disetsemula. Sila log masuk menggunakan katalaluan baharu.",
+                  type: "success",
+                  closeOnConfirm: true,
+                  allowOutsideClick: false,
+                  html: false
+              }).then(function(){
+                  window.sessionStorage.clear();
+                  window.localStorage.clear();
+                  // SERVER
+                  window.location.replace('https://admin.media.intan.my');
+                  
+                  // LOCALHOST
+                  // window.location.reload();
+              });
+          }
+      });
+  }
+});
+
+$('.toggle-password').click(function(){
+    $(this).children().toggleClass('fa-eye fa-eye-slash');
+    let input = $(this).prev();
+    input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+});

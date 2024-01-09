@@ -55,7 +55,7 @@ function load_image() {
   console.log(obj);
   if(obj.success){
     let data = obj.data;
-
+    console.log(data);
     $("#bg_add").css("background-image", "url(" + dir + "" + data[9] + ")");
     $("#bg-img0").css(
       "background-image",
