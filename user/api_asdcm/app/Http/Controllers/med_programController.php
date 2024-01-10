@@ -138,7 +138,7 @@ class med_programController extends Controller
                 } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
                     $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
-                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/user/api_asdcm/public/uploads/";
                 }
             }
             $new_file = array();
