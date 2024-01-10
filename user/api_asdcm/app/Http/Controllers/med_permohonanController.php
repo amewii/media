@@ -266,18 +266,30 @@ class med_permohonanController extends Controller
                                                 join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
                                                 join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                                 where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
-                                                where('med_permohonan.flag_vip',1) ->
+                                                // where('med_permohonan.flag_vip',1) ->
                                                 orderBy('id_permohonan', 'desc') ->
                                                 get(); // list all data
         }
         
 
-        if ($med_permohonan)   {
+        if (sizeof($med_permohonan)>0)   {
+            for($i=0;$i<sizeof($med_permohonan);$i++){
+                $obj_created_by = med_users::where('id_users',$med_permohonan[$i]->created_by)->first();
+                if($obj_created_by){
+                    $med_permohonan[$i]->created_by_users = $obj_created_by;
+                }
+            }
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
                 'data'=>$med_permohonan
             ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>"List Failed!",
+                'data'=>''
+            ],400);
         }
         
     }

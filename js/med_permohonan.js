@@ -52,7 +52,7 @@ function listPermohonan() {
         breakpoints: "md sm xs",
       },
       { name: "tarikh_luput", title: "Tarikh Luput", breakpoints: "md sm xs" },
-      { name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs" },
+      // { name: "nama_pegawai", title: "Nama Pegawai", breakpoints: "md sm xs" },
       { name: "nama_status", title: "Status", breakpoints: "md sm xs" },
       { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
       // {"name":"status","title":"Status","breakpoints":"sm xs"}
@@ -73,6 +73,8 @@ function listPermohonan() {
       // {"name":"status","title":"Status","breakpoints":"sm xs"}
     ];
   }
+  var list = [];
+  let bil = 1;
 
   var obj = new get(host+`permohonanListFilter/`+FK_peranan_master+`/`+FK_kluster_master,window.sessionStorage.token);
   if (FK_peranan_master == 1) {
@@ -80,12 +82,10 @@ function listPermohonan() {
   }
   obj = obj.execute();
   if(obj.success){
-    // console.log(obj.data);
+    console.log(obj.data);
     let convertList = JSON.stringify(obj.data);
 
     $("#dataList").val(convertList);
-    var list = [];
-    let bil = 1;
     $.each(obj.data, function (f, field) {
       t_permohonan = new Date(field.tarikh_permohonan);
       if (field.tarikh_luput == null) {
@@ -164,6 +164,7 @@ function listPermohonan() {
           ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
           field.id_permohonan +
           '\')"><i class="ti-trash"></i>',
+        nama_pegawai: field.created_by_users.nama
       });
     });
   } else {

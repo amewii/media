@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\med_program;
+use App\Models\med_users;
 
 class med_programController extends Controller
 {
@@ -426,12 +427,26 @@ class med_programController extends Controller
                                     orderby('id_program','DESC')->
                                     get(); // list all data
 
-        if ($med_program)   {
+        if (sizeof($med_program)>0)   {
+            for($i=0;$i<sizeof($med_program);$i++){
+                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')->where('med_program.id_program',$med_program[$i]->id_program)->first();
+                if($obj_created_by){
+                    $med_program[$i]->created_by_users = $obj_created_by;
+                }
+            }
             return response()->json([
-                'success'=>'true',
+                'success'=>true,
                 'message'=>'List Success!',
                 'data'=>$med_program
             ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
         }
         
     }
@@ -447,7 +462,13 @@ class med_programController extends Controller
                                     orderby('id_program','DESC')->
                                     get(); // list all data
 
-        if ($med_program)   {
+        if (sizeof($med_program)>0)   {
+            for($i=0;$i<sizeof($med_program);$i++){
+                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')->where('med_program.id_program',$med_program[$i]->id_program)->first();
+                if($obj_created_by){
+                    $med_program[$i]->created_by_users = $obj_created_by;
+                }
+            }
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
@@ -676,7 +697,8 @@ class med_programController extends Controller
 
         $flag_exist = 0;
         $fileName = $request->file('file')->getClientOriginalName();
-        $fileName = $id . '_' . rand();
+        $extension = explode('.',$fileName)[1];
+        $fileName = $id . '_' . rand() . "." .$extension;
 
         // $path = 'programUpload';
         // $path = '/uploads';

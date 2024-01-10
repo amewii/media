@@ -38,11 +38,33 @@ function tableProgram() {
     {name: "nama_kategori", title: "Kategori Program", breakpoints: "md sm xs",},
     // { "name": "butiran_program", "title": "Butiran Program" },
     // { "name": "gambar", "title": "Gambar Program", "breakpoints": "md sm xs" },
-    {name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs",},
-    { name: "status_rekod", title: "Status" },
-    { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
+    // {name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs",},
     // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
+
+  if(window.sessionStorage.FK_peranan == 1){
+    colums.push({
+      name: "nama_pegawai", 
+      title: "Nama Pegawai", 
+      breakpoints: "md sm xs"
+    });
+  }
+  
+  colums.push({
+    name: "status_publish", 
+    title: "Status Siar"
+  });
+  
+  // colums.push({
+  //   name: "status_rekod", 
+  //   title: "Status"
+  // });
+  
+  colums.push({
+    name: "upt_btn", 
+    title: "Tindakan",
+    breakpoints: "md sm xs"
+  });
 
   var settings = {};
   if (window.sessionStorage.FK_peranan != 2) {
@@ -51,6 +73,7 @@ function tableProgram() {
     var obj = new get(host+`programListKluster/`+FK_kluster_master,window.sessionStorage.token).execute();
   }
   if(obj.success){
+    console.log(obj);
     let convertList = JSON.stringify(obj.data);
     $("#dataList").val(convertList);
     var list = [];
@@ -66,6 +89,10 @@ function tableProgram() {
       } else {
         badge = "badge-danger";
         text_statusrekod = "Tidak Aktif";
+      }
+      var status_publish = `<span class="badge badge-secondary" style="font-size: 14px">BELUM SIAR</span>`;
+      if(field.status_publish == 1){
+        status_publish = `<span class="badge  badge-success" style="font-size: 14px;">Siar</span>`;
       }
       if (window.sessionStorage.control_program_media_U2 == 1) {
         list.push({
@@ -109,6 +136,7 @@ function tableProgram() {
           saiz_fail: field.saiz_fail,
           bil: bil++,
           nama_kampus: `<p style="white-space: pre-line;">`+field.nama_kampus + `</p>`,
+          status_publish: status_publish,
           status_rekod:
             '<label class="adomx-switch-2 success"><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
             checked +
@@ -172,6 +200,7 @@ function tableProgram() {
           nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
           saiz_fail: field.saiz_fail,
           bil: bil++,
+          status_publish: status_publish,
           status_rekod:
             '<label class="adomx-switch-2 success"><span id="text_statusrekod' +
             field.id_program +
@@ -181,11 +210,8 @@ function tableProgram() {
             text_statusrekod +
             "</span></label>",
           upt_btn:
-            ' <button class="button button-box button-sm button-info" title="Terperinci" onclick="detail(\'' +
-            field.id_program +
-            "','" +
-            i +
-            '\')" id="btnPerincian"><i class="ti-menu"></i></button>',
+            ` <button class="button button-box button-sm button-info" title="Terperinci" onclick="detail('`+field.id_program+`','`+i+`')" id="btnPerincian"><i class="ti-arrow-right" style="font-weight: 900;"></i></button>`,
+          nama_pegawai: field.created_by_users.nama
         });
       }
     });
