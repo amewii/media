@@ -158,6 +158,7 @@ function tableProgram() {
             "','" +
             i +
             '\')" id="btnPerinncian"><i class="ti-menu"></i></button>',
+          nama_pegawai: field.created_by_users.nama
         });
       } else {
         list.push({
