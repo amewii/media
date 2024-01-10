@@ -130,15 +130,18 @@ class med_programController extends Controller
                                     where('med_program.id_program',$id)->first();
 
         if ($med_program)   {
-            if($_SERVER['SERVER_PORT'] == "8081"){
-                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
-            } else {
-                if($_SERVER["HTTP_HOST"] == "localhost"){
-                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
-                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-                } else {
-                    $host = "https://".$_SERVER["HTTP_HOST"]."/user/api_asdcm/public/uploads/";
+            $dir = '../public/uploads/';
+    
+            $list = [];
+    
+            if (is_dir($dir)) {
+                if ($dh = opendir($dir)) {
+    
+                    while (($file = readdir($dh)) !== false) {
+                        array_push($list,$file);
+                    }
+                    closedir($dh);
+    
                 }
             }
             $new_file = array();
@@ -146,20 +149,12 @@ class med_programController extends Controller
                 $file = json_decode($med_program->media_path);
                 if(sizeof($file)>0){
                     for($j=0;$j<sizeof($file);$j++){
-                        $url = $host.$file[$j]->images;
-                        $handle = curl_init($url);
-                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-                        
-                        /* Get the HTML or whatever is linked in $url. */
-                        $response = curl_exec($handle);
-                        
-                        /* Check for 404 (file not found). */
-                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        if($httpCode != 404) {
-                            array_push($new_file,$file[$j]->images);
+                        for($k=0;$k<sizeof($list);$k++){
+                            if($list[$k] == $file[$j]->images){
+                                array_push($new_file,$file[$j]->images);
+                                break;
+                            }
                         }
-                        
-                        curl_close($handle);
                     }
                 }
             }
