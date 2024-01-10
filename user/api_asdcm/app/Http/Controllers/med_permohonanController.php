@@ -203,6 +203,12 @@ class med_permohonanController extends Controller
                                             
 
         if (sizeof($med_permohonan)>0)   {
+            for($i=0;$i<sizeof($med_permohonan);$i++){
+                $obj_created_by = med_users::where('id_users',$med_permohonan[$i]->created_by)->first();
+                if($obj_created_by){
+                    $med_permohonan[$i]->created_by_users = $obj_created_by;
+                }
+            }
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
