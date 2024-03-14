@@ -92,9 +92,9 @@ class med_programController extends Controller
             $med_program = $med_program -> where('med_program.FK_kluster',$FK_kluster);
         }
         if($tahun_program != '') {
-            $med_program = $med_program -> where(med_program::raw('substr(tarikh_program,1,4)'),date('Y',strtotime($tahun_program)));
-        }        
-
+            $med_program = $med_program->whereRaw('YEAR(tarikh_program) = ?', [$tahun_program]);
+        }
+        
         $med_program = $med_program -> get();
 
         if ($med_program)   {
