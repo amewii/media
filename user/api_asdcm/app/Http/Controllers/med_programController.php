@@ -70,8 +70,8 @@ class med_programController extends Controller
                                         join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                                         join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                         join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-                                        join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
-                                        join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit');        
+                                        join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster');
+                                        // join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit');        
 
         if($FK_kategori != '') {
             $med_program = $med_program -> where('FK_kategori',$FK_kategori);
