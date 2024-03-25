@@ -192,15 +192,16 @@ class med_permohonanController extends Controller
     }
 
     public function list()  {
-        $med_permohonan = med_permohonan::  leftjoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                            leftjoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
-                                            leftjoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
-                                            leftjoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
-                                            where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
-                                            orderBy('id_permohonan', 'desc') ->
-                                            get(); // list all data
-
-                                            
+        $med_permohonan = med_permohonan::  leftjoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') 
+                                            ->leftJoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program')
+                                            ->leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
+                                            ->leftJoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan')
+                                            ->leftJoin('med_jenispengguna', 'med_jenispengguna.id_jenispengguna', '=', 'med_users.FK_jenis_pengguna')
+                                            ->where('med_users.statusrekod', '1')
+                                            ->where('med_permohonan.statusrekod', '1')
+                                            ->orderBy('id_permohonan', 'desc')
+                                            ->get();
+                
 
         if (sizeof($med_permohonan)>0)   {
             for($i=0;$i<sizeof($med_permohonan);$i++){
@@ -217,6 +218,66 @@ class med_permohonanController extends Controller
         }
         
     }
+
+    
+    public function laporan_permohonan(Request $request) {
+        $FK_jenis_pengguna = $request->input('FK_jenis_pengguna');
+        $FK_status = $request->input('FK_status');
+        $tahun_permohonan = $request->input('tahun_permohonan');
+        $tarikh_permohonan = $request->input('tarikh_permohonan');
+
+    
+        $query = med_permohonan::select( 'med_permohonan.*', 
+                                        'med_users.*', 
+                                        'med_program.*', 
+                                        'med_kampus.*', 
+                                        'med_status.*', 
+                                        'med_jenispengguna.*')
+                                ->leftJoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users')
+                                ->leftJoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program')
+                                ->leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
+                                ->leftJoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan')
+                                ->leftJoin('med_jenispengguna', 'med_jenispengguna.id_jenispengguna', '=', 'med_users.FK_jenis_pengguna');
+    
+        if ($FK_jenis_pengguna) {
+            $query->where('med_users.FK_jenis_pengguna', $FK_jenis_pengguna);
+        }
+
+        if ($FK_status) {
+            $query->where('med_permohonan.status_permohonan', $FK_status);
+        }
+    
+        if ($tahun_permohonan) {
+            $query->whereYear('med_permohonan.tarikh_permohonan', $tahun_permohonan);
+        }
+    
+        if ($tarikh_permohonan) {
+            $query->whereDate('med_permohonan.tarikh_permohonan', $tarikh_permohonan);
+        }
+        
+        $med_permohonan = $query->where('med_users.statusrekod', '1')
+                                ->where('med_permohonan.statusrekod', '1')
+                                ->orderBy('med_permohonan.id_permohonan', 'desc')
+                                ->get();
+
+
+        if ($med_permohonan) {
+            return response()->json([
+                'success' => true,
+                'message' => 'List Success!',
+                'data' => $med_permohonan
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No records found.',
+                'data' => []
+            ], 404);
+        }
+    }
+    
+
+
 
     public function listStatistik()  {
         $med_permohonan = med_permohonan::  select(med_permohonan::raw("count(id_permohonan) as bil_permohonan"), med_permohonan::raw("substr(tarikh_permohonan,6,2) as bulan")) ->

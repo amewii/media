@@ -2,11 +2,11 @@
     <div class="box">
 
         <div class="box-head">
-            <h3 class="title">Carian</h3>
+            <h3 class="title">Laporan Permohonan</h3>
         </div>
 
         <div class="box-body">
-            <div class="accordion" id="laporanProgram">
+            <div class="accordion" id="laporanPermohonan">
 
                 <!--Card Start-->
                 <div class="card">
@@ -18,9 +18,9 @@
                     <!--Card Header End-->
 
                     <!--Collapse Start-->
-                    <div id="collapseCarian" class="collapse show" data-parent="#laporanProgram">
+                    <div class="container-fluid" data-parent="#laporanPermohonan">
                         <div class="card-body">                            
-                            <form role="form" id="carian">
+                            <form role="form" id="carian_permohonan">
                                 <div class="row mbn-20">
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-20">
                                         <label for="FK_jenis_pengguna">Kategori Pengguna</label>
@@ -60,21 +60,24 @@
                     <!--Card Header End-->
 
                     <!--Collapse Start-->
-                    <div id="collapseMaklumat" class="collapse" data-parent="#laporanProgram">
+                    <div class="container-fluid" data-parent="#laporanPermohonan">
                         <div class="card-body">
-                            <div id="tableProgram">
-                                <textarea class="hidden" id="dataListProgram"></textarea>
-                                <table id="listProgram" class="table"></table>
+                            <div id="tablePermohonan" class="table-responsive">
+                                <textarea class="hidden" id="dataListPermohonan"></textarea>
+                                <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 listPermohonan-length"></span></h6>
+
+                                <table id="listPermohonan" class="table mb-3"></table>
                             </div>
                         </div>
                     </div>
+
                     <!--Collapse End-->
 
                 </div>
                 <!--Card End-->
 
                 <!--Card Start-->
-                <div class="card">
+                <div class="card d-none">
 
                     <!--Card Header Start-->
                     <div class="card-header">

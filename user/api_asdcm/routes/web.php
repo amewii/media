@@ -311,6 +311,7 @@ $router->get('/permohonan/{id}', 'med_permohonanController@showGet');
 $router->get('/permohonanByUsers/{FK_users}', 'med_permohonanController@showGetUsers');
 $router->get('/permohonanByUsersNotification/{FK_users}', 'med_permohonanController@showGetUsersNotification');
 $router->get('/permohonanList', 'med_permohonanController@list');
+$router->post('/permohonanLaporan', 'med_permohonanController@laporan_permohonan');
 $router->get('/permohonanListStatistik', 'med_permohonanController@listStatistik');
 $router->get('/permohonanListPermohonanGraf/{bulan}', 'med_permohonanController@listPermohonanGraf');
 $router->get('/permohonanListFilter/{FK_peranan}/{FK_kluster}', 'med_permohonanController@listFilter');
