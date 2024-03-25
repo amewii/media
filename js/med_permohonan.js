@@ -164,7 +164,7 @@ function listPermohonan() {
           ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
           field.id_permohonan +
           '\')"><i class="ti-trash"></i>',
-        nama_pegawai: field.created_by_users.nama
+        // nama_pegawai: field.created_by_users.nama
       });
     });
   } else {
