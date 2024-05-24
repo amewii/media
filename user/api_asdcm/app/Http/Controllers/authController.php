@@ -303,22 +303,30 @@ class authController extends Controller
                                     <a href="'.$tetapan_mail->link_sistem.$landing_page.'/?temp='.$enc_link.'">Set Semula Katalaluan</a><br><br>
                                     Terima kasih.';
                 $mail->AltBody = 'Alternate Message';
-                // if(!$mail->send()) {
-                //     // dd("Mailer Error: " . $mail->ErrorInfo);
-                //     return response()->json([
-                //         'success'=>true,
-                //         'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                //         'data'=>''
-                //     ],200);
-                //     // exit;
-                // }
-                // else {
-                //     return response()->json([
-                //         'success'=>true,
-                //         'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
-                //         'data'=>''
-                //     ],200);
-                // }
+                if($tetapan_mail->mail_username == 'localhost'){
+                    return response()->json([
+                        'success'=>true,
+                        'message'=>'LOCALHOST: Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                        'data'=>'',
+                    ],200);
+                } else {
+                    if(!$mail->send()) {
+        //                dd("Mailer Error: " . $mail->ErrorInfo);
+                        return response()->json([
+                            'success'=>true,
+                            'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
+                            'data'=>'',
+                        ],200);
+                    } 
+                    else {
+                        // dd("Mailer Error: " . $mail->ErrorInfo);
+                        return response()->json([
+                            'success'=>true,
+                            'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                            'data'=>'',
+                        ],200);
+                    }
+                }
                 return response()->json([
                     'success'=>true,
                     'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
