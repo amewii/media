@@ -96,80 +96,131 @@ $("#send_noic").on("submit", function (e) {
             $("#semak_btn").prop("disabled", false);
             $("#icon_semak").prop("class", "fa fa-search");
           } else {
-            check_usersIntan(noic, function () {
-              if (obj_usersIntan == "") {
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-                swal({
-                  title: "Daftar Pengguna",
-                  text: "Bukan Pengguna Dalaman INTAN",
-                  confirmButtonText: "OK",
-                  closeOnConfirm: true,
-                  allowOutsideClick: false,
-                  html: false,
-                }).then(function () {
-                  $("#check_noic").modal("hide");
-                  $("#noic_check").val("");
-                });
-              } else {
-                var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
-                $.each(kampus,function(i,item){
-                  if(item == "INTIM"){
-                    $("#FK_kampus_add").val('1');
-                    return false;
-                  }
-                  if(item == "INTURA"){
-                    $("#FK_kampus_add").val('2');
-                    return false;
-                  }
-                  if(item == "IKWAS"){
-                    $("#FK_kampus_add").val('3');
-                    return false;
-                  }
-                  if(item == "INTAN SABAH"){
-                    $("#FK_kampus_add").val('4');
-                    return false;
-                  }
-                  if(item == "INTAN SARAWAK"){
-                    $("#FK_kampus_add").val('5');
-                    return false;
-                  }
-                  if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
-                    $("#FK_kampus_add").val('11');
-                    return false;
-                  }
-                });
-                $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
-                $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
-                  // console.log(item);
-                  // if(item == )
-                });
-                $("#nama_text_add").text(obj_hrmis.peribadi.nama);
-                $("#noic_text_add").text(obj_hrmis.peribadi.icno);
-                $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
-                $("#nama_jawatan_add").val(
-                  obj_hrmis.perkhidmatan.schmofservtitle
-                );
-                $("#nama_add").val(obj_hrmis.peribadi.nama);
-                $("#emel_add").val(obj_hrmis.peribadi.COEmail);
-                $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
-                $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
-                $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
-                $("#noic_check").val("");
-                $("#check_noic").modal("hide");
-                $("#register_users").modal("show");
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-
-                // $.each(obj_usersIntan,function(i,field){
-                //     ezxsSubKluster(field.post.bahagian);
-                // });
+            var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
+            $.each(kampus,function(i,item){
+              if(item == "INTIM"){
+                $("#FK_kampus_add").val('1');
+                return false;
+              }
+              if(item == "INTURA"){
+                $("#FK_kampus_add").val('2');
+                return false;
+              }
+              if(item == "IKWAS"){
+                $("#FK_kampus_add").val('3');
+                return false;
+              }
+              if(item == "INTAN SABAH"){
+                $("#FK_kampus_add").val('4');
+                return false;
+              }
+              if(item == "INTAN SARAWAK"){
+                $("#FK_kampus_add").val('5');
+                return false;
+              }
+              if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
+                $("#FK_kampus_add").val('11');
+                return false;
               }
             });
+            $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
+            $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
+              // console.log(item);
+              // if(item == )
+            });
+            $("#nama_text_add").text(obj_hrmis.peribadi.nama);
+            $("#noic_text_add").text(obj_hrmis.peribadi.icno);
+            $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
+            $("#nama_jawatan_add").val(
+              obj_hrmis.perkhidmatan.schmofservtitle
+            );
+            $("#nama_add").val(obj_hrmis.peribadi.nama);
+            $("#emel_add").val(obj_hrmis.peribadi.COEmail);
+            $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
+            $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
+            $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
+            $("#noic_check").val("");
+            $("#check_noic").modal("hide");
+            $("#register_users").modal("show");
+            $("#noic_check").prop("disabled", false);
+            $("#semak_btn").prop("disabled", false);
+            $("#icon_semak").prop("class", "fa fa-search");
+            // check_usersIntan(noic, function () {
+            //   if (obj_usersIntan == "") {
+            //     $("#noic_check").prop("disabled", false);
+            //     $("#semak_btn").prop("disabled", false);
+            //     $("#icon_semak").prop("class", "fa fa-search");
+            //     swal({
+            //       title: "Daftar Pengguna",
+            //       text: "Bukan Pengguna Dalaman INTAN",
+            //       confirmButtonText: "OK",
+            //       closeOnConfirm: true,
+            //       allowOutsideClick: false,
+            //       html: false,
+            //     }).then(function () {
+            //       $("#check_noic").modal("hide");
+            //       $("#noic_check").val("");
+            //     });
+            //   } else {
+            //     var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
+            //     $.each(kampus,function(i,item){
+            //       if(item == "INTIM"){
+            //         $("#FK_kampus_add").val('1');
+            //         return false;
+            //       }
+            //       if(item == "INTURA"){
+            //         $("#FK_kampus_add").val('2');
+            //         return false;
+            //       }
+            //       if(item == "IKWAS"){
+            //         $("#FK_kampus_add").val('3');
+            //         return false;
+            //       }
+            //       if(item == "INTAN SABAH"){
+            //         $("#FK_kampus_add").val('4');
+            //         return false;
+            //       }
+            //       if(item == "INTAN SARAWAK"){
+            //         $("#FK_kampus_add").val('5');
+            //         return false;
+            //       }
+            //       if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
+            //         $("#FK_kampus_add").val('11');
+            //         return false;
+            //       }
+            //     });
+            //     $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
+            //     $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
+            //       // console.log(item);
+            //       // if(item == )
+            //     });
+            //     $("#nama_text_add").text(obj_hrmis.peribadi.nama);
+            //     $("#noic_text_add").text(obj_hrmis.peribadi.icno);
+            //     $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
+            //     $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
+            //     $("#nama_jawatan_add").val(
+            //       obj_hrmis.perkhidmatan.schmofservtitle
+            //     );
+            //     $("#nama_add").val(obj_hrmis.peribadi.nama);
+            //     $("#emel_add").val(obj_hrmis.peribadi.COEmail);
+            //     $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
+            //     $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
+            //     $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
+            //     $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
+            //     $("#noic_check").val("");
+            //     $("#check_noic").modal("hide");
+            //     $("#register_users").modal("show");
+            //     $("#noic_check").prop("disabled", false);
+            //     $("#semak_btn").prop("disabled", false);
+            //     $("#icon_semak").prop("class", "fa fa-search");
+
+            //     // $.each(obj_usersIntan,function(i,field){
+            //     //     ezxsSubKluster(field.post.bahagian);
+            //     // });
+            //   }
+            // });
           }
         });
       }
