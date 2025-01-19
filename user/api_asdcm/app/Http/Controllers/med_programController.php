@@ -307,13 +307,14 @@ class med_programController extends Controller
                         $url = $host.$file[$j]->images;
 
                         $handle = curl_init($url);
+                        curl_setopt($handle, CURLOPT_TIMEOUT, 30); // 30 seconds timeout
 
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
                         
                         /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
 
-                        dd($response);
+                        // dd($response);
 
                         
                         /* Check for 404 (file not found). */
