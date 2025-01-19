@@ -296,7 +296,7 @@ class med_programController extends Controller
                         $url = $host . $file[$j]->images;
                         $handle = curl_init($url);
     
-                        dd($handle);
+                        dd($url);
                         // Disable SSL verification (for testing purposes)
                         // curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
                         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
