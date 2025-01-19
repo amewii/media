@@ -315,13 +315,12 @@ class med_programController extends Controller
                         // if($httpCode != 404) {
                         //     array_push($new_file,$file[$j]->images);
                         // }
-                                            // Disable SSL verification (if using HTTPS and there are certificate issues)
-                    curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification temporarily
                     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($handle, CURLOPT_TIMEOUT, 10); // Set a timeout for the request
 
                     $response = curl_exec($handle);
                     $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+dd($httpCode, $response, $url);
 
                     if ($httpCode != 404 && $httpCode == 200) {
                         array_push($new_file, $file[$j]->images);
