@@ -290,11 +290,14 @@ class med_programController extends Controller
             } else {
                 if($_SERVER["HTTP_HOST"] == "localhost"){
                     $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                    dd( $med_program);
+
                 } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
                     $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
                     $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
                     dd($host);
+                    dd( $med_program);
                 }
             }
             for($i=0;$i<sizeof($med_program);$i++){
