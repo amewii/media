@@ -296,8 +296,9 @@ class med_programController extends Controller
                         $url = $host . $file[$j]->images;
                         $handle = curl_init($url);
     
+                        dd($handle);
                         // Disable SSL verification (for testing purposes)
-                        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
                         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
                         curl_setopt($handle, CURLOPT_TIMEOUT, 30); // Set timeout
                         curl_setopt($handle, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
@@ -311,7 +312,7 @@ class med_programController extends Controller
     
                         // Check HTTP status code
                         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        dd($httpCode, $response); // Log HTTP status and response
+                        // dd($httpCode, $response); // Log HTTP status and response
     
                         if ($httpCode != 404 && $httpCode == 200) {
                             array_push($new_file, $file[$j]->images);
