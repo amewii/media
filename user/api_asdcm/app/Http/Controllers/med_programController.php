@@ -261,101 +261,77 @@ class med_programController extends Controller
     }
 
     public function listbergambar()  {
-        try{        // $med_program = med_program::select("*", "med_program.id_program AS PK") ->
-            //                             join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
-            //                             join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
-            //                             join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-            //                             join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-            //                             where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-            //                             orderBy('tarikh_program', 'desc') ->
-            //                             get(); // list all data
-    
-            $med_program = med_program::select("*", "med_program.id_program AS PK") ->
-                                        join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
-                                        join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
-                                        join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-                                        leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
-                                        leftjoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-                                        where('med_program.status_publish','1') -> 
-                                        where(function($q){
-                                            $q = $q->where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-                                            where('med_program.media_path','LIKE','%JPEG%')->orWhere('med_program.media_path','LIKE','%JPG%')->orWhere('med_program.media_path','LIKE','%PNG%')->orWhere('med_program.media_path','LIKE','%BMP%')->orWhere('med_program.media_path','LIKE','%GIF%');
-                                        })->
-                                        orderBy('last_uploaded_at', 'desc') ->
-                                        get(); // list all data (MIMI)
-    
-            if (sizeof($med_program)>0)   {
-                if($_SERVER['SERVER_PORT'] == "8081"){
-                    $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+        // $med_program = med_program::select("*", "med_program.id_program AS PK") ->
+        //                             join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+        //                             join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
+        //                             join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
+        //                             join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
+        //                             where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
+        //                             orderBy('tarikh_program', 'desc') ->
+        //                             get(); // list all data
+
+        $med_program = med_program::select("*", "med_program.id_program AS PK") ->
+                                    join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+                                    join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
+                                    join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
+                                    leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
+                                    leftjoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
+                                    where('med_program.status_publish','1') -> 
+                                    where(function($q){
+                                        $q = $q->where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
+                                        where('med_program.media_path','LIKE','%JPEG%')->orWhere('med_program.media_path','LIKE','%JPG%')->orWhere('med_program.media_path','LIKE','%PNG%')->orWhere('med_program.media_path','LIKE','%BMP%')->orWhere('med_program.media_path','LIKE','%GIF%');
+                                    })->
+                                    orderBy('last_uploaded_at', 'desc') ->
+                                    get(); // list all data (MIMI)
+
+        if (sizeof($med_program)>0)   {
+            if($_SERVER['SERVER_PORT'] == "8081"){
+                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+            } else {
+                if($_SERVER["HTTP_HOST"] == "localhost"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
-                    if($_SERVER["HTTP_HOST"] == "localhost"){
-                        $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-                        // dd( $med_program);
-    
-                    } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
-                        $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-                    } else {
-                        $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
-                        // dd($host);
-                    }
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
                 }
-                for($i=0;$i<sizeof($med_program);$i++){
-                    $file = json_decode($med_program[$i]->media_path);
-                    $new_file = array();
-                    if(sizeof($file)>0){
-                        for($j=0;$j<sizeof($file);$j++){
-                            $url = $host.$file[$j]->images;
-    
-                            $handle = curl_init($url);
-                            curl_setopt($handle, CURLOPT_TIMEOUT, 30); // 30 seconds timeout
-    
-                            curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-                            curl_setopt($handle, CURLOPT_VERBOSE, TRUE); // Enable verbose output
-                            /* Get the HTML or whatever is linked in $url. */
-                            $response = curl_exec($handle);
-    
-    
-                            
-                            /* Check for 404 (file not found). */
-                            $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                            // dd($httpCode);
-    
-    
-                            if($httpCode != 404) {
-                                array_push($new_file,$file[$j]->images);
-                            }
-                            
-                            curl_close($handle);
-    
+            }
+            for($i=0;$i<sizeof($med_program);$i++){
+                $file = json_decode($med_program[$i]->media_path);
+                $new_file = array();
+                if(sizeof($file)>0){
+                    for($j=0;$j<sizeof($file);$j++){
+                        $url = $host.$file[$j]->images;
+                        $handle = curl_init($url);
+                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+                        
+                        /* Get the HTML or whatever is linked in $url. */
+                        $response = curl_exec($handle);
+                        
+                        /* Check for 404 (file not found). */
+                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                        if($httpCode != 404) {
+                            array_push($new_file,$file[$j]->images);
                         }
-    
+                        
+                        curl_close($handle);
                     }
-                    $med_program[$i]->media_path_2 = $new_file;
-    
                 }
-                return response()->json([
-                    'success'=>true,
-                    'message'=>'List Success!',
-                    'data'=>$med_program
-                ],200);
+                $med_program[$i]->media_path_2 = $new_file;
             }
-    
-            else    {
-                return response()->json([
-                    'success'=>false,
-                    'message'=>'Bad Request',
-                    'data'=>$med_program
-                ],400);
-            }
-            
-    }catch (\Exception $e) {
-            // If an error occurs, log it and return a valid JSON response
-            \Log::error('Error in listbergambar method: ' . $e->getMessage());
             return response()->json([
-                'success' => false,
-                'message' => 'Internal Server Error',
-                'error' => $e->getMessage()
-            ], 500);
+                'success'=>true,
+                'message'=>'List Success!',
+                'data'=>$med_program
+            ],200);
+        }
+
+        else    {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Bad Request',
+                'data'=>$med_program
+            ],400);
         }
         
     }
