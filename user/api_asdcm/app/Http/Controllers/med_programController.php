@@ -297,30 +297,46 @@ class med_programController extends Controller
 
                 }
             }
-            for($i=0;$i<sizeof($med_program);$i++){
+            // for($i=0;$i<sizeof($med_program);$i++){
+            //     $file = json_decode($med_program[$i]->media_path);
+            //     $new_file = array();
+            //     if(sizeof($file)>0){
+            //         for($j=0;$j<sizeof($file);$j++){
+            //             $url = $host.$file[$j]->images;
+
+            //             $handle = curl_init($url);
+            //             // dd($handle);
+
+            //             curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+            //             curl_setopt($handle, CURLOPT_TIMEOUT, 30); 
+
+            //             /* Get the HTML or whatever is linked in $url. */
+            //             $response = curl_exec($handle);
+                        
+            //             /* Check for 404 (file not found). */
+            //             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            //             if($httpCode != 404) {
+            //                 array_push($new_file,$file[$j]->images);
+            //             }
+                        
+            //             curl_close($handle);
+            //         }
+            //     }
+            //     $med_program[$i]->media_path_2 = $new_file;
+            // }
+
+            for ($i = 0; $i < sizeof($med_program); $i++) {
                 $file = json_decode($med_program[$i]->media_path);
                 $new_file = array();
-                if(sizeof($file)>0){
-                    for($j=0;$j<sizeof($file);$j++){
-                        $url = $host.$file[$j]->images;
-
-                        $handle = curl_init($url);
-                        if ($handle === false) {
-                            dd('curl_init failed');
+                if (sizeof($file) > 0) {
+                    for ($j = 0; $j < sizeof($file); $j++) {
+                        $url = $host . $file[$j]->images;
+    
+                        // Check if the file exists using file_get_contents
+                        $file_headers = @get_headers($url);
+                        if($file_headers && strpos($file_headers[0], '200')) {
+                            array_push($new_file, $file[$j]->images);
                         }
-                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-                        curl_setopt($handle, CURLOPT_TIMEOUT, 30); 
-
-                        /* Get the HTML or whatever is linked in $url. */
-                        $response = curl_exec($handle);
-                        
-                        /* Check for 404 (file not found). */
-                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        if($httpCode != 404) {
-                            array_push($new_file,$file[$j]->images);
-                        }
-                        
-                        curl_close($handle);
                     }
                 }
                 $med_program[$i]->media_path_2 = $new_file;
