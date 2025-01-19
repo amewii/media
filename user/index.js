@@ -175,6 +175,7 @@ function loadHalamanUtama() {
 
 function loadSenaraiProgramBergambar(varAPI, varAppend) {
   var obj = new get(host+varAPI,window.sessionStorage.token).execute();
+  console.log(obj)
   if(obj.success){
     console.log(obj);
     var data = obj.data;
