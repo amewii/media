@@ -297,7 +297,6 @@ class med_programController extends Controller
                 } else {
                     $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
                     // dd($host);
-                    dd( $med_program);
                 }
             }
             for($i=0;$i<sizeof($med_program);$i++){
@@ -322,6 +321,8 @@ class med_programController extends Controller
                     }
                 }
                 $med_program[$i]->media_path_2 = $new_file;
+                dd( $med_program);
+
             }
             return response()->json([
                 'success'=>true,
