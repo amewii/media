@@ -332,7 +332,6 @@ class med_programController extends Controller
                     for ($j = 0; $j < sizeof($file); $j++) {
                         $url = $host . $file[$j]->images;
     
-                        // Check if the file exists using file_get_contents
                         $file_headers = @get_headers($url);
                         if($file_headers && strpos($file_headers[0], '200')) {
                             array_push($new_file, $file[$j]->images);
