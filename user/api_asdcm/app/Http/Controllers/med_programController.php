@@ -310,7 +310,7 @@ class med_programController extends Controller
                         curl_setopt($handle, CURLOPT_TIMEOUT, 30); // 30 seconds timeout
 
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-                        
+                        curl_setopt($handle, CURLOPT_VERBOSE, TRUE); // Enable verbose output
                         /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
 
@@ -318,7 +318,7 @@ class med_programController extends Controller
                         
                         /* Check for 404 (file not found). */
                         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        dd($httpCode);
+                        // dd($httpCode);
 
 
                         if($httpCode != 404) {
