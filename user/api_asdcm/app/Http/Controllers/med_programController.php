@@ -311,7 +311,7 @@ class med_programController extends Controller
     
                         // Check HTTP status code
                         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        // dd($httpCode, $response); // Log HTTP status and response
+                        dd($httpCode, $response); // Log HTTP status and response
     
                         if ($httpCode != 404 && $httpCode == 200) {
                             array_push($new_file, $file[$j]->images);
