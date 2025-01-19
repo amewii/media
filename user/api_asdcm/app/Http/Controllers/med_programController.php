@@ -311,6 +311,7 @@ class med_programController extends Controller
 
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
                         curl_setopt($handle, CURLOPT_VERBOSE, TRUE); // Enable verbose output
+                        curl_setopt($handle, CURLOPT_FAILONERROR, true);
                         /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
 
