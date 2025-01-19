@@ -305,9 +305,9 @@ class med_programController extends Controller
                 if(sizeof($file)>0){
                     for($j=0;$j<sizeof($file);$j++){
                         $url = $host.$file[$j]->images;
+                        dd($url);
 
                         $handle = curl_init($url);
-                        dd($handle);
                         curl_setopt($handle, CURLOPT_TIMEOUT, 30); // 30 seconds timeout
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
                         
