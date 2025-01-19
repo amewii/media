@@ -305,7 +305,6 @@ class med_programController extends Controller
                 if(sizeof($file)>0){
                     for($j=0;$j<sizeof($file);$j++){
                         $url = $host.$file[$j]->images;
-                        dd($url);
 
                         $handle = curl_init($url);
 
@@ -313,6 +312,8 @@ class med_programController extends Controller
                         
                         /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
+
+                        dd($response);
 
                         
                         /* Check for 404 (file not found). */
