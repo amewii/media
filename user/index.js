@@ -258,9 +258,10 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
         "</div>";
       $("#" + varAppend).append(data_programs);
     });
-  } else {
-    
-  }
+  }else {
+    $("#" + varAppend).html(
+      '<div class="alert alert-info text-center text-black" role="alert">Tiada maklumat dipaparkan</div>'
+    );  }
 }
 
 $("#Search").on("keyup", function () {
