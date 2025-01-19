@@ -294,7 +294,6 @@ class med_programController extends Controller
                     $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
                     $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
-                    dd($med_program);
 
                 }
             }
@@ -306,7 +305,8 @@ class med_programController extends Controller
                         $url = $host.$file[$j]->images;
                         $handle = curl_init($url);
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-                        
+                        dd($handle);
+
                         /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
                         
