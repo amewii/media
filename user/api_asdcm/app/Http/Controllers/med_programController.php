@@ -284,7 +284,7 @@ class med_programController extends Controller
                                     orderBy('last_uploaded_at', 'desc') ->
                                     get(); // list all data (MIMI)
 
-                                    dd($med_program);
+                                    // dd($med_program);
         if (sizeof($med_program)>0)   {
             if($_SERVER['SERVER_PORT'] == "8081"){
                 $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
@@ -294,7 +294,7 @@ class med_programController extends Controller
                 } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
                     $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
-                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/media/user//api_asdcm/public/uploads/";
                 }
             }
             for($i=0;$i<sizeof($med_program);$i++){
