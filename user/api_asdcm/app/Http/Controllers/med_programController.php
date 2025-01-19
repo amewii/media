@@ -285,34 +285,18 @@ class med_programController extends Controller
                                     get(); // list all data (MIMI)
 
         if (sizeof($med_program)>0)   {
-            // if($_SERVER['SERVER_PORT'] == "8081"){
-            //     $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
-            // } else {
-            //     if($_SERVER["HTTP_HOST"] == "localhost"){
-            //         $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-            //     } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
-            //         $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
-            //     } else {
-            //         $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
-            //     }
-            // }
-
-            if ($_SERVER['SERVER_PORT'] == "8081") {
+            if($_SERVER['SERVER_PORT'] == "8081"){
                 $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
             } else {
-                if ($_SERVER["HTTP_HOST"] == "localhost") {
-                    $host = "http://" . $_SERVER["HTTP_HOST"] . "/media/user/api_asdcm/public/uploads/";
-                } else if ($_SERVER["HTTP_HOST"] == "100.109.228.118") {
-                    $host = "http://" . $_SERVER["HTTP_HOST"] . "/media/user/api_asdcm/public/uploads/";
+                if($_SERVER["HTTP_HOST"] == "localhost"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
+                } else if($_SERVER["HTTP_HOST"] == "100.109.228.118"){
+                    $host = "http://".$_SERVER["HTTP_HOST"]."/media/user/api_asdcm/public/uploads/";
                 } else {
-                    $isHttps = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") 
-                        || (isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && $_SERVER["HTTP_X_FORWARDED_PROTO"] === "https");
-    
-                    $protocol = $isHttps ? "https://" : "http://";
-                    $host = $protocol . $_SERVER["HTTP_HOST"] . "/api_asdcm/public/uploads/";
+                    $host = "https://".$_SERVER["HTTP_HOST"]."/api_asdcm/public/uploads/";
+                    dd($host);
                 }
             }
-    
             for($i=0;$i<sizeof($med_program);$i++){
                 $file = json_decode($med_program[$i]->media_path);
                 $new_file = array();
