@@ -304,17 +304,28 @@ class med_programController extends Controller
                     for($j=0;$j<sizeof($file);$j++){
                         $url = $host.$file[$j]->images;
                         $handle = curl_init($url);
-                        dd($handle);
-                        curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+                        // dd($handle);
+                        // curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
 
-                        /* Get the HTML or whatever is linked in $url. */
-                        $response = curl_exec($handle);
+                        // /* Get the HTML or whatever is linked in $url. */
+                        // $response = curl_exec($handle);
                         
-                        /* Check for 404 (file not found). */
-                        $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                        if($httpCode != 404) {
-                            array_push($new_file,$file[$j]->images);
-                        }
+                        // /* Check for 404 (file not found). */
+                        // $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                        // if($httpCode != 404) {
+                        //     array_push($new_file,$file[$j]->images);
+                        // }
+                                            // Disable SSL verification (if using HTTPS and there are certificate issues)
+                    curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification temporarily
+                    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($handle, CURLOPT_TIMEOUT, 10); // Set a timeout for the request
+
+                    $response = curl_exec($handle);
+                    $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
+                    if ($httpCode != 404 && $httpCode == 200) {
+                        array_push($new_file, $file[$j]->images);
+                    }
                         
                         curl_close($handle);
                     }
