@@ -752,3 +752,45 @@ function publish(){
     }
   });
 }
+
+function batal_publish(){
+  swal({
+    title: "Batal Siar Program",
+    text: "Anda Pasti Untuk Batal Siar?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+    closeOnConfirm: true,
+    allowOutsideClick: false,
+    html: false,
+  }).then(function () {
+    var form = new FormData();
+    form.append('id_program',window.sessionStorage.med_program_id);
+    form.append('updated_by',id_users_master);
+    var obj = new post(host+`program/unpublish`,form,window.sessionStorage.token).execute();
+    if(obj.success){
+      swal({
+        title: "Batal Siar Program",
+        text: "Program Berjaya Dibatalkan dari siar.",
+        type: "success",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        window.location.reload();
+      });
+    } else {
+      swal({
+        title: "Daftar Program",
+        text: "Program Gagal Disiarkan.",
+        type: "error",
+        closeOnConfirm: true,
+        allowOutsideClick: false,
+        html: false,
+      }).then(function () {
+        window.location.reload();
+      });
+    }
+  });
+}
