@@ -150,6 +150,9 @@ function loadHalamanUtama() {
     '<li class="nav-item">' +
     '<a class="nav-link" data-toggle="tab" href="#videos"><i class="la la-file-video-o mr-2"></i> Galeri Video</a>' +
     "</li>" +
+    '<li class="nav-item">' +
+    '<a class="nav-link" data-toggle="tab" href="#document"><i class="la la-file-pdf-o mr-2"></i> Dokumen</a>' +
+    "</li>" +
     "</ul>" +
     '<div class="tab-content">' +
     '<div class="tab-pane fade show active pt-2" id="images" role="tabpanel">' +
@@ -160,6 +163,11 @@ function loadHalamanUtama() {
     '<div class="row" id="video" >' +
     "</div>" +
     "</div>" +
+    '<div class="tab-pane fade pt-2" id="document" role="tabpanel">' +
+    '<div class="row" id="dokumen">' +
+    "</div>" +
+    "</div>" +
+
     "</div>" +
     "</div>";
 
@@ -167,6 +175,8 @@ function loadHalamanUtama() {
 
   loadSenaraiProgramBergambar("programListBergambar", "image");
   loadSenaraiProgramBergambar("programListVideo", "video");
+  loadSenaraiProgramBergambar("programListDokumen", "dokumen");
+
 }
 
 // End Laman Utama
@@ -193,7 +203,7 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
           '<img class="img-fluid" src="../api_asdcm/public/uploads/' +
           imgsrc +
           '" alt="">';
-      } else {
+      } else if(varAppend == "video"){
         flag = 2;
         thumbnail =
           '<video id="video-element" src="../api_asdcm/public/uploads/' +
@@ -202,7 +212,19 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
           '<source type="video/mp4">' +
           "</video>" +
           '<canvas id="canvas-element"></canvas>';
-      }
+      } else{
+        let fileSrc = "../api_asdcm/public/uploads/" + imgsrc;
+        let fileExtension = imgsrc.split(".").pop().toLowerCase();
+        let thumbnail = "";
+        
+        thumbnail =
+          '<a href="' + fileSrc + '" target="_blank" class="document-link">' +
+          imgsrc +
+          "</a>";      
+        }
+
+
+      
       data_programs =
         '<div class="col-lg-12 col-xl-6">' +
         '<div class="card">' +
