@@ -433,6 +433,85 @@ class med_programController extends Controller
         
     }
 
+
+    public function listdokumen()  
+    {
+        $med_program = med_program::select("*", "med_program.id_program AS PK")
+            ->join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori')
+            ->join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
+            ->join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster')
+            ->leftJoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster')
+            ->leftJoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit')
+            ->where('med_program.status_publish', '1')
+            ->where(function ($q) {
+                $q->where('med_program.statusrekod', '1')
+                    ->where('med_kampus.statusrekod', '1')
+                    ->where('med_kluster.statusrekod', '1')
+                    ->whereNotNull('media_path')
+                    ->where(function ($query) {
+                        $query->where('med_program.media_path', 'LIKE', '%.PDF%')
+                            ->orWhere('med_program.media_path', 'LIKE', '%.DOC%')   // Add DOC
+                            ->orWhere('med_program.media_path', 'LIKE', '%.DOCX%'); // Add DOCX
+                    });
+            })
+            ->orderBy('last_uploaded_at', 'desc')
+            ->get(); // Fetch all data
+    
+        if (sizeof($med_program) > 0) {
+            if ($_SERVER['SERVER_PORT'] == "8081") {
+                $host = "http://localhost:8082/media/user/api_asdcm/public/uploads/";
+            } else {
+                if ($_SERVER["HTTP_HOST"] == "localhost") {
+                    $host = "http://" . $_SERVER["HTTP_HOST"] . "/media/user/api_asdcm/public/uploads/";
+                } else if ($_SERVER["HTTP_HOST"] == "100.109.228.118") {
+                    $host = "http://" . $_SERVER["HTTP_HOST"] . "/media/user/api_asdcm/public/uploads/";
+                } else {
+                    $host = "https://" . $_SERVER["HTTP_HOST"] . "/api_asdcm/public/uploads/";
+                }
+            }
+    
+            for ($i = 0; $i < sizeof($med_program); $i++) {
+                $file = json_decode($med_program[$i]->media_path);
+                $new_file = array();
+                if (sizeof($file) > 0) {
+                    for ($j = 0; $j < sizeof($file); $j++) {
+                        $url = $host . $file[$j]->images;
+                        $file_extension = pathinfo($file[$j]->images, PATHINFO_EXTENSION);
+    
+                        // Check if file exists
+                        $file_headers = @get_headers($url);
+                        if ($file_headers && strpos($file_headers[0], '200')) {
+                            // Categorize files separately
+                            if (in_array(strtolower($file_extension), ['jpeg', 'jpg', 'png', 'bmp', 'gif'])) {
+                                $new_file[] = ['type' => 'image', 'url' => $url];
+                            } elseif (in_array(strtolower($file_extension), ['pdf'])) {
+                                $new_file[] = ['type' => 'pdf', 'url' => $url];
+                            } elseif (in_array(strtolower($file_extension), ['doc', 'docx'])) {
+                                $new_file[] = ['type' => 'doc', 'url' => $url];
+                            } else {
+                                $new_file[] = ['type' => 'other', 'url' => $url];
+                            }
+                        }
+                    }
+                }
+                $med_program[$i]->media_path_2 = $new_file;
+            }
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'List Success!',
+                'data' => $med_program
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bad Request',
+                'data' => $med_program
+            ], 400);
+        }
+    }
+    
+
     public function listall()  {
         $med_program = med_program::select("*", "med_program.statusrekod AS programstatusrekod") ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
