@@ -337,6 +337,8 @@ $router->get('/programListPublish', 'med_programController@list_publish');
 $router->get('/programListTahun', 'med_programController@listtahun');
 $router->get('/programListPdf', 'med_programController@listpdf');
 $router->get('/programListBergambar', 'med_programController@listbergambar');
+$router->get('/programListDokumen', 'med_programController@listdokumen');
+
 $router->get('/programListVideo', 'med_programController@listvideo');
 $router->get('/programListAll', 'med_programController@listall');
 $router->get('/programListKluster/{id}', 'med_programController@listallbykluster');
