@@ -151,7 +151,7 @@ function loadHalamanUtama() {
     '<a class="nav-link" data-toggle="tab" href="#videos"><i class="la la-file-video-o mr-2"></i> Galeri Video</a>' +
     "</li>" +
     '<li class="nav-item">' +
-    '<a class="nav-link" data-toggle="tab" href="#document"><i class="la la-file-pdf-o mr-2"></i> Dokumen</a>' +
+    '<a class="nav-link" data-toggle="tab" href="#document"><i class="la la-file-pdf-o mr-2"></i> Galeri Dokumen</a>' +
     "</li>" +
     "</ul>" +
     '<div class="tab-content">' +
