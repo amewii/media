@@ -214,9 +214,7 @@ function loadSenaraiProgramBergambar(varAPI, varAppend) {
           '<canvas id="canvas-element"></canvas>';
       } else{
         let fileSrc = "../api_asdcm/public/uploads/" + imgsrc;
-        let fileExtension = imgsrc.split(".").pop().toLowerCase();
-        let thumbnail = "";
-        
+        flag = 3;
         thumbnail =
           '<a href="' + fileSrc + '" target="_blank" class="document-link">' +
           imgsrc +
