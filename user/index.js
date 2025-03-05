@@ -508,7 +508,7 @@ function detail_media(indexs, varType) {
             '<div class="new-arrival-product">' +
             '<div class="new-arrivals-img-contnent text-center">' +
             preview +
-            '<br><a href="../api_asdcm/public/uploads/' +
+            '<br><a href="api_asdcm/public/uploads/' +
             field.images +
             '" target="_blank">' +
             field.images +
