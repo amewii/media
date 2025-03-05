@@ -490,6 +490,49 @@ function detail_media(indexs, varType) {
           getThumbnail(field.images);
         }
       }
+
+      if (ext[1] == "docx" || ext[1] == "pdf") {
+        preview = '<span class="docx-icon" style="font-size:50px"><i class="la la-file-word-o"></i></span>';
+        
+        data_programs =
+            '<div class="doc-view">' +
+            '<div class="card p-0-7">' +
+            `<div class="card-body p-0">` +
+            '<input class="" type="checkbox" name="media_selected[]" value="' +
+            field.images +
+            ";" +
+            field.FK_vip +
+            '" id="' +
+            field.images +
+            '"/>' +
+            '<div class="new-arrival-product">' +
+            '<div class="new-arrivals-img-contnent text-center">' +
+            preview +
+            '<br><a href="../api_asdcm/public/uploads/' +
+            field.images +
+            '" target="_blank">' +
+            field.images +
+            "</a>" +
+            "<span>" +
+            vip +
+            "</span>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>";
+    
+        if (data.media_path_2) {
+            $.each(data.media_path_2, function (i, item) {
+                if (item == field.images) {
+                    bil++;
+                    $("#bilangan_media").text(bil);
+                    $("#checkboxmedia").append(data_programs);
+                }
+            });
+        }
+      }
+    
     });
 
     let class_vid_length = "";
