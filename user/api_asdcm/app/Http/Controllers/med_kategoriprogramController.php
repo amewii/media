@@ -9,16 +9,11 @@ use App\Models\med_kategoriprogram;
 
 class med_kategoriprogramController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this -> middleware('auth');
-    // }
 
     public function register(Request $request) {
         $kod_kategori = $request->input('kod_kategori');
         $nama_kategori = $request->input('nama_kategori');
         $bilangan_fail = $request->input('bilangan_fail');
-        // $flag_kod_format = $request->input('flag_kod_format');
         $kod_format = $request->input('kod_format');
         $saiz_fail = $request->input('saiz_fail');
         $created_by = $request->input('created_by'); // Pakai IC
@@ -30,7 +25,6 @@ class med_kategoriprogramController extends Controller
             'nama_kategori' => $nama_kategori,
             'bilangan_fail' => $bilangan_fail,
             'kod_format' => $kod_format,
-            // 'flag_kod_format' => $flag_kod_format,
             'saiz_fail' => $saiz_fail,
             'created_by' => $created_by,
             'updated_by' => $updated_by,
@@ -100,7 +94,6 @@ class med_kategoriprogramController extends Controller
         $nama_kategori = $request->input('nama_kategori');
         $bilangan_fail = $request->input('bilangan_fail');
         $kod_format = $request->input('kod_format');
-        // $flag_kod_format = $request->input('flag_kod_format');
         $saiz_fail = $request->input('saiz_fail');
         $updated_by = $request->input('updated_by'); // Pakai IC
 
@@ -109,7 +102,6 @@ class med_kategoriprogramController extends Controller
             'nama_kategori' => $nama_kategori,
             'bilangan_fail' => $bilangan_fail,
             'kod_format' => $kod_format,
-            // 'flag_kod_format' => $flag_kod_format,
             'saiz_fail' => $saiz_fail,
             'updated_by' => $updated_by
         ]);

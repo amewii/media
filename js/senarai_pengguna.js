@@ -1,8 +1,6 @@
 $("#reg-users").click(function () {
   $("#divSenarai").prop("class", "box collapse");
   $("#divRegister").prop("class", "box");
-  // $("#liRekodBaru").removeClass('collapse');
-  // saveLog(window.sessionStorage.id,"View Tetapan Modul.",window.sessionStorage.browser);
 });
 
 $("#list-users").click(function () {
@@ -10,8 +8,6 @@ $("#list-users").click(function () {
   window.sessionStorage.removeItem("regFK_jenis_pengguna");
   window.sessionStorage.removeItem("contentregister");
   window.location.reload();
-  // $("#liRekodBaru").removeClass('collapse');
-  // saveLog(window.sessionStorage.id,"View Tetapan Modul.",window.sessionStorage.browser);
 });
 
 var colums = [
@@ -33,7 +29,6 @@ var colums = [
   { name: "nama_etnik", title: "Etnik", breakpoints: "lg md sm xs" },
   { name: "nama_agama", title: "Agama", breakpoints: "lg md sm xs" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "usersListKerajaan",
@@ -114,7 +109,6 @@ var colums = [
   { name: "nama_etnik", title: "Etnik", breakpoints: "lg md sm xs" },
   { name: "nama_agama", title: "Agama", breakpoints: "lg md sm xs" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "usersListSwasta",
@@ -195,7 +189,6 @@ var colums = [
   { name: "nama_etnik", title: "Etnik", breakpoints: "lg md sm xs" },
   { name: "nama_agama", title: "Agama", breakpoints: "lg md sm xs" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "usersListPelajar",
@@ -270,18 +263,12 @@ var confirmed = false;
 if (window.sessionStorage.regFK_jenis_pengguna == "1") {
   window.sessionStorage.contentregister = "./html/kerajaan";
   $("#contentRegister").load("./html/kerajaan.html");
-  // document.getElementById("kerajaan").classList.add("show");
-  // document.getElementById("kerajaan").classList.add("active");
 } else if (window.sessionStorage.regFK_jenis_pengguna == "2") {
   window.sessionStorage.contentregister = "./html/swasta";
   $("#contentRegister").load("./html/swasta.html");
-  // document.getElementById("swasta").classList.add("show");
-  // document.getElementById("swasta").classList.add("active");
 } else if (window.sessionStorage.regFK_jenis_pengguna == "3") {
   window.sessionStorage.contentregister = "./html/pelajar";
   $("#contentRegister").load("./html/pelajar.html");
-  // document.getElementById("pelajar").classList.add("show");
-  // document.getElementById("pelajar").classList.add("active");
 }
 document.getElementById("no_kad_pengenalan_semak").focus();
 if (
@@ -316,7 +303,6 @@ $("#checkusers").on("submit", function (e) {
     var form = new FormData();
     form.append("no_kad_pengenalan", regno_kad_pengenalan);
 
-    // console.log(nama_user)
     var settings = {
       url: host + "users",
       method: "POST",
@@ -328,9 +314,7 @@ $("#checkusers").on("submit", function (e) {
     };
 
     $.ajax(settings).done(function (response) {
-      // console.log(response);
       result = JSON.parse(response);
-      // console.log(result);
       if (!result.success) {
         swal({
           title: "Semak Pengguna",
@@ -389,9 +373,6 @@ var settings = {
   url: host + "jenispenggunasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -449,11 +430,8 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Kemaskini User",
             text: "Kemaskini Gagal!",
@@ -487,7 +465,6 @@ function del_rekod(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id", id);
 
   swal({
@@ -511,11 +488,8 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
         swal({
           title: "Hapus User",
           text: "Gagal!",

@@ -9,13 +9,7 @@ use App\Models\med_sysposkod;
 
 class med_sysposkodController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-
     public function show(Request $request, $poskod)  {
-        // $poskod = $request->input('poskod');
 
         $med_sysposkod = med_sysposkod::join('med_sys_negeri', 'med_sys_negeri.id_sys_negeri', '=', 'med_sysposkod.negeri') -> 
                                 where('poskod',$poskod)->first();

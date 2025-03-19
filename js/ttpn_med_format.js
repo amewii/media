@@ -27,7 +27,6 @@ function tableFormat() {
     { name: "bil", title: "Bil" },
     { name: "kod_format", title: "Nama" },
     { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
   if (window.sessionStorage.control_tetapan_media_U1 == 1) {
     columns.push(
@@ -88,7 +87,6 @@ function tableFormat() {
             '">' +
             text_statusrekod +
             "</span></label>",
-          // upt_btn:  '<button class="button button-bx button-sm button-primary  hidden" id="control_tetapan_media_U1" onclick="loadData(\'' + i + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> '
         });
       }
     });
@@ -109,7 +107,6 @@ function tableFormat() {
       },
     });
   } else {
-    console.log(obj);
   }
 }
 
@@ -117,7 +114,6 @@ function loadData(indexs) {
   let data = JSON.parse($("#dataList").val());
   $("#upt_id").val(data[indexs].id_format);
   $("#upt_kod_format").val(data[indexs].kod_format);
-  // jenisFormat('upt_jenis_format',data[indexs].jenis_format);
   saveLog(
     id_users_master,
     "View Data of [id_format = " +
@@ -159,12 +155,10 @@ $("#register").on("submit", function (e) {
       html: false,
     }).then(function () {
       let kod_format = $("#kod_format").val();
-      // let jenis_format = $("#jenis_format").val();
       let statusrekod = "1";
 
       var form = new FormData();
       form.append("kod_format", kod_format);
-      // form.append("jenis_format",jenis_format);
       form.append("statusrekod", statusrekod);
       form.append("created_by", id_users_master);
       form.append("updated_by", id_users_master);
@@ -184,7 +178,6 @@ $("#register").on("submit", function (e) {
           function () {},
           function (dismiss) {
             if (dismiss === "timer") {
-              // sessionStorage.token = obj.token;
               saveLog(
                 id_users_master,
                 "Register Data [" + kod_format + "] at Tetapan Format Media.",

@@ -88,7 +88,6 @@ $("#register").on('submit',function(e){
             
             var form = new FormData();
             form.append("nama_gelaran",nama_gelaran);
-            // console.log(nama_gelaran)
             var settings = {
                 "url": host+"addGelarans",
                 "method": "POST",
@@ -100,7 +99,6 @@ $("#register").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response);
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -177,7 +175,6 @@ $("#update").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response)
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -239,7 +236,6 @@ function del_rekod(i){
       };
 
     $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
             swal({

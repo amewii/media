@@ -12,21 +12,15 @@ use App\Models\med_users;
 
 class med_usersgovController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $FK_users = $request->input('FK_users');
         $emel_kerajaan = $request->input('emel_kerajaan');
         $notel_kerajaan = $request->input('notel_kerajaan');
-        // $FK_kategori_pengguna = $request->input('FK_kategori_pengguna');
         $kod_jawatan = $request->input('kod_jawatan');
         $nama_jawatan = $request->input('nama_jawatan');
         $kategori_perkhidmatan = $request->input('kategori_perkhidmatan');
         $skim = $request->input('skim');
-        // $unit_organisasi = $request->input('unit_organisasi');
         $gred = $request->input('gred');
         $taraf_jawatan = $request->input('taraf_jawatan');
         $jenis_perkhidmatan = $request->input('jenis_perkhidmatan');
@@ -80,14 +74,8 @@ class med_usersgovController extends Controller
             $tetapan_mail = med_tetapan::first();
             $emelreceiver = $emel_kerajaan;
             $mail = new PHPMailer();
-        // mail('amriamewii@gmail.com', '[TEST MESSAGE]', 'This is the body message', 'From: muhammadamri@protigatech.com');
-            //$mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host       = $tetapan_mail->mail_gateway;
-            // $mail->SMTPAuth   = true;
-            //$mail->Username   = $tetapan_mail->mail_username;
-            //$mail->Password   = $tetapan_mail->mail_password;
-            //$mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
             $mail->Port       = $tetapan_mail->mail_port;
             
             $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
@@ -105,16 +93,13 @@ class med_usersgovController extends Controller
                                 Terima kasih.';
             $mail->AltBody = 'Alternate Message';
             if(!$mail->send()) {
-                // dd("Mailer Error: " . $mail->ErrorInfo);
                 return response()->json([
                     'success'=>'true',
                     'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
                     'data'=>''
                 ],200);
-                // exit;
             }
             if(!$mail->send()) {
-                // dd("Mailer Error: " . $mail->ErrorInfo);
                 return response()->json([
                     'success'=>'true',
                     'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',

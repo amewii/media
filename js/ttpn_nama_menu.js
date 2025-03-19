@@ -3,7 +3,6 @@ var colums = [
   { name: "modul", title: "Nama Modul" },
   { name: "menu", title: "Nama Menu" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "menusList",
@@ -88,29 +87,10 @@ $("#register").on("submit", function (e) {
       $("#reg-menu").modal("hide");
       let nama_menu = $("#nama_menu").val();
       let FK_kluster = $("#FK_kluster").val();
-      // let catatan = $("#catatan").val();
-      // let dsemak = $("#dupdate").val();
-      // let peratus = $("#peratus").val();
-      // let pegawai = $("#pegawai").val();
-      // let ucreate = window.sessionStorage.noanggota;
-      // let json_img = $("#json_img").val();
-      // let upload_1 = $("#upload_1")[0].files[0];
-      // let upload_2 = $("#upload_2")[0].files[0];
-      // let upload_3 = $("#upload_3")[0].files[0];
 
       var form = new FormData();
-      // formData.append("key","mSideDiary");
       form.append("nama_menu", nama_menu);
       form.append("FK_kluster", FK_kluster);
-      // formData.append("kod",kod);
-      // formData.append("file",json_img);
-      // formData.append("catatan",catatan);
-      // formData.append("dsemak",dsemak);
-      // formData.append("peratus",peratus);
-      // formData.append("pegawai",pegawai);
-      // formData.append("ucreate",ucreate);
-      // formData.append("token",window.sessionStorage.token);
-      console.log(nama_menu);
       var settings = {
         url: host + "addMenus",
         method: "POST",
@@ -122,11 +102,8 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Daftar Menu",
             text: "Gagal!",
@@ -186,11 +163,8 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Kemaskini Nama Menu",
             text: "Kemaskini Gagal!",
@@ -226,7 +200,6 @@ function del_rekod(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id", id);
 
   swal({
@@ -250,11 +223,8 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
         swal({
           title: "Hapus Menu",
           text: "Gagal!",
@@ -287,9 +257,6 @@ var settings = {
   url: host + "klustersList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {

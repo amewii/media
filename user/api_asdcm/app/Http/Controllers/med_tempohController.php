@@ -9,10 +9,6 @@ use App\Models\med_tempoh;
 
 class med_tempohController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this -> middleware('auth');
-    // }
 
     public function register(Request $request) {
         $tempoh = $request->input('tempoh');
@@ -59,7 +55,6 @@ class med_tempohController extends Controller
     }
 
     public function showGet(Request $request, $id)  {
-        // $id = $request->input('id');
 
         $med_tempoh = med_tempoh::where('id_tempoh',$id)->first();
 

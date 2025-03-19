@@ -9,10 +9,6 @@ use App\Models\med_kampus;
 
 class med_kampusController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_kampus = $request->input('nama_kampus');

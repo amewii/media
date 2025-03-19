@@ -9,10 +9,6 @@ use App\Models\med_submodul;
 
 class med_submodulController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $FK_modul = $request->input('FK_modul');

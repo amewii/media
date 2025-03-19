@@ -39,7 +39,6 @@ function tableKategori() {
       { name: "saiz_fail", title: "Saiz Fail", breakpoints: "md sm xs" },
       { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
       { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
     ];
   } else {
     var colums = [
@@ -54,8 +53,6 @@ function tableKategori() {
       { name: "kod_format", title: "Format", breakpoints: "md sm xs" },
       { name: "saiz_fail", title: "Saiz Fail", breakpoints: "md sm xs" },
       { name: "status_rekod", title: "Status", breakpoints: "md sm xs" },
-      // { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
     ];
   }
 
@@ -125,7 +122,6 @@ function tableKategori() {
             '">' +
             text_statusrekod +
             "</span></label>",
-          // upt_btn:  '<button class="button button-box button-sm button-primary" onclick="loadData(\'' + i + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> '
         });
       }
     });
@@ -154,11 +150,7 @@ function formatList() {
     url: host + "formatList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
-  // console.log(checkboxval);
 
   $.ajax(settings).done(function (response) {
     let listFormat = "";
@@ -183,7 +175,6 @@ function formatList() {
         listFormat = item.kod_format;
       }
       $("#upt_checkboxformatval").val(item.kod_format);
-      // $('#upt_checkboxformatval').val(item.kod_format +':'+ item.jenis_format);
       $("#upt_checkboxformat").append(
         $(
           '<label class="adomx-checkbox"><input class="form-control" type="checkbox" name="kod_format[]" value="' +
@@ -267,7 +258,6 @@ $("#register").on("submit", function (e) {
       let saiz_fail = $("#saiz_fail").val();
       let kod_format = $('#checkboxformat [type="checkbox"]:checked')
         .map(function () {
-          // alert(this.value);
           let kod = this.value.split(":");
           return kod[0];
         })
@@ -279,7 +269,6 @@ $("#register").on("submit", function (e) {
         .get();
 
       var form = new FormData();
-      // formData.append("key","mSideDiary");
       form.append("kod_kategori", kod_kategori);
       form.append("nama_kategori", nama_kategori);
       form.append("bilangan_fail", bilangan_fail);
@@ -289,7 +278,6 @@ $("#register").on("submit", function (e) {
       form.append("created_by", window.sessionStorage.no_kad_pengenalan);
       form.append("updated_by", window.sessionStorage.no_kad_pengenalan);
       form.append("statusrekod", "1");
-      // console.log(kod_format)
       var settings = {
         url: host + "addKategoriprogram",
         method: "POST",
@@ -301,7 +289,6 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           swal({
@@ -334,7 +321,6 @@ $("#register").on("submit", function (e) {
             function () {},
             function (dismiss) {
               if (dismiss === "timer") {
-                // sessionStorage.token = result.token;
                 saveLog(
                   window.sessionStorage.id,
                   "Register Data [" +
@@ -345,13 +331,11 @@ $("#register").on("submit", function (e) {
                 $("#register").trigger("reset");
                 $("#reg-kategori").modal("hide");
                 tableKategori();
-                // window.location.reload();
               }
             }
           );
         }
 
-        // window.location.reload();
       });
     });
   }
@@ -378,14 +362,11 @@ $("#update").on("submit", function (e) {
       let upt_kod_kategori = $("#upt_kod_kategori").val();
       let upt_nama_kategori = $("#upt_nama_kategori").val();
       let upt_bilangan_fail = $("#upt_bilangan_fail").val();
-      // let upt_kod_format = $("#upt_kod_format").val();
       let upt_saiz_fail = $("#upt_saiz_fail").val();
       let statusrekod = "EDT";
 
       let upt_kod_format = $('#upt_checkboxformat [type="checkbox"]:checked')
         .map(function () {
-          // alert(this.value);
-          // let kod = this.value.split(":");
           return this.value;
         })
         .get();
@@ -410,7 +391,6 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
           swal({
@@ -481,11 +461,8 @@ function del_rekod(i) {
   };
 
   $.ajax(settings).done(function (response) {
-    // console.log(response)
     result = JSON.parse(response);
     if (!result.success) {
-      // Swal(result.message, result.data, "error");
-      // return;
       swal({
         title: "Hapus Kategori Media",
         text: "Gagal!",

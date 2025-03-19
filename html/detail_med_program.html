@@ -159,18 +159,6 @@
                 <div class="row" id="listImages">
                     <input type="text" id="uptid" class="hidden">
                     <textarea id="dataList" class="hidden"></textarea>
-                    <!-- <div class="col-lg-3 col-12 mb-30 border">
-                        <div class="row adomx-checkbox-radio-group" style="padding: 10px;">
-                            <div class="col-1">
-                                <input type="checkbox" id="img1" name="img1" value="0" /> <i class="icon"></i>
-                            </div>
-                            <label class="adomx-checkbox" for="img1">
-                                <div class="col-10">
-                                    <img src="assets/images/team/test.jpeg" height="150px" alt="">
-                                </div>
-                            </label>
-                        </div>   
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -183,7 +171,6 @@
                 <form role="form" id="taggambar" enctype='multipart/form-data'>
                     <div class="modal-header">
                         <h5 class="modal-title">Kemaskini Fail Media</h5><hr/>
-                        <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
                     </div>
                     <div class="modal-body">                        
                         <div class="col-12 mb-20">
@@ -206,7 +193,6 @@
                         <button class="button button-success" type="submit"> Ya </button>
                         <button type="button"class="button button-primary" onclick="del_media()"> Hapus </button>
                         <button class="button button-danger" data-dismiss="modal" onclick="resetForm();" id="closeButton"><i class="ti-close"></i>Tutup</button>
-                        <!-- <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button> -->
                     </div>
                 </form>
             </div>
@@ -219,7 +205,6 @@
                 <form role="form" id="register" enctype='multipart/form-data'>
                     <div class="modal-header">
                         <h5 class="modal-title">Muat Naik Fail Baharu</h5>
-                        <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
                     </div>
                     <div class="modal-body">
                         <p>
@@ -228,7 +213,6 @@
                                 <!--FilePond Start-->
                                 <input class="form-control hidden" id="upt_id" type="text">
                                 <input type="file" id="upload-2" multiple>
-                                <!-- <input class="file-pond" id="media_path" type="file" > -->
                                 <!--FilePond End-->
                                 <div id="upload-2-queue"></div>
                             </div>
@@ -238,7 +222,6 @@
                         <button onclick="$.fileup('upload-2', 'upload', '*')" class="button button-success" type="button"> Muatnaik Semua </button>
                         <button onclick="$.fileup('upload-2', 'remove', '*')" class="button button-danger" type="button"> Padam Semua </button>
                         <button class="button button-danger" data-dismiss="modal" id="finishButton"><i class="ti-close"></i>Tutup</button>
-                        <!-- <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button> -->
                     </div>
                 </form>
             </div>
@@ -253,5 +236,4 @@
 
 </div>
 
-<!-- <script src="../js/detail_med_program.js"></script> -->
 <script src="./js/detail_med_program.js?n=8"></script>

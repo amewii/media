@@ -9,10 +9,6 @@ use App\Models\med_menu;
 
 class med_menuController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $FK_parent = $request->input('FK_parent');

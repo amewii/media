@@ -9,10 +9,6 @@ use App\Models\med_agensi;
 
 class med_agensiController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_agensi = $request->input('nama_agensi');

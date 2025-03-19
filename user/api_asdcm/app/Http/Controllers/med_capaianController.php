@@ -75,7 +75,6 @@ class med_capaianController extends Controller
     }
 
     public function showGet($FK_users)  {
-        // $id = $request->input('id_capaian');
 
         $med_capaian = med_capaian::select("*", "med_capaian.statusrekod AS med_capaianstatusrekod") ->
                             join('med_peranan', 'med_peranan.id_peranan', '=', 'med_capaian.FK_peranan') -> 

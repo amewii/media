@@ -71,7 +71,6 @@ class med_programController extends Controller
                                         join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                         join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                         join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster');
-                                        // join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit');        
 
         if($FK_kategori != '') {
             $med_program = $med_program -> where('FK_kategori',$FK_kategori);
@@ -261,14 +260,6 @@ class med_programController extends Controller
     }
 
     public function listbergambar()  {
-        // $med_program = med_program::select("*", "med_program.id_program AS PK") ->
-        //                             join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
-        //                             join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
-        //                             join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-        //                             join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-        //                             where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-        //                             orderBy('tarikh_program', 'desc') ->
-        //                             get(); // list all data
 
         $med_program = med_program::select("*", "med_program.id_program AS PK") ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
@@ -297,33 +288,6 @@ class med_programController extends Controller
 
                 }
             }
-            // for($i=0;$i<sizeof($med_program);$i++){
-            //     $file = json_decode($med_program[$i]->media_path);
-            //     $new_file = array();
-            //     if(sizeof($file)>0){
-            //         for($j=0;$j<sizeof($file);$j++){
-            //             $url = $host.$file[$j]->images;
-
-            //             $handle = curl_init($url);
-            //             // dd($handle);
-
-            //             curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-            //             curl_setopt($handle, CURLOPT_TIMEOUT, 30); 
-
-            //             /* Get the HTML or whatever is linked in $url. */
-            //             $response = curl_exec($handle);
-                        
-            //             /* Check for 404 (file not found). */
-            //             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-            //             if($httpCode != 404) {
-            //                 array_push($new_file,$file[$j]->images);
-            //             }
-                        
-            //             curl_close($handle);
-            //         }
-            //     }
-            //     $med_program[$i]->media_path_2 = $new_file;
-            // }
 
             for ($i = 0; $i < sizeof($med_program); $i++) {
                 $file = json_decode($med_program[$i]->media_path);
@@ -358,14 +322,6 @@ class med_programController extends Controller
     }
 
     public function listvideo()  {
-        // $med_program = med_program::select("*", "med_program.id_program AS PK") ->
-        //                             join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
-        //                             join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
-        //                             join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-        //                             join('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit') ->
-        //                             where('med_program.statusrekod','1') -> where('med_kampus.statusrekod','1') -> where('med_kluster.statusrekod','1') -> whereNotNull('media_path') ->
-        //                             orderBy('tarikh_program', 'desc') ->
-        //                             get(); // list all data
 
         $med_program = med_program::select("*", "med_program.id_program AS PK") ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
@@ -402,10 +358,8 @@ class med_programController extends Controller
                         $handle = curl_init($url);
                         curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
                         
-                        /* Get the HTML or whatever is linked in $url. */
                         $response = curl_exec($handle);
                         
-                        /* Check for 404 (file not found). */
                         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
                         if($httpCode != 404) {
                             array_push($new_file,$file[$j]->images);
@@ -795,31 +749,10 @@ class med_programController extends Controller
         $extension = explode('.',$fileName)[1];
         $fileName = $id . '_' . rand() . "." .$extension;
 
-        // $path = 'programUpload';
-        // $path = '/uploads';
-
-        // $destinationPath = public_path($path); // upload path
         $destinationPath = 'uploads'; // upload path
 
         $request->file('file')->move($destinationPath, $fileName);
-        // $files = File::files(public_path());
         $files = base_path('public');
-        // dd($files);
-
-        // foreach($files as $key => $value){
-            
-                
-        //     $relativeNameInZipFile = basename($value);
-            
-        //     if($fileName == $relativeNameInZipFile){
-            
-        //         return ;
-
-        //     }
-
-        // }
-
-        // return 0;
         return response()->json([
             'success'=>true,
             'result'=>$flag_exist,
@@ -922,13 +855,11 @@ class med_programController extends Controller
             
         }
 
-        // dd($media_list);
         $med_program = med_program::where('id_program',$id) -> update([
             'media_path' => '['.$media_list.']',
             'updated_by' => $updated_by
         ]);
 
-        // $med_kategori = $med_program->FK_kategori;
 
         if ($med_program)  {
             return response()->json([
@@ -961,7 +892,6 @@ class med_programController extends Controller
             $media_path = $med_program -> media_path;
             $obj_media = json_decode($media_path);
             foreach($obj_media as $y => $valdb) {
-                // dd($val);
                 if($valdb->images == $val){
                     unlink("uploads/".$valdb->images);
                 }else{
@@ -982,7 +912,6 @@ class med_programController extends Controller
             ]);     
         }
 
-        // $med_kategori = $med_program->FK_kategori;
 
         if ($med_program)  {
             return response()->json([

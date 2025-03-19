@@ -9,10 +9,7 @@ use App\Models\med_unit;
 
 class med_unitController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+
 
     public function register(Request $request) {
         $nama_unit = $request->input('nama_unit');
@@ -61,7 +58,6 @@ class med_unitController extends Controller
     }
 
     public function showGet($FK_kluster, $FK_subkluster)  {
-        // $id = $request->input('id_unit');
 
         $med_unit = med_unit::where('FK_kluster',$FK_kluster)->where('FK_subkluster',$FK_subkluster)->get();
 

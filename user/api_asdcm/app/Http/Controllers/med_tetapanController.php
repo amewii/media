@@ -9,10 +9,6 @@ use App\Models\med_tetapan;
 
 class med_tetapanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_sistem = $request->input('nama_sistem');
@@ -100,7 +96,6 @@ class med_tetapanController extends Controller
         $link_sistem = $request->input('link_sistem');
         $updated_by = $request->input('updated_by');
 
-        // $med_tetapan = med_tetapan::find($id); 
 
         $med_tetapan = med_tetapan::where('id_tetapan',$id)  -> update([
             'nama_sistem' => $nama_sistem,
@@ -138,7 +133,6 @@ class med_tetapanController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_tetapan');
 
-        // $med_tetapan = med_tetapan::find($id); 
 
         $med_tetapan = med_tetapan::where('id_tetapan',$id) -> update([
             'statusrekod' => '0',

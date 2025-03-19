@@ -9,10 +9,6 @@ use App\Models\med_vip;
 
 class med_vipController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_vip = $request->input('nama_vip');

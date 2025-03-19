@@ -52,10 +52,8 @@ function listPermohonan() {
         breakpoints: "md sm xs",
       },
       { name: "tarikh_luput", title: "Tarikh Luput", breakpoints: "md sm xs" },
-      // { name: "nama_pegawai", title: "Nama Pegawai", breakpoints: "md sm xs" },
       { name: "nama_status", title: "Status", breakpoints: "md sm xs" },
       { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
     ];
   } else {
     var colums = [
@@ -69,8 +67,6 @@ function listPermohonan() {
       },
       { name: "tarikh_luput", title: "Tarikh Luput", breakpoints: "md sm xs" },
       { name: "nama_status", title: "Status", breakpoints: "md sm xs" },
-      // { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs" },
-      // {"name":"status","title":"Status","breakpoints":"sm xs"}
     ];
   }
   var list = [];
@@ -82,7 +78,6 @@ function listPermohonan() {
   }
   obj = obj.execute();
   if(obj.success){
-    console.log(obj.data);
     let convertList = JSON.stringify(obj.data);
 
     $("#dataList").val(convertList);
@@ -164,7 +159,6 @@ function listPermohonan() {
           ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
           field.id_permohonan +
           '\')"><i class="ti-trash"></i>',
-        // nama_pegawai: field.created_by_users.nama
       });
     });
   } else {
@@ -225,7 +219,6 @@ function loadData(indexs) {
   );
   $("#upt_pegawai_pelulus").val(window.sessionStorage.id);
   $("#upt_updated_by").val(window.sessionStorage.id);
-  // alert(new Date(new Date().setDate(new Date().getDate() + $('#upt_tempoh').val() - 252)));
 
   $("#media-list").html("");
   $.each(media_list, function (i, item) {
@@ -267,7 +260,6 @@ function detail(i, indexs) {
   window.sessionStorage.med_program_id = data.FK_program;
   window.sessionStorage.med_permohonan_id = data.PK;
   window.sessionStorage.content = "detail_med_program";
-  // $('#content').load('detail_med_permohonan.html');
   window.location.reload();
 }
 
@@ -308,7 +300,6 @@ $("#update").on("submit", function (e) {
         twmYear: upt_updated_by,
       };
 
-      // console.log(param);
       var form = new FormData();
       form.append("id_permohonan", upt_id);
       form.append("catatan_permohonan", upt_catatan_permohonan);
@@ -366,7 +357,6 @@ function del_rekod(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id_permohonan", id);
 
   swal({
@@ -391,11 +381,8 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
         swal({
           title: "Hapus Permohonan",
           text: "Gagal!",
@@ -426,9 +413,6 @@ var settings = {
   url: host + "statusList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {

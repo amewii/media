@@ -9,10 +9,6 @@ use App\Models\med_modul;
 
 class med_modulController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $kod_modul = $request->input('kod_modul');

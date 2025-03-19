@@ -7,28 +7,6 @@ $(function () {
   statusList();
   tahunList();
 
-  // users_info(window.sessionStorage.id, function () {
-  //   if (result.data.users_intan == 1) {
-  //     $("#displayjawatan").text(
-  //       result.data.nama_kluster +
-  //         ", " +
-  //         result.data.nama_subkluster +
-  //         ", " +
-  //         result.data.nama_unit
-  //     );
-  //   } else {
-  //     $("#displayjawatan").text(
-  //       result.data.nama_kementerian +
-  //         ", " +
-  //         result.data.nama_agensi +
-  //         ", " +
-  //         result.data.nama_bahagian
-  //     );
-  //   }
-  //   $("#displayno_kad_pengenalan").val(result.data.no_kad_pengenalan);
-  //   $("#displayjantina").val(result.data.nama_jantina);
-  //   $("#displayemel").val(result.data.emel);
-  // });
 });
 var confirmed = false;
 
@@ -40,8 +18,6 @@ $("#carian_permohonan").on("submit", function (e) {
     let FK_status = $("#FK_status").val();
     let tahun_permohonan = $("#tahun_permohonan").val();
     let tarikh_permohonan = $("#tarikh_permohonan").val();
-    console.log(FK_jenis_pengguna);
-    console.log(FK_status);
 
 
     var form = new FormData();
@@ -61,9 +37,6 @@ function kategoriList() {
     url: host + "jenispenggunasList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -122,9 +95,6 @@ function tahunList() {
     url: host + "permohonanListTahun",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -235,11 +205,6 @@ function carianPermohonan(form){
     { name: "status", title: "Status" },
   ];
 
-  // var form = new FormData();
-  // form.append("FK_jenis_pengguna", FK_jenis_pengguna); 
-  // form.append("FK_status", FK_status);
-  // form.append("tahun_permohonan", tahun_permohonan);
-  // form.append("tarikh_permohonan", tarikh_permohonan);
 
   var obj = new post(host+`permohonanLaporan`,form,window.sessionStorage.token).execute();
 
@@ -251,9 +216,7 @@ function carianPermohonan(form){
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      // console.log(obj.success)
 
-      console.log(obj.data);
       t_program = new Date(field.tarikh_program);
       tarikh_mohon = new Date(field.tarikh_permohonan);
 

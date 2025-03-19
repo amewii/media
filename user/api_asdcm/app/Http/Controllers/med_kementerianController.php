@@ -9,10 +9,6 @@ use App\Models\med_kementerian;
 
 class med_kementerianController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_kementerian = $request->input('nama_kementerian');
@@ -78,7 +74,6 @@ class med_kementerianController extends Controller
         $nama_kementerian = $request->input('nama_kementerian');
 
         $med_kementerian = med_kementerian::where('nama_kementerian',$nama_kementerian)->get();
-        // dd($med_kementerian);
         if ($med_kementerian)   {
             return response()->json([
                 'success'=>'true',

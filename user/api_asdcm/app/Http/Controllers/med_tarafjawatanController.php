@@ -9,10 +9,6 @@ use App\Models\med_tarafjawatan;
 
 class med_tarafjawatanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_tarafjawatan = $request->input('nama_tarafjawatan');

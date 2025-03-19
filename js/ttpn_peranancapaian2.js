@@ -324,9 +324,6 @@ $("#send_noic").on("submit", function (e) {
                 $("#semak_btn").prop("disabled", false);
                 $("#icon_semak").prop("class", "fa fa-search");
 
-                // $.each(obj_usersIntan,function(i,field){
-                //     ezxsSubKluster(field.post.bahagian);
-                // });
               }
             });
           }
@@ -357,7 +354,6 @@ $("#registergov").on("submit", function (e) {
     form.append("FK_gelaran", FK_gelaran);
     form.append("katalaluan", katalaluan);
     var settingsregusers = {
-      // "url": host + "api_pentadbir/public/addUsers",
       url: host + "addUsers",
       method: "POST",
       timeout: 0,
@@ -368,7 +364,6 @@ $("#registergov").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
@@ -386,7 +381,6 @@ $("#registergov").on("submit", function (e) {
       };
 
       $.ajax(settingsfetchusers).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         let FK_users = result.data.id_users;
         let emel_kerajaan = $("#emel_kerajaan_add").val();
@@ -468,17 +462,6 @@ $("#registergov").on("submit", function (e) {
             window.location.reload();
           });
 
-          // swal({
-          //     title: "Daftar Pengguna",
-          //     text: "Pendaftaran berjaya! " + result.message,
-          //     confirmButtonText: "OK",
-          //     closeOnConfirm: true,
-          //     allowOutsideClick: false,
-          //     html: false
-          // }).then(function(){
-          //     $("#register_users").modal("hide");
-          //     tablePengguna();
-          // });
         });
       });
     });
@@ -500,7 +483,6 @@ function check_users(noic, returnValue) {
 function check_usersIntan(noic, returnValue) {
   var settings = {
     url: "https://admin.dtims.intan.my/api/ezxs/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
     method: "GET",
     timeout: 0,
   };
@@ -513,7 +495,6 @@ function check_usersIntan(noic, returnValue) {
 function check_hrmis(noic, returnValue) {
   var settings = {
     url: "https://admin.dtims.intan.my/api/hrmis/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
     method: "GET",
     timeout: 0,
   };
@@ -530,7 +511,6 @@ function tablePeranan() {
     { name: "nama_peranan", title: "Nama Peranan" },
     { name: "nama_senarai", title: "Senarai Capaian", breakpoints: "md sm xs" },
     { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
   var settings = {
     url: host + "perananList",
@@ -573,7 +553,6 @@ function tablePeranan() {
             break;
         }
         senarai_capaian = senarai_capaian + nama_submodul;
-        // console.log(senarai_capaian)
         if (field.FK_capaian.indexOf("C" + inc) >= 0)
           senarai_capaian = senarai_capaian + "Create, ";
         if (field.FK_capaian.indexOf("R" + inc) >= 0)
@@ -585,7 +564,6 @@ function tablePeranan() {
         senarai_capaian = senarai_capaian + "<br>";
         inc++;
       }
-      // console.log(senarai_capaian)
       list.push({
         id: field.id_peranan,
         nama_peranan: field.nama_peranan,
@@ -596,7 +574,6 @@ function tablePeranan() {
           '<button class="button button-box button-sm button-primary" onclick="loadData(\'' +
           i +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
-        // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_peranan+'\')"><i class="ti-trash"></i>'
       });
     });
 
@@ -627,7 +604,6 @@ function tablePengguna() {
     { name: "no_kad_pengenalan", title: "No. K/P", breakpoints: "md sm xs" },
     { name: "status_rekod", title: "Status", breakpoints: "lg md sm xs" },
     { name: "upt_btn", title: "Tindakan", breakpoints: "lg md sm xs" },
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
   var settings = {
     url: host + "usersListAll",
@@ -644,7 +620,6 @@ function tablePengguna() {
     $.each(response.data, function (i, field) {
       t_lahir = new Date(field.tarikh_lahir);
       var checked;
-      // alert(field.statusrekod_capaian);
       if (field.statusrekod_capaian == "1") {
         checked = "checked";
         badge = "badge-success";
@@ -681,7 +656,6 @@ function tablePengguna() {
           '<button class="button button-box button-sm button-primary" onclick="loadDataCapaian(\'' +
           i +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
-        // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
 
@@ -760,30 +734,6 @@ function loadDataCapaian(indexs) {
 
   $("#update-capaian").modal("show");
 
-  // $('input[type=checkbox]').prop('checked',false);
-  // var upt_FK_capaian = [];
-
-  // listmodul = sessionStorage.listsubmodule.split(",");
-  // listcapaian = data[indexs].FK_capaian.split(",");
-  // listproses = ['C','R','U','D'];
-
-  // for(var c=0;c<listcapaian.length;c++){
-  //     for(var m=0;m<listmodul.length;m++){
-
-  //         for(var p=0;p<listproses.length;p++){
-
-  //             var curprocess = listproses[p]+""+listmodul[m];
-
-  //             if(listcapaian[c].indexOf(curprocess) >= 0){
-
-  //                 $('#upt_'+curprocess).prop('checked',true);
-
-  //             }
-
-  //         }
-
-  //     }
-  // }
 }
 
 $("#FK_users").change(function () {
@@ -793,7 +743,6 @@ $("#FK_users").change(function () {
     timeout: 0,
   };
   $.ajax(settings).done(function (response) {
-    // alert(response.data)
     $("#FK_user").val(response.data.id_users);
     $("#FK_kampus").val(response.data.FK_kampus);
     $("#FK_kluster").val(response.data.FK_kluster);
@@ -844,12 +793,8 @@ $("#registerPeranan").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
-          console.log(result);
           swal({
             title: "Daftar Peranan Pengguna",
             text: result.message,
@@ -920,12 +865,8 @@ $("#updatePeranan").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
-          console.log(result);
           swal({
             title: "Kemaskini Peranan Pengguna",
             text: result.message,
@@ -989,7 +930,6 @@ $("#registerCapaian").on("submit", function (e) {
         twmTitle: FK_users,
         twmDescription: FK_peranan,
       };
-      // console.log(param)
 
       var settings = {
         url: host + "addCapaian",
@@ -1001,11 +941,8 @@ $("#registerCapaian").on("submit", function (e) {
         data: form,
       };
       $.ajax(settings).done(function (response) {
-        console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Daftar Capaian Pengguna",
             text: result.data,
@@ -1066,7 +1003,6 @@ $("#updateCapaian").on("submit", function (e) {
         twmTitle: FK_users,
         twmDescription: FK_peranan,
       };
-      console.log(param);
 
       var settings = {
         url: host + "capaianUpdate",
@@ -1079,11 +1015,8 @@ $("#updateCapaian").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Kemaskini Capaian Pengguna",
             text: result.data,
@@ -1124,7 +1057,6 @@ function del_rekod(i, status) {
   else statuscapaian = 0;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id_capaian", id);
   form.append("status", statuscapaian);
 
@@ -1149,11 +1081,8 @@ function del_rekod(i, status) {
     };
 
     $.ajax(settings).done(function (response) {
-      // console.log(response)
       result = JSON.parse(response);
       if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
         swal({
           title: "Kemaskini Status Capaian",
           text: "Gagal!",
@@ -1389,9 +1318,6 @@ function ezxsKampus(id_kampus) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -1422,9 +1348,6 @@ function ezxsKluster(id_kluster) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -1456,9 +1379,6 @@ function ezxsSubKluster(id_subkluster) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -1482,9 +1402,6 @@ function perananList(returnValue) {
     url: host + "perananList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -1503,7 +1420,6 @@ var settings = {
   method: "GET",
   timeout: 0,
 };
-// console.log(checkboxval);
 $.ajax(settings).done(function (response) {
   //LIST OPTION
   $.each(response.data, function (i, item) {

@@ -9,10 +9,6 @@ use App\Models\med_kategoripengguna;
 
 class med_kategoripenggunaController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $FK_jenis_pengguna = $request->input('FK_jenis_pengguna');

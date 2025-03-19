@@ -6,7 +6,6 @@ var colums = [
     { "name": "alamat", "title": "Alamat", "breakpoints": "md sm xs" },
     { "name": "status_rekod", "title": "Status" },
     { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs"  },
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
     "url": host + "kampusList",
@@ -98,7 +97,6 @@ $("#register").on('submit',function(e){
             form.append("poskod",poskod);
             form.append("bandar",bandar);
             form.append("FK_negeri",negeri);
-            console.log(nama_kampus)
             var settings = {
                 "url": host+"addKampus",
                 "method": "POST",
@@ -110,7 +108,6 @@ $("#register").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response);
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -195,7 +192,6 @@ $("#update").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response)
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -257,11 +253,10 @@ function del_rekod(i){
       };
 
     $.ajax(settings).done(function (response) {
-        // console.log(response)
+
         result = JSON.parse(response);
         if (!result.success) {
-            // Swal(result.message, result.data, "error");
-            // return;
+
             swal({
                 title: "Hapus Kampus",
                 text: "Gagal!",
@@ -289,9 +284,6 @@ var settings = {
     "url": host + "api_public/public/negerisList",
     "method": "GET",
     "timeout": 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
     $.ajax(settings).done(function (response) {

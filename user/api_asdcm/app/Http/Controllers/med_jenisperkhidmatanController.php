@@ -9,10 +9,6 @@ use App\Models\med_jenisperkhidmatan;
 
 class med_jenisperkhidmatanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_jenisperkhidmatan = $request->input('nama_jenisperkhidmatan');

@@ -9,10 +9,6 @@ use App\Models\med_bahagian;
 
 class med_bahagianController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_bahagian = $request->input('nama_bahagian');

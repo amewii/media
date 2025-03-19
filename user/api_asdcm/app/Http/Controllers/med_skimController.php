@@ -9,10 +9,6 @@ use App\Models\med_skim;
 
 class med_skimController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $kod_skim = $request->input('kod_skim');

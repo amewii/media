@@ -9,10 +9,6 @@ use App\Models\med_subkluster;
 
 class med_subklusterController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_subkluster = $request->input('nama_subkluster');
@@ -59,7 +55,6 @@ class med_subklusterController extends Controller
     }
 
     public function showGet($FK_kluster)  {
-        // $id = $request->input('id_subkluster');
 
         $med_subkluster = med_subkluster::where('FK_kluster',$FK_kluster)->get();
 

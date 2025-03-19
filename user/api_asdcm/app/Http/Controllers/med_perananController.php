@@ -9,10 +9,6 @@ use App\Models\med_peranan;
 
 class med_perananController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_peranan = $request->input('nama_peranan');
@@ -22,9 +18,6 @@ class med_perananController extends Controller
         $updated_by = $request->input('updated_by');
         $statusrekod = "1";
 
-        // $json_FK_capaian = json_encode($FK_capaian);
-        // $arrayFK_capaian = json_decode($json_FK_capaian, true);
-        // dd($json_FK_capaian);
 
         $checkexist = med_peranan::where('med_peranan.nama_peranan',$nama_peranan) -> 
                                         get(); // list all data
@@ -91,7 +84,6 @@ class med_perananController extends Controller
 
     public function update(Request $request)    {
         $id = $request->input('id_peranan');
-        // dd($id);
         $nama_peranan = $request->input('nama_peranan');
         $FK_submodul = $request->input('FK_submodul');
         $FK_capaian = $request->input('FK_capaian');

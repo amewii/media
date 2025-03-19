@@ -99,10 +99,8 @@ $.fileup({
     form_data.append("file", file_data);
     form_data.append("updated_by", window.sessionStorage.id);
     var obj = new post(host+`programUpload/`+window.sessionStorage.med_program_id,form_data,window.sessionStorage.token).execute();
-    console.log(obj);
     if(obj.success){
       ++bil_upload;
-      // alert(bil_upload);
       imglist = $("#dataList").val();
       if (imglist == "") {
         imglist = [];
@@ -140,11 +138,8 @@ $.fileup({
     }
   },
   onError: function (event, file, file_number) {
-    console.log(file.name + " - " + "error,");
-    //swal error
   },
   onFinish: function (e) {
-    // window.location.reload();
   },
 });
 
@@ -159,92 +154,6 @@ function saveImgList(varImg) {
   var obj = new post(host+`programUpload2/`+window.sessionStorage.med_program_id,form_upload,window.sessionStorage.token).execute();
 }
 
-// $.fileup({
-//     // url: 'file/upload',
-//     inputID: 'upload-2',
-//     dropzoneID: 'upload-2-dropzone',
-//     queueID: 'upload-2-queue',
-//     lang: 'en',
-//     onSelect: function(file) {
-//         $('#multiple button').show();
-//     },
-//     onRemove: function(file, total) {
-//         if (file === '*' || total === 1) {
-//             $('#multiple button').hide();
-//         }
-//     },
-//     onSuccess: function(response, file_number, file) {
-//         var file_data = file;
-
-//         var ext = file.name.split('.').pop();
-
-//         var form_data = new FormData();
-//         form_data.append('file', file_data);
-//         form_data.append('updated_by', window.sessionStorage.id);
-//         $.ajax({
-//             url: host + 'programUpload/' + window.sessionStorage.med_program_id,
-//             dataType: 'text',
-//             cache: false,
-//             contentType: false,
-//             processData: false,
-//             data: form_data,
-//             method: 'post',
-//             timeout: 0
-//         });
-//         imglist = $('#dataList').val();
-//         if(imglist == ""){
-//             imglist = [];
-//         }
-//         else{
-//             imglist =  JSON.parse(JSON.parse($('#dataList').val()));
-//             // console.log(imglist)
-//         }
-
-//         var form_cek = new FormData();
-//         form_cek.append('ext', ext);
-
-//         var settings_cek = {
-//             "url": host + "programUploadExt/" + window.sessionStorage.med_program_id,
-//             "method": "POST",
-//             "timeout": 0,
-//             contentType: false,
-//             processData: false,
-//             data: form_upload,
-//         };
-//         $.ajax(settings).done(function (response) {
-
-//             alert(response.data);
-//             // if()
-
-//             imglist.push({images: window.sessionStorage.med_program_id + "_" + file.name});
-//             $('#dataList').val(JSON.stringify(JSON.stringify(imglist)));
-//             // console.log(imglist)
-//             var form_upload = new FormData();
-//             form_upload.append('file', JSON.stringify(imglist));
-//             form_upload.append('updated_by', window.sessionStorage.id);
-//             var settings = {
-//                 "url": host + "programUpload2/" + window.sessionStorage.med_program_id,
-//                 "method": "POST",
-//                 "timeout": 0,
-//                 contentType: false,
-//                 processData: false,
-//                 data: form_upload,
-//             };
-//             $.ajax(settings).done(function (response) {
-//                 window.location.reload();
-//             });
-//         });
-
-//         //api_upload_img
-//     },
-//     onError: function(event, file, file_number) {
-//         console.log(file.name+" - "+"error,");
-//         //swal error
-//     },
-//     onFinish: function(e){
-//         window.location.reload();
-//     }
-// });
 
 function onPageLoad() {
   $("#loading_modal").modal("show");
@@ -255,18 +164,6 @@ function onPageLoad() {
 
     vip = response.data.FK_vip;
     vip = vip.replace(/;/gi, " ,");
-
-    // let vip = "";
-    // console.log(JSON.parse(response.data.media_path));
-    // $.each(JSON.parse(response.data.media_path), function(i, item){
-    //     if (item.FK_vip != null){
-    //         if (vip != ""){
-
-    //         } else  {
-
-    //         }
-    //     }
-    // });
 
     $("#disp_id").val(response.data.id_program);
     $("#upt_id").val(response.data.id_program);
@@ -316,18 +213,14 @@ function onPageLoad() {
           "',2,'" +
           field.FK_vip +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
-        // preview = '<span class="" style="font-size:80px" onclick="loadData(\'' + field.images + '\',2)" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="fa fa-file-video-o"></i></span>';
-        // preview = '<img src="../api_asdcm/api_media//images/'+field.images+'" height="150px" alt="" onclick="loadData(\'' + field.images + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
       } else if (ext[1] != "mp4" || ext[1] != "mov") preview = '<img src="user/api_asdcm/public/uploads/' + field.images + '" height="150px" alt="" onclick="loadData(\'' + field.images + "',1,'" + field.FK_vip + '\')" data-ui-toggle-class="zoom" data-ui-target="#animate">';
 
       listImages =
         '<div class="col-lg-3 col-12 mb-30 border">' +
           '<div class="row adomx-checkbox-radio-group" style="padding: 10px;"><input class="" type="checkbox" name="media_selected[]" value="' + field.images + '";"' + field.id_program + '" id="' + field.images + '"/>' +
           '<div class="col-12" align="center"> <br>' +
-        // '<div class="watermark">'+
             preview +
           "</div>" +
-        // '</div>'+
         "</div>   " +
         "</div> ";
       $("#listImages").append(listImages);
@@ -338,11 +231,6 @@ function onPageLoad() {
     $("#finishButton").removeAttr("disabled");
   }
 
-  // $.ajax(settings)
-  //   .done(function (response) {
-  //   })
-  //   .then(function () {
-  //   });
 }
 
 function loadData(indexs, varType, vip) {
@@ -366,7 +254,6 @@ function loadData(indexs, varType, vip) {
 
   $("#imgText").val(indexs);
 
-  // watermark = '<div class="watermark"></div>';
   document.getElementById("imgTags").appendChild(img);
   $("#FK_users").val("");
   if (vip != "undefined") $("#FK_users").val(vip);
@@ -471,16 +358,7 @@ $("#reg-permohonan").click(function () {
       t_program.getDate();
     let statusrekod = "1";
 
-    // var param = {
-    //     twmTitle: FK_program,
-    //     twmDescription: status_permohonan,
-    //     twmSdate: tarikh_permohonan,
-    //     twmEdate: statusrekod,
-    // }
-    // console.log(param)
-
     var form = new FormData();
-    // formData.append("key","mSideDiary");
     form.append("FK_users", FK_users);
     form.append("FK_program", FK_program);
     form.append("status_permohonan", status_permohonan);
@@ -517,28 +395,12 @@ $("#reg-permohonan").click(function () {
   });
 });
 
-// $('#FK_users').change(function(){
-//     var settings = {
-//         "url": host+"vips/"+$("#FK_users").val(),
-//         "method": "GET",
-//         "timeout": 0,
-//       };
-//     $.ajax(settings).done(function (response) {
-//         $("#FK_user").val(response.data.PK);
-//         $("#FK_kampus").val(response.data.FK_kampus);
-//         $("#FK_kluster").val(response.data.FK_kluster);
-//         $("#FK_unit").val(response.data.FK_unit);
-//     });
-// })
 
 //Dropdown User List
 var settings = {
   url: host + "vipsList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -606,7 +468,6 @@ function del_media() {
     var form = new FormData();
 
     form.append("updated_by", FK_users);
-    // form.append("FK_program",FK_program);
     form.append("imgText", imgText);
 
     var settings = {
@@ -620,11 +481,8 @@ function del_media() {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        // Swal(result.message, result.data, "error");
-        // return;
         swal({
           title: "Kemaskini Media",
           text: "Hapus Media Gagal!",
@@ -691,7 +549,6 @@ function del_media_multi(value) {
   var form = new FormData();
 
   form.append("updated_by", FK_users);
-  // form.append("FK_program",FK_program);
   form.append("imgText", imgText);
   var settings = {
     url: host + "programMediaBunchRemove/" + FK_program,

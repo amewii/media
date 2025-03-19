@@ -9,10 +9,6 @@ use App\Models\med_gelaran;
 
 class med_gelaranController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     
     public function register(Request $request) {
         $nama_gelaran = $request->input('nama_gelaran');

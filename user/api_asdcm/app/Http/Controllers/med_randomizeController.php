@@ -14,7 +14,6 @@ class med_randomizeController extends Controller
     public function randomize(){
 
         $dir = '../public/uploads/';
-        // $dir = '../public/uploads/';
 
         $list = [];
         $finalist = [];

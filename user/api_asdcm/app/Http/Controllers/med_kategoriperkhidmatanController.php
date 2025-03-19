@@ -9,10 +9,6 @@ use App\Models\med_kategoriperkhidmatan;
 
 class med_kategoriperkhidmatanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_kategoriperkhidmatan = $request->input('nama_kategoriperkhidmatan');

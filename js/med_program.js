@@ -36,10 +36,6 @@ function tableProgram() {
     { name: "nama_program", title: "Nama Program" },
     { name: "t_program", title: "Tarikh Program", breakpoints: "md sm xs" },
     {name: "nama_kategori", title: "Kategori Program", breakpoints: "md sm xs",},
-    // { "name": "butiran_program", "title": "Butiran Program" },
-    // { "name": "gambar", "title": "Gambar Program", "breakpoints": "md sm xs" },
-    // {name: "nama_kampus", title: "Kampus", breakpoints: "md sm xs",},
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
   ];
 
   if(window.sessionStorage.FK_peranan == 1){
@@ -55,10 +51,6 @@ function tableProgram() {
     title: "Status Siar"
   });
   
-  // colums.push({
-  //   name: "status_rekod", 
-  //   title: "Status"
-  // });
   
   colums.push({
     name: "upt_btn", 
@@ -73,7 +65,6 @@ function tableProgram() {
     var obj = new get(host+`programListKluster/`+FK_kluster_master,window.sessionStorage.token).execute();
   }
   if(obj.success){
-    console.log(obj);
     let convertList = JSON.stringify(obj.data);
     $("#dataList").val(convertList);
     var list = [];
@@ -270,7 +261,6 @@ $("#reg-program").on("shown.bs.modal", function () {
     $("#FK_kluster").val(data.FK_kluster);
     $("#FK_subkluster").val(data.FK_subkluster);
   } else {
-    console.log(obj);
   }
 });
 
@@ -292,7 +282,6 @@ function detail(i, indexs) {
       " at Tetapan Program Media.",
     window.sessionStorage.browser
   );
-  // $('#content').load('./js/detail_med_program.html');
   window.location.reload();
 }
 
@@ -328,7 +317,6 @@ $("#register").on("submit", function (e) {
         .get();
 
       var form = new FormData();
-      // formData.append("key","mSideDiary");
       form.append("nama_program", nama_program);
       form.append("tarikh_program", tarikh_program);
       form.append("FK_kampus", FK_kampus);
@@ -351,7 +339,6 @@ $("#register").on("submit", function (e) {
         g: FK_kategori,
         h: FK_vip,
       };
-      // console.log(param)
 
       var obj = new post(host+`addProgram`,form,window.sessionStorage.token).execute();
       if(obj.success){
@@ -587,7 +574,6 @@ $("#FK_kampus").change(function () {
       }
     });
   } else {
-    console.log(obj);
   }
 });
 
@@ -610,7 +596,6 @@ $("#FK_kluster").change(function () {
       );
     });
   } else {
-    console.log(obj);
   }
 }); //Dropdown Subkluster List
 
@@ -758,7 +743,6 @@ function kampusList() {
     }
   } else {
     obj_kampusList = obj;
-    console.log(obj_kampusList);
   }
 }
 
@@ -780,7 +764,6 @@ function klusterList() {
 
   var obj = new get(host+`klustersList`,window.sessionStorage.token).execute();
   if(obj.success){
-    // console.log(obj);
     obj_klusterList = obj;
     $.each(obj_klusterList.data, function (i, item) {
       $("#FK_kluster").append(
@@ -980,6 +963,5 @@ function kategoriprogramList(returnValue) {
       );
     });
   } else {
-    console.log(obj);
   }
 }

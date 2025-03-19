@@ -3,7 +3,6 @@ var colums = [
     { "name": "nama_bangsa", "title": "Nama" },
     { "name": "status_rekod", "title": "Status" },
     { "name": "upt_btn", "title": "Tindakan", "breakpoints": "md sm xs" },
-    // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
     "url": host + "api_public/public/bangsasListAll",
@@ -84,7 +83,6 @@ $("#register").on('submit',function(e){
             
             var form = new FormData();
             form.append("nama_bangsa",nama_bangsa);
-            console.log(nama_bangsa)
             var settings = {
                 "url": host+"api_public/public/addBangsas",
                 "method": "POST",
@@ -96,7 +94,6 @@ $("#register").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response);
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -126,7 +123,6 @@ $("#register").on('submit',function(e){
                     }).then(function(){},
                         function (dismiss) {
                             if (dismiss === 'timer') {
-                                // sessionStorage.token = result.token;
                                 saveLog(window.sessionStorage.id,"Register Data ["+ nama_bangsa +"] at Tetapan Bangsa.",window.sessionStorage.browser);
                                 window.location.reload();    
                             }
@@ -174,7 +170,6 @@ $("#update").on('submit',function(e){
             };
 
             $.ajax(settings).done(function (response) {
-                // console.log(response)
                 result = JSON.parse(response);
                 if (!result.success) {
                     swal({
@@ -237,11 +232,8 @@ function del_rekod(i){
       };
 
     $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
-            // Swal(result.message, result.data, "error");
-            // return;
             swal({
                 title: "Hapus Bangsa",
                 text: "Gagal!",

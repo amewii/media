@@ -49,20 +49,6 @@ $(function () {
       $("#FK_kementerian").val(result.data.id_kementerian);
       $("#FK_agensi").val(result.data.id_agensi);
       $("#FK_bahagian").val(result.data.id_bahagian);
-      //     if (result.data.users_intan == 1)   {
-      //     $('#usersintan').removeClass('hidden');
-      //     $('#FK_kampus').val(result.data.id_kampus);
-      //     $('#FK_kluster').val(result.data.id_kluster);
-      //     $('#FK_subkluster').val(result.data.id_subkluster);
-      //     $('#FK_unit').val(result.data.id_unit);
-      // } else {
-      //     $('#FK_ila').val(result.data.id_ilawam);
-      //     $('#alamat1_pejabat').val(result.data.alamat1_pejabat);
-      //     $('#alamat2_pejabat').val(result.data.alamat2_pejabat);
-      //     $('#poskod_pejabat').val(result.data.poskod_pejabat);
-      //     $('#daerah_pejabat').val(result.data.daerah_pejabat);
-      //     $('#negeri_pejabat').val(result.data.negeri_pejabat);
-      // }
     } else if (result.data.usersswasta != "undefined") {
       $("#divSwasta").removeClass("hidden");
       $("#id_usersswasta").val(result.data.id_usersswasta);
@@ -84,16 +70,12 @@ $("#update").on("submit", function (e) {
     let id_users = $("#id_users").val();
     let emel = $("#displayemel").val();
     let notel = $("#notel").val();
-    // let katalaluan = $("#katalaluan").val();
 
     var form = new FormData();
-    // formData.append("key","mSideDiary");
     form.append("id_users", id_users);
     form.append("emel", emel);
     form.append("notel", notel);
     form.append("updated_by", window.sessionStorage.id);
-    // form.append("katalaluan", katalaluan);
-    // formData.append("token",window.sessionStorage.token);
     var settingseditprofileusers = {
       url: host + "usersEditProfile",
       method: "POST",
@@ -104,7 +86,6 @@ $("#update").on("submit", function (e) {
     };
     $.ajax(settingseditprofileusers).done(function (response) {
       if (response.success == false) {
-        // swal(response.message, response.data, "error");
         return;
       }
     });
@@ -167,7 +148,6 @@ $("#update").on("submit", function (e) {
 
       $.ajax(settingseditprofileusersgovs).done(function (response) {
         if (response.success == false) {
-          // swal(response.message, response.data, "error");
           return;
         }
         swal({
@@ -201,7 +181,6 @@ function users_info(id, returnValue) {
   $.ajax(settings).done(function (response) {
     result = response;
     if (result.success) {
-      // console.log(response.data)
       returnValue();
     } else {
       swal(response.message, "Tiada Data", "warning");
@@ -223,9 +202,6 @@ function kampusList() {
     url: host + "kampusList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -278,9 +254,6 @@ function ezxsKampus(id_kampus) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -305,9 +278,6 @@ function klusterList() {
     url: host + "klustersList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -360,9 +330,6 @@ function ezxsKluster(id_kluster) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -388,9 +355,6 @@ function subklusterList() {
     url: host + "subklustersList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -443,9 +407,6 @@ function ezxsSubKluster(id_subkluster) {
     mimeType: "multipart/form-data",
     contentType: false,
     data: form,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -470,9 +431,6 @@ function unitList() {
     url: host + "unitsList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -519,9 +477,6 @@ function skimList() {
     url: host + "skimsList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -551,9 +506,6 @@ function gredList() {
     url: host + "gredsList",
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {

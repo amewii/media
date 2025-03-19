@@ -20,17 +20,7 @@ $("#registergov").on("submit", function (e) {
     let FK_negara_lahir = $("#FK_negara_lahir").val();
     let FK_negeri_lahir = $("#FK_negeri_lahir").val();
     let katalaluan = $("#katalaluan").val();
-    // let ucreate = window.sessionStorage.noanggota;
-    // var param = {
-    //     twmTitle: no_kad_pengenalan,
-    //     twmDescription: nama,
-    //     a: FK_jantina,
-    //     b: emel,
-    //     c: tarikh_lahir,
-    // }
-    // console.log(param)
     var form = new FormData();
-    // formData.append("key","mSideDiary");
     form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("nama", nama);
     form.append("FK_jantina", FK_jantina);
@@ -46,9 +36,7 @@ $("#registergov").on("submit", function (e) {
     form.append("FK_negara_lahir", FK_negara_lahir);
     form.append("FK_negeri_lahir", FK_negeri_lahir);
     form.append("katalaluan", katalaluan);
-    // formData.append("token",window.sessionStorage.token);
     var settingsregusers = {
-      // "url": host + "api_pentadbir/public/addUsers",
       url: host + "addUsers",
       method: "POST",
       timeout: 0,
@@ -59,7 +47,6 @@ $("#registergov").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
@@ -77,7 +64,6 @@ $("#registergov").on("submit", function (e) {
       };
 
       $.ajax(settingsfetchusers).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         let FK_users = result.data.id;
         let nama_jawatan = $("#nama_jawatan").val();
@@ -142,7 +128,6 @@ $("#registergov").on("submit", function (e) {
         };
 
         $.ajax(settingsregusersgovs).done(function (response) {
-          // console.log(response);
           result = JSON.parse(response);
           let nama_mk = $("#nama_mk").val();
           let notel_mk = $("#notel_mk").val();
@@ -164,7 +149,6 @@ $("#registergov").on("submit", function (e) {
           };
 
           $.ajax(settingsregmk).done(function (response) {
-            // console.log(response);
             result = JSON.parse(response);
             if (!result.success) {
               Swal(result.message, result.data, "error");
@@ -225,9 +209,6 @@ var settings = {
   url: host + "kampusList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -255,9 +236,6 @@ var settings = {
   url: host + "klustersList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -295,9 +273,6 @@ $("#FK_kluster").change(function () {
     url: host + "subklusters/" + $("#FK_kluster").val(),
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -339,9 +314,6 @@ $("#FK_subkluster").change(function () {
       $("#FK_subkluster").val(),
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
 
   $.ajax(settings).done(function (response) {
@@ -370,9 +342,6 @@ var settings = {
   url: host + "api_public/public/jantinasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -399,9 +368,6 @@ var settings = {
   url: host + "api_public/public/warganegarasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -429,9 +395,6 @@ var settings = {
   url: host + "gelaransList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -459,9 +422,6 @@ var settings = {
   url: host + "api_public/public/bangsasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -489,9 +449,6 @@ var settings = {
   url: host + "api_public/public/etniksList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -519,9 +476,6 @@ var settings = {
   url: host + "api_public/public/agamasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -549,9 +503,6 @@ var settings = {
   url: host + "api_public/public/negarasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -579,9 +530,6 @@ var settings = {
   url: host + "api_public/public/negerisList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -609,9 +557,6 @@ var settings = {
   url: host + "skimsList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -639,9 +584,6 @@ var settings = {
   url: host + "gredsList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -669,9 +611,6 @@ var settings = {
   url: host + "tarafjawatansList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -699,9 +638,6 @@ var settings = {
   url: host + "jenisperkhidmatansList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -729,9 +665,6 @@ var settings = {
   url: host + "kategoriperkhidmatansList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -759,9 +692,6 @@ var settings = {
   url: host + "kementeriansList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -789,9 +719,6 @@ var settings = {
   url: host + "agensisList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -833,11 +760,7 @@ $("#FK_agensi").change(function () {
       $("#FK_agensi").val(),
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
-  console.log(settings);
 
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -859,7 +782,6 @@ $("#FK_agensi").change(function () {
   });
   // END Dropdown Sub Modul List
 
-  // document.getElementById("submodul").classList.remove("hidden");
 });
 
 //Dropdown Bahagian List
@@ -876,11 +798,7 @@ $("#FK_bahagian").change(function () {
     url: host + "ilawams/" + $("#FK_bahagian").val(),
     method: "GET",
     timeout: 0,
-    // "header":{
-    //     "Authentication": "ASDCM"+window.sessionStorage.token
-    //   }
   };
-  console.log(settings);
 
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -902,5 +820,4 @@ $("#FK_bahagian").change(function () {
   });
   // END Dropdown Sub Modul List
 
-  // document.getElementById("submodul").classList.remove("hidden");
 });

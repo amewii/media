@@ -34,7 +34,6 @@ class authController extends Controller
         $katalaluan = $request->input('katalaluan');
         $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
         $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
-        // dd($enc_katalaluan);
         $nama = $request->input('nama');
         $emel = $request->input('emel');
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
@@ -57,15 +56,9 @@ class authController extends Controller
             $tetapan_mail = med_tetapan::first();
             $emelreceiver = $emel;
             $mail = new PHPMailer();
-        // mail('amriamewii@gmail.com', '[TEST MESSAGE]', 'This is the body message', 'From: muhammadamri@protigatech.com');
-            // $mail->SMTPAuth = true;
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host       = $tetapan_mail->mail_gateway;
-            // $mail->SMTPAuth   = true;
-            // $mail->Username   = $tetapan_mail->mail_username;
-            // $mail->Password   = $tetapan_mail->mail_password;
-            // $mail->SMTPSecure = $tetapan_mail->mail_smtp_secure;
             $mail->Port       = $tetapan_mail->mail_port;
             
             $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
@@ -102,7 +95,6 @@ class authController extends Controller
                 ],200);
             } 
             else {
-                // dd("Mailer Error: " . $mail->ErrorInfo);
                 return response()->json([
                     'success'=>'true',
                     'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
@@ -135,7 +127,6 @@ class authController extends Controller
             $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
             $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
             
-            // dd($enc_katalaluan);
             if($userS->katalaluan === $enc_katalaluan){
                 $token = Str::random(32);
     
@@ -165,7 +156,6 @@ class authController extends Controller
             else{
                 return response()->json([
                     'success'=>false,
-                    // 'token'=>$token,
                     'messages'=>'Log Masuk Gagal',
                     'data'=>'Katalaluan tidak tepat. Sila cuba lagi.',
                 ],400);
@@ -174,7 +164,6 @@ class authController extends Controller
         else {
             return response()->json([
                 'success'=>false,
-                // 'token'=>$token,
                 'messages'=>'Log Masuk Gagal',
                 'data'=>'Sila hubungi pihak pentadbir sistem untuk maklumat lanjut.',
             ],400);
@@ -191,7 +180,6 @@ class authController extends Controller
             $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
             $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
             
-            // dd($enc_katalaluan);
             if($userS->katalaluan === $enc_katalaluan){
                 $token = Str::random(32);
     
@@ -221,7 +209,6 @@ class authController extends Controller
             else{
                 return response()->json([
                     'success'=>false,
-                    // 'token'=>$token,
                     'messages'=>'Log Masuk Gagal',
                     'data'=>'Katalaluan tidak tepat. Sila cuba lagi.',
                 ],201);
@@ -230,7 +217,6 @@ class authController extends Controller
         else {
             return response()->json([
                 'success'=>false,
-                // 'token'=>$token,
                 'messages'=>'Log Masuk Gagal',
                 'data'=>'Sila hubungi pihak pentadbir sistem untuk maklumat lanjut.',
             ],201);
@@ -311,7 +297,6 @@ class authController extends Controller
                     ],200);
                 } else {
                     if(!$mail->send()) {
-        //                dd("Mailer Error: " . $mail->ErrorInfo);
                         return response()->json([
                             'success'=>true,
                             'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
@@ -319,7 +304,6 @@ class authController extends Controller
                         ],200);
                     } 
                     else {
-                        // dd("Mailer Error: " . $mail->ErrorInfo);
                         return response()->json([
                             'success'=>true,
                             'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',

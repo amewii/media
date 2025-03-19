@@ -3,7 +3,6 @@ var colums = [
   { name: "kod_modul", title: "Kod Modul" },
   { name: "nama_modul", title: "Nama Modul" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "List",
@@ -88,9 +87,7 @@ function detail(id, indexs) {
     contentType: false,
     data: form,
   };
-  // console.log(settings)
   $.ajax(settings).done(function (response) {
-    // console.log(response)
     let result = JSON.parse(response);
     $("#listProgramdet").html("");
     if (result.success) {
@@ -104,7 +101,6 @@ function detail(id, indexs) {
 
       let data = result.data;
       let bil = 1;
-      // alert(data);
       let convertDetList = JSON.stringify(data);
       $("#dataDetailList").val(convertDetList);
 
@@ -163,7 +159,6 @@ $("#btnKembali").click(function () {
 
 function loadDataDetail(indexs) {
   let data = JSON.parse($("#dataDetailList").val());
-  // alert(data[indexs].pgm_id);
   $("#upt_nama_modul").val(data[indexs].nama_modul);
   $("#upt_nama_submodul").val(data[indexs].nama_submodul);
   $("#upt_idt").val(data[indexs].id);
@@ -206,7 +201,6 @@ $("#update").on("submit", function (e) {
       form.append("id", upt_id);
       form.append("kod_modul", upt_kod_modul);
       form.append("nama_modul", upt_nama_modul);
-      // form.append("recordstatus", statusrekod);
 
       var settings = {
         url: host + "modulsUpdate",
@@ -219,11 +213,8 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Kemaskini Modul",
             text: "Kemaskini Gagal!",
@@ -275,7 +266,6 @@ $("#updatet").on("submit", function (e) {
       var form = new FormData();
       form.append("id", upt_id);
       form.append("nama_submodul", upt_nama_submodul);
-      // form.append("recordstatus", statusrekod);
 
       var settings = {
         url: host + "submodulsUpdate",
@@ -288,11 +278,8 @@ $("#updatet").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
-          // Swal(result.message, result.data, "error");
-          // return;
           swal({
             title: "Kemaskini Sub Modul",
             text: "Kemaskini Gagal!",
@@ -328,7 +315,6 @@ function del_rekod(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id", id);
 
   swal({
@@ -352,14 +338,12 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
         return;
       }
 
-      // sessionStorage.token = result.token;
       saveLog(
         window.sessionStorage.id,
         "Delete Data for [id = " +
@@ -381,7 +365,6 @@ function del_rekodt(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id", id);
 
   swal({
@@ -405,14 +388,12 @@ function del_rekodt(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
         return;
       }
 
-      // sessionStorage.token = result.token;
       saveLog(
         window.sessionStorage.id,
         "Delete Data for [id = " +

@@ -3,7 +3,6 @@ var colums = [
   { name: "nama", title: "Nama Capaian" },
   { name: "", title: "Nama Kluster" },
   { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
-  // {"name":"status","title":"Status","breakpoints":"sm xs"}
 ];
 var settings = {
   url: host + "api_public/public/capaiansList",
@@ -87,29 +86,10 @@ $("#register").on("submit", function (e) {
       $("#reg-capaian").modal("hide");
       let nama_capaian = $("#nama_capaian").val();
       let FK_kluster = $("#FK_kluster").val();
-      // let catatan = $("#catatan").val();
-      // let dsemak = $("#dupdate").val();
-      // let peratus = $("#peratus").val();
-      // let pegawai = $("#pegawai").val();
-      // let ucreate = window.sessionStorage.noanggota;
-      // let json_img = $("#json_img").val();
-      // let upload_1 = $("#upload_1")[0].files[0];
-      // let upload_2 = $("#upload_2")[0].files[0];
-      // let upload_3 = $("#upload_3")[0].files[0];
 
       var form = new FormData();
-      // formData.append("key","mSideDiary");
       form.append("nama_capaian", nama_capaian);
       form.append("FK_kluster", FK_kluster);
-      // formData.append("kod",kod);
-      // formData.append("file",json_img);
-      // formData.append("catatan",catatan);
-      // formData.append("dsemak",dsemak);
-      // formData.append("peratus",peratus);
-      // formData.append("pegawai",pegawai);
-      // formData.append("ucreate",ucreate);
-      // formData.append("token",window.sessionStorage.token);
-      console.log(nama_capaian);
       var settings = {
         url: host + "api_public/public/addCapaians",
         method: "POST",
@@ -121,7 +101,6 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           Swal(result.message, result.data, "error");
@@ -176,14 +155,12 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        // console.log(response)
         result = JSON.parse(response);
         if (!result.success) {
           Swal(result.message, result.data, "error");
           return;
         }
 
-        // sessionStorage.token = result.token;
         saveLog(
           window.sessionStorage.id,
           "Update Data for [id = " +
@@ -206,7 +183,6 @@ function del_rekod(i) {
   let id = i;
 
   var form = new FormData();
-  // form.append("recordstatus", statusrekod);
   form.append("id", id);
 
   swal({
@@ -230,14 +206,12 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      // console.log(response)
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
         return;
       }
 
-      // sessionStorage.token = result.token;
       saveLog(
         window.sessionStorage.id,
         "Delete Data for [id = " +
@@ -257,9 +231,6 @@ var settings = {
   url: host + "klustersList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {

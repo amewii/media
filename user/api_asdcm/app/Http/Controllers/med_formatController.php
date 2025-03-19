@@ -10,21 +10,15 @@ use PDO;
 
 class med_formatController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this -> middleware('auth');
-    // }
 
     public function register(Request $request) {
         $kod_format = $request->input('kod_format');
-        // $jenis_format = $request->input('jenis_format');
         $created_by = $request->input('created_by'); // Pakai IC
         $updated_by = $request->input('updated_by'); // Pakai IC
         $statusrekod = $request->input('statusrekod');
 
         $register = med_format::create([
             'kod_format' => $kod_format,
-            // 'jenis_format' => $jenis_format,
             'created_by' => $created_by,
             'updated_by' => $updated_by,
             'statusrekod' => $statusrekod

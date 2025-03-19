@@ -9,10 +9,6 @@ use App\Models\med_log;
 
 class med_logController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $FK_users = $request->input('FK_users');

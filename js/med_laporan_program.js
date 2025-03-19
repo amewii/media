@@ -24,19 +24,8 @@ $("#carian").on("submit", function (e) {
     let FK_kluster = $("#FK_kluster").val();
     let tahun_program = $("#tahun_program").val();
 
-    // var param = {
-    //     1: FK_kategori,
-    //     2: nama_program,
-    //     3: tarikh_mula,
-    //     4: tarikh_akhir,
-    //     5: FK_kampus,
-    //     6: FK_kluster,
-    //     7: tahun_program,
-    // }
-    // console.log(param)
 
     var form = new FormData();
-    // formData.append("key","mSideDiary");
     form.append("FK_kategori", FK_kategori);
     form.append("nama_program", nama_program);
     form.append("tarikh_mula", tarikh_mula);
@@ -335,7 +324,6 @@ function carianProgram(form) {
         tahun: field.tahun,
         bil: bil++,
       });
-      // console.log(field)
     });
     $("#listProgram").empty();
     $(".listProgram-length").html(list.length);

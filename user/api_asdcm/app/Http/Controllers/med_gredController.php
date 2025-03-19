@@ -9,10 +9,6 @@ use App\Models\med_gred;
 
 class med_gredController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_gred = $request->input('nama_gred');

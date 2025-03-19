@@ -21,17 +21,7 @@ $("#registerswasta").on("submit", function (e) {
     let FK_negara_lahir = $("#FK_negara_lahir_swasta").val();
     let FK_negeri_lahir = $("#FK_negeri_lahir_swasta").val();
     let katalaluan = $("#katalaluan_swasta").val();
-    // let ucreate = window.sessionStorage.noanggota;
-    // var param = {
-    //     twmTitle: no_kad_pengenalan,
-    //     twmDescription: nama,
-    //     a: FK_jantina,
-    //     b: emel,
-    //     c: tarikh_lahir,
-    // }
-    // console.log(param)
     var form = new FormData();
-    // formData.append("key","mSideDiary");
     form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("nama", nama);
     form.append("FK_jantina", FK_jantina);
@@ -47,10 +37,8 @@ $("#registerswasta").on("submit", function (e) {
     form.append("FK_negara_lahir", FK_negara_lahir);
     form.append("FK_negeri_lahir", FK_negeri_lahir);
     form.append("katalaluan", katalaluan);
-    // formData.append("token",window.sessionStorage.token);
     var settingsregusers = {
       url: host + "addUsers",
-      // "url": host + "api_pentadbir/public/addUsers",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -60,7 +48,6 @@ $("#registerswasta").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
@@ -78,7 +65,6 @@ $("#registerswasta").on("submit", function (e) {
       };
 
       $.ajax(settingsfetchusers).done(function (response) {
-        // console.log(response);
         result = JSON.parse(response);
         let FK_users = result.data.id;
         let nama_majikan = $("#nama_majikan_swasta").val();
@@ -129,7 +115,6 @@ $("#registerswasta").on("submit", function (e) {
         };
 
         $.ajax(settingsreguserswastas).done(function (response) {
-          // console.log(response);
           result = JSON.parse(response);
           let nama_mk = $("#nama_mk_swasta").val();
           let notel_mk = $("#notel_mk_swasta").val();
@@ -151,7 +136,6 @@ $("#registerswasta").on("submit", function (e) {
           };
 
           $.ajax(settingsregmk).done(function (response) {
-            // console.log(response);
             result = JSON.parse(response);
             $("#loading_modal").modal("hide");
             if (!result.success) {
@@ -215,9 +199,6 @@ var settings = {
   url: host + "api_public/public/jantinasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -244,9 +225,6 @@ var settings = {
   url: host + "api_public/public/warganegarasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -274,9 +252,6 @@ var settings = {
   url: host + "gelaransList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -304,9 +279,6 @@ var settings = {
   url: host + "api_public/public/bangsasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -334,9 +306,6 @@ var settings = {
   url: host + "api_public/public/etniksList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -364,9 +333,6 @@ var settings = {
   url: host + "api_public/public/agamasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -394,9 +360,6 @@ var settings = {
   url: host + "api_public/public/negarasList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {
@@ -424,9 +387,6 @@ var settings = {
   url: host + "api_public/public/negerisList",
   method: "GET",
   timeout: 0,
-  // "header":{
-  //     "Authentication": "ASDCM"+window.sessionStorage.token
-  //   }
 };
 
 $.ajax(settings).done(function (response) {

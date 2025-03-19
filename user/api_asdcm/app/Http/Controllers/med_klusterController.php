@@ -9,10 +9,6 @@ use App\Models\med_kluster;
 
 class med_klusterController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function register(Request $request) {
         $nama_kluster = $request->input('nama_kluster');
@@ -57,7 +53,6 @@ class med_klusterController extends Controller
     }
 
     public function showGet($FK_kampus)  {
-        // $id = $request->input('id_subkluster');
 
         $med_kluster = med_kluster::where('FK_kampus',$FK_kampus)->get();
 
