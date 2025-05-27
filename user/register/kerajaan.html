@@ -1,3 +1,31 @@
+<style>
+    .valid::before {
+        content: "✔ ";
+        color: green;
+    }
+
+    .invalid::before {
+        content: "✘ ";
+        color: red;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #007bff;
+    }
+
+    .input-group-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+</style>
+
+
 <a href="../login/"><i class="ti-arrow-left" style="font-weight: bold;margin-left: 10px; margin-right: 10px; margin-top: 5px;color: white;"></i></a>
 <div class="text-center mb-3">
     <!-- <img src="../images/logo-full.png" alt=""> -->
@@ -133,11 +161,28 @@
              <label style="color:white;">No. Telefon</label>
             <input type="text" class="form-control" id="notel" placeholder="No. Telefon">
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
-             <label style="color:white;">Katalaluan</label>
-            <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" required>
-            <!-- <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" required> -->
+        <div class="col-lg-6 col-md-12 mb-3">
+            <label for="katalaluan" class="form-label text-white">Katalaluan</label>
+            
+            <div class="input-group">
+                <input type="password" class="form-control rounded-start" id="katalaluan"
+                       placeholder="Masukkan katalaluan"
+                       required
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                       <span class="input-group-text toggle-password" style="cursor: pointer; background-color: #dcdcdc; border-radius: 0;">
+                        <i class="fa fa-eye"></i>
+                    </span>
+            </div>
+        
+            <div class="mt-2" id="message" style="background-color: #d3d3d3; padding: 10px; border-radius: 4px;">
+                <div><i id="length" class="invalid"></i> Panjang kata laluan sekurang-kurangnya 12 aksara</div>
+                <div><i id="capital" class="invalid"></i> Mesti mengandungi huruf besar</div>
+                <div><i id="letter" class="invalid"></i> Sekurang-kurangnya satu (1) huruf kecil</div>
+                <div><i id="number" class="invalid"></i> Sekurang-kurangnya satu (1) nombor</div>
+                <div><i id="symbol" class="invalid"></i> Sekurang-kurangnya satu (1) simbol</div>
+            </div>
         </div>
+        
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
              <label style="color:white;">Pengesahan Katalaluan</label>
             <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required>
@@ -156,4 +201,4 @@
 
 <!-- Plugins & Activation JS For Only This Page -->
 <script src="../config.js"></script>
-<script src="kerajaan.js?n=1"></script>
+<script src="kerajaan.js?n=2"></script>
