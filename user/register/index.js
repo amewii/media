@@ -60,10 +60,8 @@ $("#checkusers").on("submit", function (e) {
           swal({
             title: "Semak Pengguna",
             text:
-              "No Kad Pengenalan " +
-              no_kad_pengenalan +
-              " telah berdaftar di dalam sistem.",
-            type: "success",
+            "Semak Pengguna Berjaya",
+             type: "success",
             closeOnConfirm: true,
             allowOutsideClick: false,
             html: false,
@@ -93,9 +91,7 @@ $("#no_kad_pengenalan_daftar").change(function () {
         swal({
           title: "Semak Pengguna",
           text:
-            "No Kad Pengenalan " +
-            no_kad_pengenalan +
-            " telah berdaftar di dalam sistem.",
+           "Semak Pengguna Berjaya",
           type: "warning",
           closeOnConfirm: true,
           allowOutsideClick: false,
