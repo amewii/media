@@ -76,10 +76,8 @@ $("#checkusers").on("submit", function (e) {
         swal({
           title: "Lupa Katalaluan",
           text:
-            "No Kad Pengenalan " +
-            no_kad_pengenalan +
-            " tidak berdaftar di dalam sistem.",
-          type: "success",
+          "Permintaan tidak dapat diproses. Sila cuba lagi atau hubungi pentadbir sistem.",
+        type: "warning",
           closeOnConfirm: true,
           allowOutsideClick: false,
           html: true,
