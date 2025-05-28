@@ -93,7 +93,7 @@ $("#register").on("submit", function (e) {
       // formData.append("key","mSideDiary");
       form.append("nama_unit", nama_unit);
       form.append("FK_kluster", FK_kluster);
-      console.log(nama_unit);
+      // console.log(nama_unit);
       var settings = {
         url: host + "addUnits",
         method: "POST",
@@ -105,7 +105,7 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");
@@ -171,7 +171,7 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");
@@ -234,7 +234,7 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         // Swal(result.message, result.data, "error");

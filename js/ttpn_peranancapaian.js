@@ -314,7 +314,7 @@ $("#registergov").on("submit", function (e) {
             mimeType: "multipart/form-data",
             contentType: false,
             data: form,
-          }; // console.log(response);
+          };
           $.ajax(settingsfetchusers).done(function (response) {
             result = JSON.parse(response);
             let FK_users = result.data.id_users;
@@ -541,7 +541,7 @@ function tablePeranan() {
       },
     });
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
 }
 
@@ -1210,7 +1210,7 @@ $("#updatePeranan").on("submit", function (e) {
         if (!result.success) {
           // Swal(result.message, result.data, "error");
           // return;
-          console.log(result);
+          // console.log(result);
           swal({
             title: "Kemaskini Peranan Pengguna",
             text: "Kemaskini Gagal!",
@@ -1296,7 +1296,7 @@ $("#registerCapaian").on("submit", function (e) {
         data: form,
       };
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");
@@ -1514,7 +1514,7 @@ function del_rekod(i, status) {
   var form = new FormData();
   // form.append("recordstatus", statusrekod);
   form.append("id_capaian", id);
-  console.log(id);
+  // console.log(id);
   var settings = {
     url: host + "capaianDelete",
     method: "POST",
@@ -1573,7 +1573,7 @@ function del_rekod_users(i, status) {
   var form = new FormData();
   // form.append("recordstatus", statusrekod);
   form.append("id_users", id);
-  console.log(id);
+  // console.log(id);
   var settings = {
     url: host + "usersDelete",
     method: "POST",
@@ -2345,7 +2345,7 @@ function load_select_peranan_capaian(){
     listsubmodule_master = listsubmodule;
   
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
   
   var obj = new get(host+`perananList`,window.sessionStorage.token).execute();
@@ -2420,7 +2420,7 @@ function load_select_peranan_capaian(){
     });
 
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
 }
 

@@ -117,7 +117,7 @@ function listVip() {
 function listProgram() {
   var obj = new get(host+`programListPublish`,window.sessionStorage.token).execute();
   if(obj.success){
-    console.log(obj);
+    // console.log(obj);
     var data = obj.data;
     $("#nama_program").empty();
     $.each(data, function (i, item) {
@@ -185,9 +185,9 @@ function loadHalamanUtama() {
 
 function loadSenaraiProgramBergambar(varAPI, varAppend) {
   var obj = new get(host+varAPI,window.sessionStorage.token).execute();
-  console.log(obj)
+  // console.log(obj)
   if(obj.success){
-    console.log(obj);
+    // console.log(obj);
     var data = obj.data;
     $.each(data, function (f, field) {
       imgsrc = "";

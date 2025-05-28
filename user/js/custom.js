@@ -76,7 +76,7 @@ var Gymove = function(){
 		$("ul#menu>li").on('click', function() {
 			const sidebarStyle = $('body').attr('data-sidebar-style');
 			if (sidebarStyle === 'mini') {
-				console.log($(this).find('ul'))
+				// console.log($(this).find('ul'))
 				$(this).find('ul').stop()
 			}
 		})

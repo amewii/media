@@ -37,7 +37,7 @@ $("#registerswasta").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      console.log(response);
+      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
@@ -55,7 +55,7 @@ $("#registerswasta").on("submit", function (e) {
       };
 
       $.ajax(settingsfetchusers).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         let FK_users = result.data.id_users;
         let nama_majikan = $("#nama_majikan_swasta").val();
@@ -78,7 +78,7 @@ $("#registerswasta").on("submit", function (e) {
         };
 
         $.ajax(settingsreguserswastas).done(function (response) {
-          console.log(response);
+          // console.log(response);
           result = JSON.parse(response);
           $("#loading_modal").modal("hide");
           if (!result.success) {

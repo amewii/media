@@ -95,7 +95,7 @@ $("#register").on("submit", function (e) {
 
       var form = new FormData();
       form.append("nama_log", nama_log);
-      console.log(nama_log);
+      // console.log(nama_log);
       var settings = {
         url: host + "addLogs",
         method: "POST",
@@ -107,7 +107,7 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");

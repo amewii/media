@@ -34,8 +34,14 @@ class AuthServiceProvider extends ServiceProvider
         // error_reporting(0);
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
-                $apiToken = explode('0L1v3', $request->header('Authorization'));
-                return med_users::where('token', $apiToken[1])->first();
+                $no_kad_pengenalan = $request->route('no_kad_pengenalan');
+                if($no_kad_pengenalan != null){
+                    $apiToken = explode(' ', $request->header('Authorization'));
+                    return med_users::where('no_kad_pengenalan', $no_kad_pengenalan)->where('token', $apiToken[1])->first();
+                } else {
+                    $apiToken = explode(' ', $request->header('Authorization'));
+                    return med_users::where('token', $apiToken[1])->first();
+                }
             }
         });
     }

@@ -28,7 +28,7 @@ function getUrlVars() {
 
 function users(returnValue){
   var obj = new get(host+`usersGetIc/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
-  console.log(obj);
+//   console.log(obj);
   objUsers = obj
   if(objUsers.success){
     var data = objUsers.data;

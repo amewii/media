@@ -1194,7 +1194,7 @@ function hrmisBahagian(kod_kementerian, kod_agensi, returnValue) {
 
   $.ajax(settings).done(function (response) {
     obj_bahagianList = response;
-    console.log(obj_bahagianList);
+    // console.log(obj_bahagianList);
     returnValue();
   });
   // END Dropdown Sub Modul List

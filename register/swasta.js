@@ -28,7 +28,7 @@ $("#registerswasta").on("submit", function (e) {
       b: emel,
       c: tarikh_lahir,
     };
-    console.log(param);
+    // console.log(param);
     var form = new FormData();
     // formData.append("key","mSideDiary");
     form.append("no_kad_pengenalan", no_kad_pengenalan);
@@ -59,7 +59,7 @@ $("#registerswasta").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      console.log(response);
+      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
@@ -77,7 +77,7 @@ $("#registerswasta").on("submit", function (e) {
       };
 
       $.ajax(settingsfetchusers).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         let FK_users = result.data.id;
         let nama_majikan = $("#nama_majikan_swasta").val();
@@ -128,7 +128,7 @@ $("#registerswasta").on("submit", function (e) {
         };
 
         $.ajax(settingsreguserswastas).done(function (response) {
-          console.log(response);
+          // console.log(response);
           result = JSON.parse(response);
           let nama_mk = $("#nama_mk_swasta").val();
           let notel_mk = $("#notel_mk_swasta").val();
@@ -150,7 +150,7 @@ $("#registerswasta").on("submit", function (e) {
           };
 
           $.ajax(settingsregmk).done(function (response) {
-            console.log(response);
+            // console.log(response);
             result = JSON.parse(response);
             if (!result.success) {
               Swal(result.message, result.data, "error");

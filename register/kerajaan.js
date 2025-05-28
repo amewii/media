@@ -836,7 +836,7 @@ $("#FK_agensi").change(function () {
     //     "Authentication": "ASDCM"+window.sessionStorage.token
     //   }
   };
-  console.log(settings);
+  // console.log(settings);
 
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -879,7 +879,7 @@ $("#FK_bahagian").change(function () {
     //     "Authentication": "ASDCM"+window.sessionStorage.token
     //   }
   };
-  console.log(settings);
+  // console.log(settings);
 
   $.ajax(settings).done(function (response) {
     //LIST OPTION

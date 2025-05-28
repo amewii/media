@@ -90,7 +90,7 @@ $("#register").on('submit',function(e){
             
             var form = new FormData();
             form.append("nama_etnik",nama_etnik);
-            console.log(nama_etnik)
+            // console.log(nama_etnik)
             var settings = {
                 "url": host+"api_public/public/addEtniks",
                 "method": "POST",

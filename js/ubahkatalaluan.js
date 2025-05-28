@@ -22,7 +22,7 @@ $("#katalaluansemasa").change(function () {
     data: form,
   };
   $.ajax(settings).done(function (response) {
-    console.log(response.success);
+    // console.log(response.success);
     if (response.success !== "true") {
       swal({
         title: "Ubah Katalaluan",
@@ -72,8 +72,8 @@ $("#update").on("submit", function (e) {
       let no_kad_pengenalan = $("#no_kad_pengenalan").val();
       let katalaluanbaharu = $("#katalaluanbaharu").val();
       // let katalaluan = $("#katalaluan").val();
-      console.log(katalaluanbaharu);
-      console.log(no_kad_pengenalan);
+      // console.log(katalaluanbaharu);
+      // console.log(no_kad_pengenalan);
       var form = new FormData();
       form.append("no_kad_pengenalan", no_kad_pengenalan);
       form.append("katalaluan", katalaluanbaharu);
@@ -88,7 +88,7 @@ $("#update").on("submit", function (e) {
         data: form,
       };
       $.ajax(settings).done(function (response) {
-        console.log(response.success);
+        // console.log(response.success);
         if (response.success !== "true") {
           swal({
             title: "Ubah Katalaluan",

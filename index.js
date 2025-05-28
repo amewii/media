@@ -170,7 +170,7 @@ function settingCapaian() {
       $("#control_log").removeClass("hidden");
     }
   } else {
-    console.log(obj);
+    // console.log(obj);
   }
 }
 

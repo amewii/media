@@ -22,7 +22,7 @@ $("#login").on("submit", function (e) {
     form.append("katalaluan", katalaluan);
 
     var obj = new post(host+`loginUser`,form,'').execute();
-    console.log(obj);
+    // console.log(obj);
     if(obj.success){
         // alert(result.data.PK);
         var data = obj.data;
@@ -52,10 +52,10 @@ function load_image() {
   var dir = "../api_asdcm/public/uploads/";
   // var dir = 'var/www/html/api_asdcm/public/uploads/';
   var obj = new get(host+`randomGambar`,window.sessionStorage.token).execute();
-  console.log(obj);
+  // console.log(obj);
   if(obj.success){
     let data = obj.data;
-    console.log(data);
+    // console.log(data);
     $("#bg_add").css("background-image", "url(" + dir + "" + data[9] + ")");
     $("#bg-img0").css(
       "background-image",

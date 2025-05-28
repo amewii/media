@@ -85,7 +85,7 @@ function loadData(indexs) {
     //     "Authentication": "ASDCM"+window.sessionStorage.token
     //   }
   };
-  console.log(settings);
+  // console.log(settings);
 
   $.ajax(settings).done(function (response) {
     //LIST OPTION
@@ -155,7 +155,7 @@ $("#register").on("submit", function (e) {
         twmSdate: FK_submodul,
         twmEdate: FK_capaian,
       };
-      console.log(param);
+      // console.log(param);
 
       var form = new FormData();
       // formData.append("key","mSideDiary");
@@ -178,7 +178,7 @@ $("#register").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (result.success == "false") {
           // Swal(result.message, result.data, "error");
@@ -239,7 +239,7 @@ $("#update").on("submit", function (e) {
         twmSdate: upt_FK_submodul,
         twmEdate: upt_FK_capaian,
       };
-      console.log(param);
+      // console.log(param);
 
       var form = new FormData();
       // formData.append("key","mSideDiary");
@@ -261,7 +261,7 @@ $("#update").on("submit", function (e) {
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");
@@ -326,7 +326,7 @@ function del_rekod(i) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         // Swal(result.message, result.data, "error");
@@ -425,7 +425,7 @@ $("#FK_useradmin").change(function () {
   $.ajax(settings).done(function (response) {
     //LIST OPTION
     //Dropdown Sub Modul List
-    console.log(response);
+    // console.log(response);
     var settings = {
       url: host + "submoduls/" + response.data.FK_modul,
       method: "GET",
@@ -434,7 +434,7 @@ $("#FK_useradmin").change(function () {
       //     "Authentication": "ASDCM"+window.sessionStorage.token
       //   }
     };
-    console.log(settings);
+    // console.log(settings);
 
     $.ajax(settings).done(function (response) {
       //LIST OPTION
@@ -476,7 +476,7 @@ $("#upt_FK_useradmin").change(function () {
   $.ajax(settings).done(function (response) {
     //LIST OPTION
     //Dropdown Sub Modul List
-    console.log(response);
+    // console.log(response);
     var settings = {
       url: host + "submoduls/" + response.data.FK_modul,
       method: "GET",
@@ -485,7 +485,7 @@ $("#upt_FK_useradmin").change(function () {
       //     "Authentication": "ASDCM"+window.sessionStorage.token
       //   }
     };
-    console.log(settings);
+    // console.log(settings);
 
     $.ajax(settings).done(function (response) {
       //LIST OPTION UPDATE

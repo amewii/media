@@ -188,7 +188,7 @@ $("#checkusers3").on("submit", function (e) {
       contentType: false,
       data: form,
     };
-    console.log(settings);
+    // console.log(settings);
 
     $.ajax(settings).done(function (response) {
       // console.log(response);

@@ -455,7 +455,7 @@ $("#registergov").on("submit", function (e) {
             mimeType: "multipart/form-data",
             contentType: false,
             data: form,
-          }; // console.log(response);
+          };
           $.ajax(settingsfetchusers).done(function (response) {
             result = JSON.parse(response);
             sessionStorage.noic = result.data.no_kad_pengenalan;

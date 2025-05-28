@@ -29,7 +29,7 @@ $("#register").on("submit", function (e) {
       b: emel,
       c: tarikh_lahir,
     };
-    console.log(param);
+    // console.log(param);
     var form = new FormData();
     // formData.append("key","mSideDiary");
     form.append("no_kad_pengenalan", no_kad_pengenalan);
@@ -59,7 +59,7 @@ $("#register").on("submit", function (e) {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
+      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");

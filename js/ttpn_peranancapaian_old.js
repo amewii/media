@@ -249,7 +249,7 @@ $("#registergov").on("submit", function (e) {
             mimeType: "multipart/form-data",
             contentType: false,
             data: form,
-          }; // console.log(response);
+          };
           $.ajax(settingsfetchusers).done(function (response) {
             result = JSON.parse(response);
             let FK_users = result.data.id_users;
@@ -285,7 +285,7 @@ $("#registergov").on("submit", function (e) {
               data: formPeranan,
             };
             $.ajax(settings).done(function (response) {
-              console.log(response);
+              // console.log(response);
               result = JSON.parse(response);
               if (!result.success) {
                 // Swal(result.message, result.data, "error");
@@ -908,7 +908,7 @@ $("#registerPeranan").on("submit", function (e) {
         if (!result.success) {
           // Swal(result.message, result.data, "error");
           // return;
-          console.log(result);
+          // console.log(result);
           swal({
             title: "Daftar Peranan Pengguna",
             text: result.message,
@@ -990,7 +990,7 @@ $("#updatePeranan").on("submit", function (e) {
         if (!result.success) {
           // Swal(result.message, result.data, "error");
           // return;
-          console.log(result);
+          // console.log(result);
           swal({
             title: "Kemaskini Peranan Pengguna",
             text: "Kemaskini Gagal!",
@@ -1066,7 +1066,7 @@ $("#registerCapaian").on("submit", function (e) {
         data: form,
       };
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        // console.log(response);
         result = JSON.parse(response);
         if (!result.success) {
           // Swal(result.message, result.data, "error");
@@ -1282,7 +1282,7 @@ function del_rekod(i, status) {
   var form = new FormData();
   // form.append("recordstatus", statusrekod);
   form.append("id_capaian", id);
-  console.log(id);
+  // console.log(id);
   var settings = {
     url: host + "capaianDelete",
     method: "POST",
@@ -1341,7 +1341,7 @@ function del_rekod_users(i, status) {
   var form = new FormData();
   // form.append("recordstatus", statusrekod);
   form.append("id_users", id);
-  console.log(id);
+  // console.log(id);
   var settings = {
     url: host + "sersDelete",
     method: "POST",
