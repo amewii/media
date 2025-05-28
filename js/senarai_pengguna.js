@@ -331,9 +331,7 @@ $("#checkusers").on("submit", function (e) {
         swal({
           title: "Semak Pengguna",
           text:
-            "No Kad Pengenalan " +
-            regno_kad_pengenalan +
-            " telah berdaftar di dalam sistem.",
+           "Semak Pengguna Berjaya",
           type: "success",
           closeOnConfirm: true,
           allowOutsideClick: false,
