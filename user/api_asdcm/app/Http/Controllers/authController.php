@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use PHPMailer\PHPMailer\PHPMailer;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -31,16 +32,34 @@ class authController extends Controller
     }
 
     public function register(Request $request) {
-        $katalaluan = $request->input('katalaluan');
+        $validator = Validator::make($request->all(), [
+            'nama'                 => 'required|string|max:255|not_regex:/<[^>]*script/',
+            'no_kad_pengenalan'    => 'required|string|max:20',
+            'emel'                 => 'required|email|max:255',
+            'notel'                => 'nullable|string|max:20|not_regex:/<[^>]*script/',
+            'FK_jenis_pengguna'    => 'required|integer',
+            'FK_gelaran'           => 'nullable|integer',
+            'katalaluan'           => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
+        $validated = $validator->validated();
+        $katalaluan = $validated['katalaluan'];        
         $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
         $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
-        $nama = $request->input('nama');
-        $emel = $request->input('emel');
-        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
-        $notel = $request->input('notel');
-        $FK_jenis_pengguna = $request->input('FK_jenis_pengguna');
-        $FK_gelaran = $request->input('FK_gelaran');
-
+        $nama = $validated['nama'];    
+        $emel = $validated['emel'];  
+        $no_kad_pengenalan = $validated['no_kad_pengenalan'];      
+        $notel = $validated['notel'];    
+        $FK_jenis_pengguna = $validated['FK_jenis_pengguna'];        
+        $FK_gelaran = $validated['FK_gelaran'];        
 
         $register = med_users::create([
             'nama' => $nama,
