@@ -41,6 +41,7 @@ $router->post('/checkUsers', 'authController@show');
 $router->post('/registerSiteAwam', 'authController@register');
 $router->post('/usersResetToEmail', 'authController@resetpasswordtomail');
 $router->get('/usersResetKatalaluan/{resetkatalaluan}', 'authController@showGetResetKatalaluan');
+$router->post('/logout/{no_kad_pengenalan}', 'authController@logout');
 $router->post('/usersReset', 'authController@resetpassword');
 
 

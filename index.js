@@ -592,9 +592,11 @@ $("#logKeluar").click(function () {
     allowOutsideClick: false,
     html: false,
   }).then(function () {
-    saveLog(id_users_master, "Logout.", window.sessionStorage.browser);
-    window.sessionStorage.clear();
-    window.location.replace("login/");
+      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan).execute()
+      saveLog(id_users_master, "Logout.", window.sessionStorage.browser);
+      window.sessionStorage.clear();
+      window.localStorage.clear();
+      window.location.replace("login/");
   });
 });
 

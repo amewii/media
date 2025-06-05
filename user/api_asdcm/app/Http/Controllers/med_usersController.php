@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\med_kategoriperkhidmatan;
 use App\Models\med_skim;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Models\med_users;
 use App\Models\med_tetapan;
@@ -154,7 +151,6 @@ class med_usersController extends Controller
     }
 
     public function showSiteAdmin($no_kad_pengenalan){
-        
         $obj = med_users::
                 join('med_capaian','med_capaian.FK_users','med_users.id_users')->
                 join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
@@ -166,6 +162,7 @@ class med_usersController extends Controller
                     'med_capaian.FK_peranan',
                     'med_capaian.FK_kluster',
                 ]);
+
         if($obj){
             $token = $this->getToken($obj->id_users);
             return response()->json([
@@ -231,7 +228,6 @@ class med_usersController extends Controller
     }
 
     public function showGetIc($no_kad_pengenalan)  {
-
         $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->first();
 
         switch($med_users->FK_jenis_pengguna){

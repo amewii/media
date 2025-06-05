@@ -13,7 +13,8 @@ if(window.location.hostname == "10.1.3.36"){
 else if(window.location.port == "8081"){
     var host = window.location.protocol+"//"+window.location.hostname+":8081/media/user/api_asdcm/public/";
 } else {
-    var host = window.location.protocol+"//"+window.location.hostname+"/media/user/api_asdcm/public/";
+    let port = window.location.port ? ":" + window.location.port : ""
+    var host = window.location.protocol + "//" + window.location.hostname + port + "/media/user/api_asdcm/public/";
 }
 
 var id_users_master, nama_master, emel_master, emel_kerajaan_master, notel_master, notel_kerajaan_master, FK_jenis_pengguna_master, id_usersgov_master, nama_jawatan_master, id_usersswasta_master;

@@ -117,6 +117,16 @@ class authController extends Controller
         }
     }
     
+    public function logout($no_kad_pengenalan){
+        med_users::query()
+            ->where('no_kad_pengenalan', $no_kad_pengenalan)
+            ->update([
+                'token' => null
+            ]);
+
+        return response()->json(['success' => true], 200);
+    }
+
     public function login(Request $request){
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
         $katalaluan = $request->input('katalaluan');

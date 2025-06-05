@@ -347,10 +347,9 @@ $("#list").click(function () {
 });
 
 $("#logKeluar").click(function () {
-  // document.getElementById("menu-kanan").classList.remove("show");
   swal({
     title: "Log Keluar",
-    text: "Anda Pasti Untuk Log Keluar?",
+    text: "Anda Pasti Untuk Log Keluars?",
     type: "question",
     showCancelButton: true,
     confirmButtonText: "Ya",
@@ -359,8 +358,12 @@ $("#logKeluar").click(function () {
     allowOutsideClick: false,
     html: false,
   }).then(function () {
-    window.sessionStorage.clear();
-    window.location.replace("login/");
+      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan).execute()
+      if (obj.success) {
+        window.sessionStorage.clear();
+        window.localStorage.clear();
+        window.location.replace("login/");
+      }
   });
 });
 
