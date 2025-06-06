@@ -1,3 +1,8 @@
+<FilesMatch "^(package\.json|package-lock\.json|composer\.json|composer\.lock|phpinfo\.php|.*\.env)$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Content-Security-Policy "frame-ancestors 'self';"
 </IfModule>
