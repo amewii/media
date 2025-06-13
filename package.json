@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "filepond-plugin-file-validate-size": "^2.2.5",
+    "javascript-obfuscator": "^4.1.1",
     "jspdf": "^2.5.1"
   }
 }
