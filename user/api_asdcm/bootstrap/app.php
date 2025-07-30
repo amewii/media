@@ -33,6 +33,10 @@ $app->withFacades();
 $app->withEloquent();
 $app->register(Illuminate\Validation\ValidationServiceProvider::class);
 
+$app->register(Illuminate\View\ViewServiceProvider::class);
+
+$app->configure('view');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
