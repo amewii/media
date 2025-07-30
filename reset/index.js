@@ -76,7 +76,7 @@ $("#checkusers").on("submit", function (e) {
         swal({
           title: "Lupa Katalaluan",
           text:
-          "Permintaan tidak dapat diproses. Sila cuba lagi atau hubungi pentadbir sistem.",
+          "Permintaan set semula katalaluan akan dihantar ke emel anda sekiranya wujud.",
         type: "warning",
           closeOnConfirm: true,
           allowOutsideClick: false,

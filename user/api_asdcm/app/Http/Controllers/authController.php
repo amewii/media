@@ -194,7 +194,7 @@ class authController extends Controller
                 return response()->json([
                     'success'=>false,
                     'messages'=>'Log Masuk Gagal',
-                    'data'=>'Katalaluan tidak tepat. Sila cuba lagi.',
+                    'data'=>'Log masuk gagal. Sila cuba lagi.',
                 ],400);
             }
         }
@@ -202,7 +202,7 @@ class authController extends Controller
             return response()->json([
                 'success'=>false,
                 'messages'=>'Log Masuk Gagal',
-                'data'=>'Sila hubungi pihak pentadbir sistem untuk maklumat lanjut.',
+                'data'=>'Log masuk gagal. Sila cuba lagi.',
             ],400);
         }
     }
@@ -247,7 +247,7 @@ class authController extends Controller
                 return response()->json([
                     'success'=>false,
                     'messages'=>'Log Masuk Gagal',
-                    'data'=>'Katalaluan tidak tepat. Sila cuba lagi.',
+                    'data'=>'Log masuk gagal. Sila cuba lagi.',
                 ],201);
             }
         }
@@ -255,7 +255,7 @@ class authController extends Controller
             return response()->json([
                 'success'=>false,
                 'messages'=>'Log Masuk Gagal',
-                'data'=>'Sila hubungi pihak pentadbir sistem untuk maklumat lanjut.',
+                'data'=>'Log masuk gagal. Sila cuba lagi.',
             ],201);
         }
     }

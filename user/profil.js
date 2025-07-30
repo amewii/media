@@ -12,6 +12,7 @@ $(function () {
         $("#notel").val(notel_master);
         $("#FK_jenis_pengguna").val(FK_jenis_pengguna_master);
         $("#id_users").val(id_users_master);
+
         if (id_usersgov_master != null) {
           $("#divKerajaan").show();
           $("#id_usersgov").val(id_usersgov_master);
@@ -138,7 +139,7 @@ $("#update").on("submit", function (e) {
     e.preventDefault();
     let id_users = $("#id_users").val();
     let emel = $("#displayemel").val();
-    let notel = $("#notel").val();
+    let notel = $("#notel_kerajaan").val();
     // let katalaluan = $("#katalaluan").val();
 
     var form = new FormData();
@@ -151,6 +152,9 @@ $("#update").on("submit", function (e) {
     var settingseditprofileusers = {
       url: host + "usersEditProfile",
       method: "POST",
+      headers: {
+        'Authorization' : window.sessionStorage.token
+      },
       timeout: 0,
       processData: false,
       contentType: false,
