@@ -174,12 +174,14 @@ $.ajax(settings).done(function (response) {
     })
   );
   $.each(response.data, function (i, item) {
-    $("#FK_jenis_pengguna").append(
-      $("<option>", {
-        value: item.id_jenispengguna,
-        text: item.jenis_pengguna,
-      })
-    );
+    if (item.jenis_pengguna != "Pelajar") {
+      $("#FK_jenis_pengguna").append(
+        $("<option>", {
+          value: item.id_jenispengguna,
+          text: item.jenis_pengguna,
+        })
+      );
+    }
   });
 });
 // END Dropdown Jenis Pengguna List

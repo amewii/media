@@ -43,7 +43,7 @@ class med_usersController extends Controller
     public function register(Request $request) {
         $katalaluan = $request->input('katalaluan');
         $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
+        $enc_katalaluan = hash("sha256", $katalaluan.$ajinomoto);
         $nama = $request->input('nama');
         $emel = $request->input('emel');
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');

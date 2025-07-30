@@ -36,8 +36,24 @@ $("#registerswasta").on("submit", function (e) {
       data: form,
     };
 
-    $.ajax(settingsregusers).done(function (response) {
-      // console.log(response);
+    $.ajax(settingsregusers)
+    .fail(function(xhr, status, error) {
+        if (xhr.status == 422) {
+          var response = JSON.parse(xhr.responseText)
+          var content = '<ul class="text-danger">'
+          $.each(response.errors, function (key, value) {
+            $.each(value, function (key2, value2) {
+              content += `<li style="list-style: disc !important;">${value2}</li>`
+            })
+          })
+          content += '</ul>'
+
+          var modal = $('#validation_modal')
+          modal.find('.modal-body').html(content)
+          modal.modal('show')
+        }
+    })
+    .done(function (response) {
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
