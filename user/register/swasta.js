@@ -51,6 +51,7 @@ $("#registerswasta").on("submit", function (e) {
           var modal = $('#validation_modal')
           modal.find('.modal-body').html(content)
           modal.modal('show')
+          $("#loading_modal").modal("hide");
         }
     })
     .done(function (response) {
@@ -93,7 +94,25 @@ $("#registerswasta").on("submit", function (e) {
           data: formswasta,
         };
 
-        $.ajax(settingsreguserswastas).done(function (response) {
+        $.ajax(settingsreguserswastas)
+        .fail(function(xhr, status, error) {
+          if (xhr.status == 422) {
+            var response = JSON.parse(xhr.responseText)
+            var content = '<ul class="text-danger">'
+            $.each(response.errors, function (key, value) {
+              $.each(value, function (key2, value2) {
+                content += `<li style="list-style: disc !important;">${value2}</li>`
+              })
+            })
+            content += '</ul>'
+
+            var modal = $('#validation_modal')
+            modal.find('.modal-body').html(content)
+            modal.modal('show')
+            $("#loading_modal").modal("hide");
+          }
+        })
+        .done(function (response) {
           // console.log(response);
           result = JSON.parse(response);
           $("#loading_modal").modal("hide");
