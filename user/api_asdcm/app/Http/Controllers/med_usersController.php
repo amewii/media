@@ -554,7 +554,7 @@ class med_usersController extends Controller
         $notel = $request->input('notel');
         $updated_by = $request->input('updated_by');
 
-        $med_users = med_users::where('id_users', $id) -> update([
+        $med_users = med_users::where('id_users', $id)->update([
             'emel' => $emel,
             'notel' => $notel,
             'updated_by' => $updated_by

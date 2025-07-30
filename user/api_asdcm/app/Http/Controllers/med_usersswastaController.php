@@ -3,14 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Models\med_usersswasta;
+use Illuminate\Support\Facades\Validator;
 
 class med_usersswastaController extends Controller
 {
 
     public function register(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'FK_users' => 'required',
+            'jawatan' => 'required|string|max:255|not_regex:/<[^>]*script/',
+            'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
+            'statusrekod' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+        
         $FK_users = $request->input('FK_users');
         $jawatan = $request->input('jawatan');
         $nama_majikan = $request->input('nama_majikan');
