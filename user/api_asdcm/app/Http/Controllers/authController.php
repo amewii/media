@@ -40,6 +40,14 @@ class authController extends Controller
             'FK_jenis_pengguna'    => 'required|integer',
             'FK_gelaran'           => 'nullable|integer',
             'katalaluan'           => 'required|string|min:6',
+            'katalaluan' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',      // at least one lowercase letter
+                'regex:/[A-Z]/',      // at least one uppercase letter
+                'regex:/[0-9]/',      // at least one digit
+            ],
         ]);
 
         if ($validator->fails()) {

@@ -89,9 +89,25 @@
     </div>
     <div class="modal" id="loading_modal" data-backdrop="static">
         <div class="modal-dialog">
-          <div style="padding-top: 50%;" class="text-center text-white"><span class="fa fa-cog fa-spin fa-3x m-b"></span><br><i>Loading...</i></div>
+            <div style="padding-top: 50%;" class="text-center text-white"><span class="fa fa-cog fa-spin fa-3x m-b"></span><br><i>Loading...</i></div>
         </div>
-    </div> 
+    </div>
+
+    <div class="modal fade" id="validation_modal" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form role="form" id="validation_modal" enctype='multipart/form-data'>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Validation Error</h5><hr/>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info" data-dismiss="modal" onclick="resetForm();" id="closeButton">Ok</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!--**********************************
         Scripts
