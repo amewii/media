@@ -4,7 +4,7 @@
     <h1 class="text-center mb-4 text-white">Daftar Baharu</h1>
 </div>
 <h3 class="text-center mb-5 text-white">Pekerja Swasta</h3>
-<form id="registerswasta">
+<form id="registerswasta" autocomplete="new-password">
     <div class="row mb-5">
         <div class="col-12 mb-3">
             <h4 style="color:white;">1. Maklumat Diri</h4>
@@ -61,12 +61,12 @@
 
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
             <label style="color:white;">Katalaluan</label>
-            <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" required>
+            <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
             <!-- <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" required> -->
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
-             <label style="color:white;">Pengesahan Katalaluan</label>
-            <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required>
+            <label style="color:white;">Pengesahan Katalaluan</label>
+            <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
             <label class="adomx-checkbox success" style="color: white;">
