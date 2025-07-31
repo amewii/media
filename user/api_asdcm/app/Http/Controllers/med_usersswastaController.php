@@ -13,8 +13,8 @@ class med_usersswastaController extends Controller
         $validator = Validator::make($request->all(), [
             'FK_users' => 'required',
             'jawatan' => 'required|string|max:255|not_regex:/<[^>]*script/',
-            'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
-            'statusrekod' => 'required',
+            // 'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
+            // 'statusrekod' => 'required',
         ]);
 
         if ($validator->fails()) {

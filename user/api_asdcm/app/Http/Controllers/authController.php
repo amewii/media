@@ -39,7 +39,8 @@ class authController extends Controller
             'notel'                => 'nullable|string|max:20|not_regex:/<[^>]*script/',
             'FK_jenis_pengguna'    => 'required|integer',
             'FK_gelaran'           => 'nullable|integer',
-            'katalaluan'           => 'required|string|min:6',
+            'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
+            'statusrekod' => 'required',
             'katalaluan' => [
                 'required',
                 'string',

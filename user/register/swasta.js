@@ -13,7 +13,8 @@ $("#registerswasta").on("submit", function (e) {
     let FK_jenis_pengguna = "2";
     let FK_gelaran = $("#FK_gelaran_swasta").val();
     let katalaluan = $("#katalaluan").val();
-    // alert(katalaluan);
+    let nama_majikan = $("#nama_majikan_swasta").val();
+    let jawatan = $("#jawatan_swasta").val();
 
     var form = new FormData();
     // formData.append("key","mSideDiary");
@@ -24,7 +25,8 @@ $("#registerswasta").on("submit", function (e) {
     form.append("FK_jenis_pengguna", FK_jenis_pengguna);
     form.append("FK_gelaran", FK_gelaran);
     form.append("katalaluan", katalaluan);
-    // formData.append("token",window.sessionStorage.token);
+    form.append("nama_majikan", nama_majikan);
+    form.append("jawatan", jawatan);
     
     var settingsregusers = {
       url: host + "registerSiteAwam",
