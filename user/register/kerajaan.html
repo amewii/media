@@ -32,7 +32,7 @@
     <h1 class="text-center mb-4 text-white">Daftar Baharu</h1>
 </div>
 <h4 class="text-center mb-5 text-white">Penjawat Awam</h4>
-<form id="registergov">
+<form id="registergov" autocomplete="new-password">
     <div class="row mb-5">
         <div class="col-12 mb-3">
             <h4 style="color:white;">1. Maklumat Diri</h4>
@@ -168,7 +168,7 @@
                 <input type="password" class="form-control rounded-start" id="katalaluan"
                        placeholder="Masukkan katalaluan"
                        required
-                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
                        <span class="input-group-text toggle-password" style="cursor: pointer; background-color: #dcdcdc; border-radius: 0;">
                         <i class="fa fa-eye"></i>
                     </span>
@@ -185,7 +185,7 @@
         
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
              <label style="color:white;">Pengesahan Katalaluan</label>
-            <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required>
+            <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
             <label class="adomx-checkbox success" style="color: white;">
