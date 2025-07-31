@@ -40,7 +40,7 @@ class authController extends Controller
             'FK_jenis_pengguna'    => 'required|integer',
             'FK_gelaran'           => 'nullable|integer',
             'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
-            'statusrekod' => 'required',
+            'jawatan' => 'required|string|max:255|not_regex:/<[^>]*script/',
             'katalaluan' => [
                 'required',
                 'string',
