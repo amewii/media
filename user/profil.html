@@ -51,7 +51,8 @@
                     </div>
                     <div class="form-group col-md-6" style="display: none;">
                         <label>Gred</label>
-                        <select id="gred" class="form-control" style="pointer-events: none; touch-action: none;"></select>
+                        <select id="gred" class="form-control"
+                            style="pointer-events: none; touch-action: none;"></select>
                     </div>
                     <div class="form-group col-md-12 mt-4">
                         <h4 class="text-primary mb-4">Maklumat Perkhidmatan</h4>
@@ -64,62 +65,69 @@
                             <option value="0">Tidak</option>
                         </select>
                     </div>
-                    <div id="usersintan" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row" style="display: none;">
+                    <div id="usersintan" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row"
+                        style="display: none;">
                         <div class="form-group col-md-6">
                             <label for="FK_kampus">Kampus</label>
-                            <select class="form-control c-select"  id="FK_kampus" style="pointer-events: none; touch-action: none;"></select>
+                            <select class="form-control c-select" id="FK_kampus"
+                                style="pointer-events: none; touch-action: none;"></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="FK_kluster">Kluster</label>
-                            <select class="form-control c-select"  id="FK_kluster" style="pointer-events: none; touch-action: none;"></select>
+                            <select class="form-control c-select" id="FK_kluster"
+                                style="pointer-events: none; touch-action: none;"></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="FK_subkluster">Sub Kluster</label>
-                            <select class="form-control c-select" id="FK_subkluster" style="pointer-events: none; touch-action: none;"></select>
+                            <select class="form-control c-select" id="FK_subkluster"
+                                style="pointer-events: none; touch-action: none;"></select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="FK_unit">Unit</label>
-                            <select class="form-control c-select" id="FK_unit" style="pointer-events: none; touch-action: none;"></select>
-                        </div>       
+                            <select class="form-control c-select" id="FK_unit"
+                                style="pointer-events: none; touch-action: none;"></select>
+                        </div>
                     </div>
-                    <div id="usersluar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row" style="display: none;">
+                    <div id="usersluar" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 mb-20 row"
+                        style="display: none;">
                         <div class="form-group col-md-6 input-success-o">
                             <label for="FK_kementerian">Kementerian</label>
                             <input type="text" id="id_usersgov" class="form-control" style="display: none;">
-                            <select class="form-control c-select"  id="FK_kementerian"></select>
+                            <select class="form-control c-select" id="FK_kementerian"></select>
                         </div>
                         <div class="form-group col-md-6 input-success-o">
                             <label for="FK_agensi">Agensi</label>
-                            <select class="form-control c-select"  id="FK_agensi"></select>
+                            <select class="form-control c-select" id="FK_agensi"></select>
                         </div>
                         <div class="form-group col-md-6 input-success-o">
                             <label for="FK_bahagian">Bahagian</label>
-                            <select class="form-control c-select"  id="FK_bahagian"></select>
+                            <select class="form-control c-select" id="FK_bahagian"></select>
                         </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label for="FK_ila">ILA (Jika Ada)</label>
-                            <select class="form-control c-select" id="FK_ila" style="pointer-events: none; touch-action: none;"></select>
-                        </div>    
+                            <select class="form-control c-select" id="FK_ila"
+                                style="pointer-events: none; touch-action: none;"></select>
+                        </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label>Alamat 1</label>
-                            <input type="text" class="form-control" id="alamat1_pejabat" placeholder="Alamat 1" >
+                            <input type="text" class="form-control" id="alamat1_pejabat" placeholder="Alamat 1">
                         </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label>Alamat 2</label>
-                            <input type="text" class="form-control" id="alamat2_pejabat" placeholder="Alamat 2" >
+                            <input type="text" class="form-control" id="alamat2_pejabat" placeholder="Alamat 2">
                         </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label>Poskod</label>
-                            <input type="text" class="form-control" id="poskod_pejabat" placeholder="Poskod" >
+                            <input type="text" class="form-control" id="poskod_pejabat" placeholder="Poskod">
                         </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label>Daerah</label>
-                            <input type="text" class="form-control" id="daerah_pejabat" placeholder="Daerah" readonly >
+                            <input type="text" class="form-control" id="daerah_pejabat" placeholder="Daerah" readonly>
                         </div>
                         <div class="form-group col-md-6" style="display: none;">
                             <label>Negeri</label>
-                            <input type="text" class="form-control" id="negeri_pejabat" placeholder="Negeri" readonly >
-                        </div> 
+                            <input type="text" class="form-control" id="negeri_pejabat" placeholder="Negeri" readonly>
+                        </div>
                     </div>
                 </div>
                 <div id="divSwasta" class="form-row" style="display: none;">
@@ -147,6 +155,23 @@
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Kemaskini</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="validation_modal" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form role="form" id="validation_modal" enctype='multipart/form-data'>
+                <div class="modal-header">
+                    <h5 class="modal-title">Validation Error</h5>
+                    <hr />
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" data-dismiss="modal" onclick="resetForm();"
+                        id="closeButton">Ok</button>
+                </div>
             </form>
         </div>
     </div>

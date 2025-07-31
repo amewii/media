@@ -12,6 +12,7 @@ use App\Models\med_tetapan;
 use App\Models\med_usersgov;
 use App\Models\med_userspelajar;
 use App\Models\med_usersswasta;
+use Illuminate\Support\Facades\Validator;
 
 // require '../api_pentadbir/vendor/autoload.php';
 
@@ -549,6 +550,19 @@ class med_usersController extends Controller
     }
 
     public function editprofile(Request $request)    {
+        $validator = Validator::make($request->all(), [
+            'emel' => 'required|email|max:255',
+            'notel' => 'required|max:20',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
         $id = $request->input('id_users');
         $emel = $request->input('emel');
         $notel = $request->input('notel');

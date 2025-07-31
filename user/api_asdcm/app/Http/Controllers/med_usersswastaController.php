@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Validator;
 
 class med_usersswastaController extends Controller
 {
-
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
             'FK_users' => 'required',
