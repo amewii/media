@@ -55,6 +55,7 @@
                     <li style="list-style: disc !important;">Sekurang-kurangnya satu huruf kecil.</li>
                     <li style="list-style: disc !important;">Sekurang-kurangnya satu huruf besar.</li>
                     <li style="list-style: disc !important;">Sekurang-kurangnya satu digit.</li>
+                    <li style="list-style: disc !important;">Sekurang-kurangnya satu simbol khas.</li>
                 </ul>
             </div>
         </div>
@@ -63,7 +64,12 @@
             <label style="color:white;">Katalaluan</label>
             <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
             <!-- <input type="password" class="form-control" id="katalaluan" placeholder="Katalaluan" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$" required> -->
+
+            <div id="password-strength" class="mt-2 progress" style="height: 10px;">
+                <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
+
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 mb-3">
             <label style="color:white;">Pengesahan Katalaluan</label>
             <input type="password" class="form-control" id="ckatalaluan" placeholder="Katalaluan" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">

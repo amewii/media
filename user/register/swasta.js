@@ -1,5 +1,93 @@
-document.getElementById("no_kad_pengenalan_swasta").value =
-  window.sessionStorage.no_kad_pengenalan;
+document.getElementById("no_kad_pengenalan_swasta").value = window.sessionStorage.no_kad_pengenalan;
+
+$(document).ready(function () {
+  initializePasswordInput()
+});
+
+function initializePasswordInput() {
+  $("#katalaluan").on("input", function () {
+    var password = $(this).val();
+    // $("#ipass").text(password);
+    var passwordStrength = calculatePasswordStrength(password);
+    var progressBar = $("#password-strength .progress-bar");
+    var conditionsMet = [false, false, false, false, false, false];
+
+    if (password.match(/[a-z]+/)) {
+      conditionsMet[0] = true;
+    }
+
+    if (password.match(/[A-Z]+/)) {
+      conditionsMet[1] = true;
+    }
+
+    if (password.match(/[0-9]+/)) {
+      conditionsMet[2] = true;
+    }
+
+    if (password.match(/[^a-zA-Z0-9]/)) {
+      conditionsMet[3] = true;
+    }
+
+    if (password.length >= 8) {
+      conditionsMet[4] = true;
+    }
+
+    if (password.length >= 12) {
+      conditionsMet[5] = true;
+    }
+
+    switch (passwordStrength) {
+      case "weak":
+        progressBar
+          .removeClass("bg-warning bg-success")
+          .addClass("bg-danger")
+          .css("width", "25%")
+          .text("Weak");
+        break;
+      case "medium":
+        progressBar
+          .removeClass("bg-danger bg-success")
+          .addClass("bg-warning")
+          .css("width", "50%")
+          .text("Medium");
+        break;
+      case "strong":
+        progressBar
+          .removeClass("bg-danger bg-warning")
+          .addClass("bg-success")
+          .css("width", "100%")
+          .text("Strong");
+        break;
+      default:
+        progressBar
+          .removeClass("bg-warning bg-success")
+          .addClass("bg-danger")
+          .css("width", "25%")
+          .text("");
+    }
+  });
+
+  $("#katalaluan").trigger("input");
+}
+
+function calculatePasswordStrength(password) {
+  var passwordStrength = "weak";
+
+  if (
+    password.match(/[a-z]+/) &&
+    password.match(/[A-Z]+/) &&
+    password.match(/[0-9]+/) &&
+    password.match(/[^a-zA-Z0-9]/)
+  ) {
+    if (password.length >= 12) {
+      passwordStrength = "strong";
+    } else if (password.length >= 8) {
+      passwordStrength = "medium";
+    }
+  }
+
+  return passwordStrength;
+}
 
 $("#registerswasta").on("submit", function (e) {
   let $this = $(this);
@@ -27,7 +115,7 @@ $("#registerswasta").on("submit", function (e) {
     form.append("katalaluan", katalaluan);
     form.append("nama_majikan", nama_majikan);
     form.append("jawatan", jawatan);
-    
+
     var settingsregusers = {
       url: host + "registerSiteAwam",
       method: "POST",
@@ -39,110 +127,110 @@ $("#registerswasta").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers)
-    .fail(function(xhr, status, error) {
+      .fail(function (xhr, status, error) {
         if (xhr.status == 422) {
-          var response = JSON.parse(xhr.responseText)
-          var content = '<ul class="text-danger">'
+          var response = JSON.parse(xhr.responseText);
+          var content = '<ul class="text-danger">';
           $.each(response.errors, function (key, value) {
             $.each(value, function (key2, value2) {
-              content += `<li style="list-style: disc !important;">${value2}</li>`
-            })
-          })
-          content += '</ul>'
+              content += `<li style="list-style: disc !important;">${value2}</li>`;
+            });
+          });
+          content += "</ul>";
 
-          var modal = $('#validation_modal')
-          modal.find('.modal-body').html(content)
-          modal.modal('show')
+          var modal = $("#validation_modal");
+          modal.find(".modal-body").html(content);
+          modal.modal("show");
           $("#loading_modal").modal("hide");
         }
-    })
-    .done(function (response) {
-      result = JSON.parse(response);
-      if (!result.success) {
-        Swal(result.message, result.data, "error");
-        return;
-      }
-
-      var settingsfetchusers = {
-        url: host + "checkUsers",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settingsfetchusers).done(function (response) {
-        // console.log(response);
+      })
+      .done(function (response) {
         result = JSON.parse(response);
-        let FK_users = result.data.id_users;
-        let nama_majikan = $("#nama_majikan_swasta").val();
-        let jawatan = $("#jawatan_swasta").val();
+        if (!result.success) {
+          Swal(result.message, result.data, "error");
+          return;
+        }
 
-        var formswasta = new FormData();
-        formswasta.append("FK_users", FK_users);
-        formswasta.append("nama_majikan", nama_majikan);
-        formswasta.append("jawatan", jawatan);
-        formswasta.append("statusrekod", "1");
-
-        var settingsreguserswastas = {
-          url: host + "addUserswastas",
+        var settingsfetchusers = {
+          url: host + "checkUsers",
           method: "POST",
           timeout: 0,
           processData: false,
           mimeType: "multipart/form-data",
           contentType: false,
-          data: formswasta,
+          data: form,
         };
 
-        $.ajax(settingsreguserswastas)
-        .fail(function(xhr, status, error) {
-          if (xhr.status == 422) {
-            var response = JSON.parse(xhr.responseText)
-            var content = '<ul class="text-danger">'
-            $.each(response.errors, function (key, value) {
-              $.each(value, function (key2, value2) {
-                content += `<li style="list-style: disc !important;">${value2}</li>`
-              })
-            })
-            content += '</ul>'
-
-            var modal = $('#validation_modal')
-            modal.find('.modal-body').html(content)
-            modal.modal('show')
-            $("#loading_modal").modal("hide");
-          }
-        })
-        .done(function (response) {
+        $.ajax(settingsfetchusers).done(function (response) {
           // console.log(response);
           result = JSON.parse(response);
-          $("#loading_modal").modal("hide");
-          if (!result.success) {
-            swal({
-              title: "Daftar Pengguna",
-              text: "Pendaftaran gagal! Sila cuba lagi.",
-              confirmButtonText: "OK",
-              closeOnConfirm: true,
-              allowOutsideClick: false,
-              html: false,
-            }).then(function () {
-              window.location.reload();
+          let FK_users = result.data.id_users;
+          let nama_majikan = $("#nama_majikan_swasta").val();
+          let jawatan = $("#jawatan_swasta").val();
+
+          var formswasta = new FormData();
+          formswasta.append("FK_users", FK_users);
+          formswasta.append("nama_majikan", nama_majikan);
+          formswasta.append("jawatan", jawatan);
+          formswasta.append("statusrekod", "1");
+
+          var settingsreguserswastas = {
+            url: host + "addUserswastas",
+            method: "POST",
+            timeout: 0,
+            processData: false,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            data: formswasta,
+          };
+
+          $.ajax(settingsreguserswastas)
+            .fail(function (xhr, status, error) {
+              if (xhr.status == 422) {
+                var response = JSON.parse(xhr.responseText);
+                var content = '<ul class="text-danger">';
+                $.each(response.errors, function (key, value) {
+                  $.each(value, function (key2, value2) {
+                    content += `<li style="list-style: disc !important;">${value2}</li>`;
+                  });
+                });
+                content += "</ul>";
+
+                var modal = $("#validation_modal");
+                modal.find(".modal-body").html(content);
+                modal.modal("show");
+                $("#loading_modal").modal("hide");
+              }
+            })
+            .done(function (response) {
+              // console.log(response);
+              result = JSON.parse(response);
+              $("#loading_modal").modal("hide");
+              if (!result.success) {
+                swal({
+                  title: "Daftar Pengguna",
+                  text: "Pendaftaran gagal! Sila cuba lagi.",
+                  confirmButtonText: "OK",
+                  closeOnConfirm: true,
+                  allowOutsideClick: false,
+                  html: false,
+                }).then(function () {
+                  window.location.reload();
+                });
+              }
+              swal({
+                title: "Daftar Pengguna",
+                text: "Pendaftaran berjaya! Sila log masuk ke dalam sistem.",
+                confirmButtonText: "OK",
+                closeOnConfirm: true,
+                allowOutsideClick: false,
+                html: false,
+              }).then(function () {
+                window.location.replace("../login");
+              });
             });
-          }
-          swal({
-            title: "Daftar Pengguna",
-            text: "Pendaftaran berjaya! Sila log masuk ke dalam sistem.",
-            confirmButtonText: "OK",
-            closeOnConfirm: true,
-            allowOutsideClick: false,
-            html: false,
-          }).then(function () {
-            window.location.replace("../login");
-          });
         });
       });
-    });
   }
 });
 
