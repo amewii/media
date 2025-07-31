@@ -330,7 +330,8 @@ class authController extends Controller
                 if($tetapan_mail->mail_username == 'localhost'){
                     return response()->json([
                         'success'=>true,
-                        'message'=>'LOCALHOST: Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                        // 'message'=>'LOCALHOST: Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                        'message'=>'Permintaan set semula katalaluan akan dihantar ke emel anda sekiranya wujud.',
                         'data'=>'',
                     ],200);
                 } else {
@@ -344,14 +345,16 @@ class authController extends Controller
                     else {
                         return response()->json([
                             'success'=>true,
-                            'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                            'message'=>'Permintaan set semula katalaluan akan dihantar ke emel anda sekiranya wujud.',
+                            // 'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
                             'data'=>'',
                         ],200);
                     }
                 }
                 return response()->json([
                     'success'=>true,
-                    'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
+                    'message'=>'Permintaan set semula katalaluan akan dihantar ke emel anda sekiranya wujud.',
+                    // 'message'=>'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
                     'data'=>''
                 ],200);
             }
