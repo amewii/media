@@ -1,5 +1,4 @@
-document.getElementById("no_kad_pengenalan").value =
-  window.sessionStorage.regno_kad_pengenalan;
+document.getElementById("no_kad_pengenalan").value = window.sessionStorage.regno_kad_pengenalan;
 
 $("#registergov").on("submit", function (e) {
   let $this = $(this);
