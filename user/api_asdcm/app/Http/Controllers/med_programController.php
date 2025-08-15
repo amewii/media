@@ -787,7 +787,7 @@ class med_programController extends Controller
                 'success'=>false,
                 'message'=>"Kemaskini Gagal!",
                 'data'=>''
-            ],404);
+            ],200);
         }
     }
 
