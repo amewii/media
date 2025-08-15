@@ -382,7 +382,7 @@ class med_programController extends Controller
                 'success'=>false,
                 'message'=>'Bad Request',
                 'data'=>$med_program
-            ],400);
+            ], 200);
         }
         
     }
