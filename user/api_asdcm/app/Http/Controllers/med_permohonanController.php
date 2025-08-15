@@ -528,11 +528,15 @@ class med_permohonanController extends Controller
     public function remove (Request $request){
         
         $file_name = $request->input('file_name');
+        $publicPath = base_path('public/' . $file_name);
 
-        if(File::exists(public_path($file_name))){
-            File::delete(public_path($file_name));
+        if(File::exists($publicPath)){
+            File::delete($publicPath);
         }else{
-            dd('File does not exists.');
+            return response()->json([
+                'success'=>false,
+                'message'=>"Muatturun Tidak Berjaya!",
+            ],200);
         }
 
         return response()->json([
