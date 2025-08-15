@@ -40,7 +40,7 @@ $("#back").click(function () {
   $("#content").load("med_program.html");
 });
 
-function listPermohonan() {
+function listPermohonan() {  
   if (window.sessionStorage.control_program_media_U3 == 1) {
     var colums = [
       { name: "bil", title: "Bil" },
@@ -98,11 +98,13 @@ function listPermohonan() {
       let disabled_button = "";
       let button_class = "";
       now = new Date();
+
       if (field.status_permohonan == "2") {
         if (t_luput - now < 0) {
           var form = new FormData();
           form.append("id", field.id_permohonan);
           form.append("status_permohonan", "5");
+          
           objLuput = new post(host+`permohonanLuput`,form,window.sessionStorage.token).execute();
           badge_status = '<span class="badge badge-danger">Luput</span>';
           disabled_button = "disabled";

@@ -256,7 +256,7 @@ class med_usersController extends Controller
                 'success'=>false,
                 'message'=>"No Data!",
                 'data'=>''
-            ]);
+            ], 200);
         }
     }
 

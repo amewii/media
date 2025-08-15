@@ -729,6 +729,7 @@ function list() {
       var button_download = "";
       var button_update = "";
       now = new Date();
+
       if (field.nama_status == "Lulus") {
         if (t_luput - now < 0) {
           var form = new FormData();
