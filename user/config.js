@@ -28,9 +28,7 @@ function getUrlVars() {
 }
 
 function users(returnValue){
-  var obj = new get(host+`usersGetIc/`+'123412341234',window.sessionStorage.token).execute();
-  // var obj = new get(host+`usersGetIc/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
-//   console.log(obj);
+  var obj = new get(host+`usersGetIc/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
   objUsers = obj
   
   if(objUsers.success){
