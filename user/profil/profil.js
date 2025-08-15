@@ -360,6 +360,181 @@ $("#update").on("submit", function (e) {
         }
       }
     });
+    if ($("#FK_jenis_pengguna").val() == 1) {
+      let id_usersgov = $("#id_usersgov").val();
+      let nama_jawatan = $("#nama_jawatan").val();
+      let notel_kerajaan = $("#notel_kerajaan").val();
+      let emel_kerajaan = $("#emel_kerajaan").val();
+      let skim = $("#skim").val();
+      let gred = $("#gred").val();
+      let FK_kampus = $("#FK_kampus").val();
+      let FK_kluster = $("#FK_kluster").val();
+      let FK_subkluster = $("#FK_subkluster").val();
+      let FK_unit = $("#FK_unit").val();
+      let FK_kementerian = $("#FK_kementerian").val();
+      let FK_agensi = $("#FK_agensi").val();
+      let FK_bahagian = $("#FK_bahagian").val();
+      let FK_ila = $("#FK_ila").val();
+      let bahagian = $("#bahagian").val();
+      let alamat1_pejabat = $("#alamat1_pejabat").val();
+      let alamat2_pejabat = $("#alamat2_pejabat").val();
+      let poskod_pejabat = $("#poskod_pejabat").val();
+      let daerah_pejabat = $("#daerah_pejabat").val();
+      let negeri_pejabat = $("#negeri_pejabat").val();
+
+      var formgov = new FormData();
+      formgov.append("id_usersgov", id_usersgov);
+      formgov.append("nama_jawatan", nama_jawatan);
+      formgov.append("notel_kerajaan", notel_kerajaan);
+      formgov.append("emel_kerajaan", emel_kerajaan);
+      formgov.append("skim", skim);
+      formgov.append("gred", gred);
+      formgov.append("FK_kampus", FK_kampus);
+      formgov.append("FK_kluster", FK_kluster);
+      formgov.append("FK_subkluster", FK_subkluster);
+      formgov.append("FK_unit", FK_unit);
+      formgov.append("FK_kementerian", FK_kementerian);
+      formgov.append("FK_agensi", FK_agensi);
+      formgov.append("FK_bahagian", FK_bahagian);
+      formgov.append("FK_ila", FK_ila);
+      formgov.append("bahagian", bahagian);
+      formgov.append("alamat1_pejabat", alamat1_pejabat);
+      formgov.append("alamat2_pejabat", alamat2_pejabat);
+      formgov.append("poskod_pejabat", poskod_pejabat);
+      formgov.append("daerah_pejabat", daerah_pejabat);
+      formgov.append("negeri_pejabat", negeri_pejabat);
+      formgov.append("statusrekod", "1");
+      formgov.append("updated_by", window.sessionStorage.id);
+
+      var settingseditprofileusersgovs = {
+        url: host + "usersgovsEditProfile",
+        method: "POST",
+        timeout: 0,
+        processData: false,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        data: formgov,
+      };
+
+      $.ajax(settingseditprofileusersgovs).done(function (response) {
+        if (response.success == false) {
+          // swal(response.message, response.data, "error");
+          return;
+        }
+        swal({
+          title: "Edit Profile",
+          text: "Berjaya Kemaskini Profile!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#data_load").load("profil/profil.html");
+            }
+          }
+        );
+        // swal({
+        //     title: "Edit Profile",
+        //     text: "Anda Pasti Untuk Kemaskini?",
+        //     type: "warning",
+        //     showCancelButton: true,
+        //     confirmButtonText: "Kemaskini",
+        //     closeOnConfirm: true,
+        //     allowOutsideClick: false,
+        //     html: false
+        // }).then(function () {
+        //     $('#data_load').load('profil/profil.html');
+        // });
+      });
+    } else if ($("#FK_jenis_pengguna").val() == 2) {
+      let id_usersswasta = $("#id_usersswasta").val();
+      let nama_majikan = $("#nama_majikan").val();
+      let jawatan = $("#jawatan").val();
+
+      var formgov = new FormData();
+      formgov.append("id_usersswasta", id_usersswasta);
+      formgov.append("nama_majikan", nama_majikan);
+      formgov.append("jawatan", jawatan);
+      formgov.append("updated_by", window.sessionStorage.id);
+
+      var settingseditprofileusersswastas = {
+        url: host + "userswastasEditProfile",
+        method: "POST",
+        timeout: 0,
+        processData: false,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        data: formgov,
+      };
+
+      $.ajax(settingseditprofileusersswastas).done(function (response) {
+        if (response.success == false) {
+          // swal(response.message, response.data, "error");
+          return;
+        }
+        swal({
+          title: "Edit Profile",
+          text: "Berjaya Kemaskini Profile!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#data_load").load("profil/profil.html");
+            }
+          }
+        );
+      });
+    } else if ($("#FK_jenis_pengguna").val() == 3) {
+      let id_userspelajar = $("#id_userspelajar").val();
+      let nama_sekolah = $("#nama_sekolah").val();
+
+      var formgov = new FormData();
+      formgov.append("id_userspelajar", id_userspelajar);
+      formgov.append("nama_sekolah", nama_sekolah);
+      formgov.append("updated_by", window.sessionStorage.id);
+
+      var settingseditprofileuserspelajars = {
+        url: host + "userspelajarsEditProfile",
+        method: "POST",
+        timeout: 0,
+        processData: false,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        data: formgov,
+      };
+
+      $.ajax(settingseditprofileuserspelajars).done(function (response) {
+        if (response.success == false) {
+          // swal(response.message, response.data, "error");
+          return;
+        }
+        swal({
+          title: "Edit Profile",
+          text: "Berjaya Kemaskini Profile!",
+          type: "success",
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          html: false,
+          timer: 1000,
+        }).then(
+          function () {},
+          function (dismiss) {
+            if (dismiss === "timer") {
+              $("#data_load").load("profil/profil.html");
+            }
+          }
+        );
+      });
+    }
   }
 });
 

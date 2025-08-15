@@ -32,14 +32,14 @@ $(function () {
     $("#page_title").html(
       '<li class="breadcrumb-item active"><a href="javascript:void(0)">Profil Pengguna</a></li>'
     );
-    $("#data_load").load("profil.html");
+    $("#data_load").load("profil/profil.html");
   } else if (window.sessionStorage.content == "ubahkatalaluan") {
     $("#data_load").html("");
     $("#permohonan").hide();
     $("#page_title").html(
       '<li class="breadcrumb-item active"><a href="javascript:void(0)">Ubah Katalaluan</a></li>'
     );
-    $("#data_load").load("ubahkatalaluan.html");
+    $("#data_load").load("ubahkatalaluan/ubahkatalaluan.html");
   }
 });
 $(document).ready(function () {
@@ -311,7 +311,7 @@ $("#profil").click(function () {
   $("#page_title").html(
     '<li class="breadcrumb-item active"><a href="javascript:void(0)">Profil Pengguna</a></li>'
   );
-  $("#data_load").load("profil.html");
+  $("#data_load").load("profil/profil.html");
   //load data_load
 });
 
@@ -322,7 +322,7 @@ $("#ubahkatalaluan").click(function () {
   $("#page_title").html(
     '<li class="breadcrumb-item active"><a href="javascript:void(0)">Ubah Katalaluan</a></li>'
   );
-  $("#data_load").load("ubahkatalaluan.html");
+  $("#data_load").load("ubahkatalaluan/ubahkatalaluan.html");
   //load data_load
 });
 

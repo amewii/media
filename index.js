@@ -547,7 +547,7 @@ $("#ubahkatalaluan").click(function () {
     "Ubah Katalaluan.",
     window.sessionStorage.browser
   );
-  $("#content").load("html/ubahkatalaluan.html");
+  $("#content").load("html/ubahkatalaluan/ubahkatalaluan.html");
 });
 
 $("#med_laporan_program").click(function () {
