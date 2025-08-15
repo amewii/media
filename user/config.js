@@ -1,1 +1,57 @@
-var a0_0x1130b5=a0_0x3185;(function(_0x321716,_0x31876e){var _0x5d9aef=a0_0x3185,_0x53214d=_0x321716();while(!![]){try{var _0x386936=-parseInt(_0x5d9aef(0xed))/0x1*(-parseInt(_0x5d9aef(0xf5))/0x2)+parseInt(_0x5d9aef(0xec))/0x3*(parseInt(_0x5d9aef(0xdf))/0x4)+-parseInt(_0x5d9aef(0xf6))/0x5+parseInt(_0x5d9aef(0xd9))/0x6*(-parseInt(_0x5d9aef(0xd1))/0x7)+-parseInt(_0x5d9aef(0xe7))/0x8+parseInt(_0x5d9aef(0xe6))/0x9*(-parseInt(_0x5d9aef(0xdb))/0xa)+-parseInt(_0x5d9aef(0xdd))/0xb*(-parseInt(_0x5d9aef(0xda))/0xc);if(_0x386936===_0x31876e)break;else _0x53214d['push'](_0x53214d['shift']());}catch(_0x3d1b0e){_0x53214d['push'](_0x53214d['shift']());}}}(a0_0x57fe,0x5a1bc));if(window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd4)]==a0_0x1130b5(0xcf))var host=window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xea)]+'//'+window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd4)]+'/api_asdcm/public/';else{if(window[a0_0x1130b5(0xe3)]['hostname']==a0_0x1130b5(0xe1))var host=window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xea)]+'//'+window['location'][a0_0x1130b5(0xd4)]+a0_0x1130b5(0xf2);else{if(window['location'][a0_0x1130b5(0xd4)]=='www.ctmg.intan.my'||window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd4)]=='10.1.3.92')var host=window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xea)]+'//'+window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd4)]+a0_0x1130b5(0xe0);else{if(window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd3)]=='8081')var host=window[a0_0x1130b5(0xe3)]['protocol']+'//'+window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd4)]+a0_0x1130b5(0xd2);else{let port=window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd3)]?':'+window[a0_0x1130b5(0xe3)][a0_0x1130b5(0xd3)]:'';var host=window['location'][a0_0x1130b5(0xea)]+'//'+window['location'][a0_0x1130b5(0xd4)]+port+a0_0x1130b5(0xe0);}}}}function a0_0x3185(_0x31b348,_0x201071){var _0x57fe6b=a0_0x57fe();return a0_0x3185=function(_0x31857c,_0x23547a){_0x31857c=_0x31857c-0xcf;var _0x13adc7=_0x57fe6b[_0x31857c];return _0x13adc7;},a0_0x3185(_0x31b348,_0x201071);}var id_users_master,nama_master,emel_master,emel_kerajaan_master,notel_master,notel_kerajaan_master,FK_jenis_pengguna_master,id_usersgov_master,nama_jawatan_master,id_usersswasta_master;function a0_0x57fe(){var _0x2c8913=['1816100UVyRZb','10.1.3.36','id_usersgov','392rINVBp',':8081/media/user/api_asdcm/public/','port','hostname','detail_pengguna','usersGetIc/','emel_kerajaan','execute','72060YMqpMi','635412QMndxW','285170YPZAjR','html','319QIAHuZ','success','551108UaMUNd','/media/user/api_asdcm/public/','media.intan.my','href','location','notel_kerajaan','sessionStorage','162YdLrTw','5003008QVGttk','nama','FK_jenis_pengguna','protocol','token','6RkdGfO','66583oEzMtQ','id_usersswasta','emel','jawatan','id_users','/api_asdcm/public/','data','nama_jawatan','22MainGT'];a0_0x57fe=function(){return _0x2c8913;};return a0_0x57fe();}function getUrlVars(){var _0x2b787e=a0_0x1130b5,_0x1219a2={},_0x4a3fa7=window['location'][_0x2b787e(0xe2)]['replace'](/[?&]+([^=&]+)=([^&]*)/gi,function(_0x4b6f89,_0x4a4f91,_0x28ad49){_0x1219a2[_0x4a4f91]=_0x28ad49;});return _0x1219a2;}function users(_0x279616){var _0x25fc2c=a0_0x1130b5,_0x35f4bc=new get(host+_0x25fc2c(0xd6)+window[_0x25fc2c(0xe5)]['no_kad_pengenalan'],window['sessionStorage'][_0x25fc2c(0xeb)])[_0x25fc2c(0xd8)]();objUsers=_0x35f4bc;if(objUsers[_0x25fc2c(0xde)]){var _0x5e03ea=objUsers[_0x25fc2c(0xf3)];$('.text_nama')[_0x25fc2c(0xdc)](_0x5e03ea['nama']),id_users_master=_0x5e03ea[_0x25fc2c(0xf1)],nama_master=_0x5e03ea[_0x25fc2c(0xe8)],emel_master=_0x5e03ea[_0x25fc2c(0xef)],id_usersgov_master=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xd0)],id_usersswasta_master=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xee)],FK_jenis_pengguna_master=_0x5e03ea[_0x25fc2c(0xe9)];switch(FK_jenis_pengguna_master){case 0x1:nama_jawatan=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xf4)];break;case 0x1:nama_jawatan=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xf0)];break;case 0x1:nama_jawatan='';break;}nama_jawatan_master=nama_jawatan,emel_kerajaan_master=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xd7)],notel_kerajaan_master=_0x5e03ea[_0x25fc2c(0xd5)][_0x25fc2c(0xe4)],_0x279616();}else{}}
+// SERVER
+// var host = "https://media.intan.my/api_asdcm/";
+
+// SERVER
+// var host = "http://localhost/media/api_asdcm/";
+if(window.location.hostname == "10.1.3.36"){
+    var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
+} else if(window.location.hostname == "media.intan.my"){
+    var host = window.location.protocol+"//"+window.location.hostname+"/api_asdcm/public/";
+} else if(window.location.hostname == "www.ctmg.intan.my" || window.location.hostname == "10.1.3.92"){
+    var host = window.location.protocol+"//"+window.location.hostname+"/media/user/api_asdcm/public/";
+}
+else if(window.location.port == "8081"){
+    var host = window.location.protocol+"//"+window.location.hostname+":8081/media/user/api_asdcm/public/";
+} else {
+    let port = window.location.port ? ":" + window.location.port : ""
+    var host = window.location.protocol + "//" + window.location.hostname + port + "/media/user/api_asdcm/public/";
+}
+
+var id_users_master, nama_master, emel_master, emel_kerajaan_master, notel_master, notel_kerajaan_master, FK_jenis_pengguna_master, id_usersgov_master, nama_jawatan_master, id_usersswasta_master;
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function users(returnValue){
+  var obj = new get(host+`usersGetIc/`+'123412341234',window.sessionStorage.token).execute();
+  // var obj = new get(host+`usersGetIc/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
+//   console.log(obj);
+  objUsers = obj
+  
+  if(objUsers.success){
+    var data = objUsers.data;
+    $(".text_nama").html(data.nama);
+    id_users_master = data.id_users
+    nama_master = data.nama;
+    emel_master = data.emel;
+    id_usersgov_master = data.detail_pengguna.id_usersgov;
+    id_usersswasta_master = data.detail_pengguna.id_usersswasta;
+    FK_jenis_pengguna_master = data.FK_jenis_pengguna;
+    switch(FK_jenis_pengguna_master){
+        case 1: nama_jawatan = data.detail_pengguna.nama_jawatan; break;
+        case 1: nama_jawatan = data.detail_pengguna.jawatan; break;
+        case 1: nama_jawatan = ""; break;
+    }
+    nama_jawatan_master = nama_jawatan;
+    emel_kerajaan_master = data.detail_pengguna.emel_kerajaan;
+    notel_kerajaan_master = data.detail_pengguna.notel_kerajaan;
+    returnValue();
+  } else {
+    // window.location.replace('login/');
+  }
+}
