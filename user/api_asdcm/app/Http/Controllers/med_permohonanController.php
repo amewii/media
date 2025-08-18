@@ -13,6 +13,8 @@ use App\Models\med_tetapan;
 use Illuminate\Support\Facades\File;
 use ZipArchive;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use PDO;
 
 class med_permohonanController extends Controller
@@ -331,6 +333,19 @@ class med_permohonanController extends Controller
     }
 
     public function update(Request $request)    {
+        $validator = Validator::make($request->all(), [
+            'id_permohonan' => 'required',
+            'tarikh_luput' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $validator->errors()
+            ], 200);
+        }
+
         $id = $request->input('id_permohonan');
         $status_permohonan = $request->input('status_permohonan');
         $catatan_permohonan = $request->input('catatan_permohonan');
