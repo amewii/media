@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\med_program;
 use App\Models\med_users;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class med_programController extends Controller
 {
@@ -765,24 +767,25 @@ class med_programController extends Controller
         $updated_by = $request->input('updated_by');
         $media_path = $request->input('file');
         $last_uploaded_at = Carbon::now()->toDateTimeString();
-        $med_program = med_program::select('*')->where('id_program',$id)->first();
-        
-        $media_path = $media_path;
-        $med_program = med_program::where('id_program',$id) -> update([
-            'media_path' => $media_path,
-            'last_uploaded_at' => $last_uploaded_at,
-            'updated_by' => $updated_by
-        ]);
 
+        try {
+            $med_program = med_program::select('*')->where('id_program',$id)->first();
+            
+            $media_path = $media_path;
+            $med_program = med_program::where('id_program',$id) -> update([
+                'media_path' => $media_path,
+                'last_uploaded_at' => $last_uploaded_at,
+                'updated_by' => $updated_by
+            ]);
 
-        if ($med_program)  {
             return response()->json([
                 'success'=>true,
                 'message'=>"Kemaskini Berjaya!",
                 'data' => $med_program
             ],200);
-        }
-        else{
+
+        } catch (Exception $e) {
+            Log::error($e);
             return response()->json([
                 'success'=>false,
                 'message'=>"Kemaskini Gagal!",
