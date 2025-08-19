@@ -152,6 +152,14 @@ class med_usersController extends Controller
     }
 
     public function showSiteAdmin($no_kad_pengenalan){
+        if (!$no_kad_pengenalan) {
+            return response()->json([
+                'success'=>false,
+                'message'=>"No Data!",
+                'data'=>''
+            ], 200);
+        }
+
         $obj = med_users::
                 join('med_capaian','med_capaian.FK_users','med_users.id_users')->
                 join('med_peranan','med_peranan.id_peranan','med_capaian.FK_peranan')->
@@ -177,7 +185,7 @@ class med_usersController extends Controller
                 'success'=>false,
                 'message'=>"No Data!",
                 'data'=>''
-            ],400);
+            ],200);
         }
     }
 
