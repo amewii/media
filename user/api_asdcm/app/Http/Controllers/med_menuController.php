@@ -53,7 +53,15 @@ class med_menuController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_menu');
 
-        $med_menu = med_menu::where('id_menu',$id)->first();
+        // $med_menu = med_menu::where('id_menu',$id)->first();
+
+        $med_menu = array_filter(json_decode(file_get_contents('datum/med_menu.json'),true), function($row) {
+            return $row['statusrekod'] === "1";
+        });
+        $med_menu = array_filter($med_menu, function($row) use ($id){
+            return $row['id_menu'] == $id;
+        });
+        $med_menu = array_values($med_menu)[0];
 
         if ($med_menu)   {
             return response()->json([
