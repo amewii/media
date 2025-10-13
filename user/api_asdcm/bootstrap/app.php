@@ -133,5 +133,6 @@ $app->router->group([
 });
 
 $app->configure('services');
+$app->configure('queue');
 
 return $app;
