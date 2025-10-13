@@ -102,14 +102,14 @@ class med_statusController extends Controller
         $nama_status = $request->input('nama_status');
         $updated_by = $request->input('updated_by');
 
-        $med_status_check = med_status::where('nama_status', $nama_status)->first();
-        if ($med_status_check) {
-            return response()->json([
-                'success' => false,
-                'message' => "Gagal! Data Telah Wujud",
-                'data' => ''
-            ], 200);
-        } else {
+        // $med_status_check = med_status::where('nama_status', $nama_status)->first();
+        // if ($med_status_check) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => "Gagal! Data Telah Wujud",
+        //         'data' => ''
+        //     ], 200);
+        // } else {
             $med_status = med_status::where('id_status', $id)->update([
                 'kod_status' => $kod_status,
                 'nama_status' => $nama_status,
@@ -129,7 +129,7 @@ class med_statusController extends Controller
                     'data' => ''
                 ], 200);
             }
-        }
+        // }
     }
 
     public function delete(Request $request)    {

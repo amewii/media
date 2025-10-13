@@ -87,15 +87,15 @@ class med_formatController extends Controller
         $jenis_format = $request->input('jenis_format');
         $updated_by = $request->input('updated_by'); // Pakai IC
 
-        $med_format_search = med_format::where('kod_format',$kod_format) -> first(); 
+        // $med_format_search = med_format::where('kod_format',$kod_format) -> first(); 
 
-        if ($med_format_search) {            
-            return response()->json([
-                'success'=>false,
-                'message'=>"Gagal! Data Telah Wujud",
-                'data'=>''
-            ],200);
-        } else  {
+        // if ($med_format_search) {            
+        //     return response()->json([
+        //         'success'=>false,
+        //         'message'=>"Gagal! Data Telah Wujud",
+        //         'data'=>''
+        //     ],200);
+        // } else  {
             $med_format = med_format::where('id_format', $id) -> update([
                 'kod_format' => $kod_format,
                 'jenis_format' => $jenis_format,
@@ -116,7 +116,7 @@ class med_formatController extends Controller
                     'data'=>''
                 ],200);
             }
-        }
+        // }
     }
 
     public function delete(Request $request)    {
