@@ -121,7 +121,6 @@ class authController extends Controller
     }
 
     public function login(Request $request){
-        dd('asdf');
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
         $katalaluan = $request->input('katalaluan');
         $userS = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 

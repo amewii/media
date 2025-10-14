@@ -162,7 +162,6 @@ $("#registerswasta").on("submit", function (e) {
         };
 
         $.ajax(settingsfetchusers).done(function (response) {
-          // console.log(response);
           result = JSON.parse(response);
           let FK_users = result.data.id_users;
           let nama_majikan = $("#nama_majikan_swasta").val();
