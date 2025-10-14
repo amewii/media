@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendRegistrationEmail;
 use App\Models\med_kategoriperkhidmatan;
 use App\Models\med_skim;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -12,6 +13,7 @@ use App\Models\med_tetapan;
 use App\Models\med_usersgov;
 use App\Models\med_userspelajar;
 use App\Models\med_usersswasta;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Validator;
 
 // require '../api_pentadbir/vendor/autoload.php';
@@ -63,68 +65,31 @@ class med_usersController extends Controller
             'FK_gelaran' => $FK_gelaran,
         ]);
 
-        if ($register)  {
+        if ($register) {
             $tetapan_mail = med_tetapan::first();
-            $emelreceiver = $emel;
-            $mail = new PHPMailer();
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->Host       = $tetapan_mail->mail_gateway;
-            $mail->Port       = $tetapan_mail->mail_port;
-            
-            $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
-            $mail->addAddress($emelreceiver);
-                
-            $mail->isHTML(true);                                  
-            $mail->Subject = 'PENGURUSAN MEDIA - PENDAFTARAN AKAUN PENGGUNA';
-            $mail->Body    = '<b>Pendaftaran Akaun Pengguna</b><br><br>
-                                Assalamualaikum dan salam sejahtera<br>
-                                '.$nama.'<br><br>
-                                Tahniah! Anda berjaya mendaftar akaun. <br>
-                                Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
-                                Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
-                                No. Kad Pengenalan: '. $no_kad_pengenalan .'<br>
-                                Katalaluan: '. $katalaluan .'<br><br>
-                                <a href="'.$tetapan_mail->link_sistem.'/user">Galeri Media INTAN Malaysia</a><br><br>
-                                Terima kasih.';
-            $mail->AltBody = 'Alternate Message';
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-                // exit;
-            }
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-            } 
-            else {
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                    'data'=>''
-                ],200);
-            }
+
+            Queue::push(new SendRegistrationEmail([
+                'env' => request()->getHost(),
+                'no_kad_pengenalan' => $no_kad_pengenalan,
+                'kata_laluan' => $katalaluan,
+                'emel' => $emel,
+                'nama' => $nama,
+                'mail_gateway' => $tetapan_mail->mail_gateway,
+                'port' => $tetapan_mail->mail_port,
+                'link_sistem' => $tetapan_mail->link_sistem,
+            ]));
+
             return response()->json([
                 'success'=>'true',
-                'message'=>'Pendaftaran Rekod Berjaya!',
-                'data'=>$register
-            ],201);
-        }
-
-        else    {
+                'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
+                'data'=>''
+            ], 200);
+        } else    {
             return response()->json([
                 'success'=>'false',
                 'message'=>'Bad Request',
                 'data'=>$register
-            ],400);
+            ], 400);
         }
     }
 

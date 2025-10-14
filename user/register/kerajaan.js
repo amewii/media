@@ -325,7 +325,6 @@ $("#registergov").on("submit", function (e) {
     };
 
     $.ajax(settingsregusers).done(function (response) {
-      // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
         Swal(result.message, result.data, "error");
