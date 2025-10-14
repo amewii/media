@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendEmailResetPassword;
+use App\Jobs\SendRegistrationEmail;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -83,61 +84,24 @@ class authController extends Controller
 
         if ($register)  {
             $tetapan_mail = med_tetapan::first();
-            $emelreceiver = $emel;
-            $mail = new PHPMailer();
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->Host       = $tetapan_mail->mail_gateway;
-            $mail->Port       = $tetapan_mail->mail_port;
-            
-            $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
-            $mail->addAddress($emelreceiver);
-                
-            $mail->isHTML(true);                                  
-            $mail->Subject = 'PENGURUSAN MEDIA - PENDAFTARAN AKAUN PENGGUNA';
-            $mail->Body    = '<b>Pendaftaran Akaun Pengguna</b><br><br>
-                                Assalamualaikum dan salam sejahtera<br>
-                                '.$nama.'<br><br>
-                                Tahniah! Anda berjaya mendaftar akaun. <br>
-                                Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
-                                Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
-                                No. Kad Pengenalan: '. $no_kad_pengenalan .'<br>
-                                Katalaluan: '. $katalaluan .'<br><br>
-                                <a href="'.$tetapan_mail->link_sistem.'/user">Galeri Media INTAN Malaysia</a><br><br>
-                                Terima kasih.';
-            $mail->AltBody = 'Alternate Message';
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-                // exit;
-            }
-            if(!$mail->send()) {
-                dd("Mailer Error: " . $mail->ErrorInfo);
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-            } 
-            else {
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                    'data'=>''
-                ],200);
-            }
+
+            Queue::push(new SendRegistrationEmail([
+                'env' => request()->getHost(),
+                'no_kad_pengenalan' => $no_kad_pengenalan,
+                'kata_laluan' => $katalaluan,
+                'emel' => $emel,
+                'nama' => $nama,
+                'mail_gateway' => $tetapan_mail->mail_gateway,
+                'port' => $tetapan_mail->mail_port,
+                'link_sistem' => $tetapan_mail->link_sistem,
+            ]));
+
             return response()->json([
                 'success'=>'true',
-                'message'=>'Pendaftaran Rekod Berjaya!',
-                'data'=>$register
-            ],201);
-        }
-
-        else    {
+                'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
+                'data'=>''
+            ], 200);
+        } else {
             return response()->json([
                 'success'=>'false',
                 'message'=>'Bad Request',
@@ -157,6 +121,7 @@ class authController extends Controller
     }
 
     public function login(Request $request){
+        dd('asdf');
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
         $katalaluan = $request->input('katalaluan');
         $userS = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 

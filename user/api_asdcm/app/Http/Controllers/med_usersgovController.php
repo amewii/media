@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+
+use App\Jobs\SendRegistrationEmail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Models\med_usersgov;
 use App\Models\med_tetapan;
 use App\Models\med_users;
+use Illuminate\Support\Facades\Queue;
 
 class med_usersgovController extends Controller
 {
@@ -72,55 +71,30 @@ class med_usersgovController extends Controller
         $med_users_search = med_users::where('id_users',$FK_users)->first();
         if ($register)  {
             $tetapan_mail = med_tetapan::first();
-            $emelreceiver = $emel_kerajaan;
-            $mail = new PHPMailer();
-            $mail->isSMTP();
-            $mail->Host       = $tetapan_mail->mail_gateway;
-            $mail->Port       = $tetapan_mail->mail_port;
-            
-            $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
-            $mail->addAddress($emelreceiver);
-                
-            $mail->isHTML(true);                                  
-            $mail->Subject = 'PENGURUSAN MEDIA - PENDAFTARAN AKAUN PENGGUNA';
-            $mail->Body    = '<b>Pendaftaran Akaun Pengguna</b><br><br>
-                                Assalamualaikum dan salam sejahtera<br>
-                                '.$med_users_search->nama.'<br><br>
-                                Tahniah! Anda berjaya mendaftar akaun. <br>
-                                Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
-                                Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
-                                <a href="'.$tetapan_mail->link_sistem.'/user">Sistem Pengurusan Media INTAN Malaysia</a><br><br>
-                                Terima kasih.';
-            $mail->AltBody = 'Alternate Message';
-            if(!$mail->send()) {
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-            }
-            if(!$mail->send()) {
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Konfigurasi Emel Sistem Tidak Tepat. Superadmin perlu set di bahagian Pentadbir Sistem -> Tetapan Sistem',
-                    'data'=>''
-                ],200);
-            } 
-            else {
-                return response()->json([
-                    'success'=>'true',
-                    'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                    'data'=>''
-                ],200);
-            }
+
+            Queue::push(new SendRegistrationEmail([
+                'env' => request()->getHost(),
+                'emel' => $emel_kerajaan,
+                'nama' => $med_users_search->nama,
+                'mail_gateway' => $tetapan_mail->mail_gateway,
+                'port' => $tetapan_mail->mail_port,
+                'link_sistem' => $tetapan_mail->link_sistem,
+                'body' => '<b>Pendaftaran Akaun Pengguna</b><br><br>
+                            Assalamualaikum dan salam sejahtera<br>
+                            '.$med_users_search->nama.'<br><br>
+                            Tahniah! Anda berjaya mendaftar akaun. <br>
+                            Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
+                            Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
+                            <a href="'.$tetapan_mail->link_sistem.'/user">Sistem Pengurusan Media INTAN Malaysia</a><br><br>
+                            Terima kasih.'
+            ]));
+
             return response()->json([
                 'success'=>'true',
-                'message'=>'Pendaftaran Rekod Berjaya!',
-                'data'=>$register
-            ],201);
-        }
-
-        else    {
+                'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
+                'data'=>''
+            ], 200);
+        } else {
             return response()->json([
                 'success'=>'false',
                 'message'=>'Bad Request',

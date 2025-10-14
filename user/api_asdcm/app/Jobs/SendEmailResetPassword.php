@@ -56,11 +56,11 @@ class SendEmailResetPassword extends Job
                 $mail->Host = $env == 'localhost' ? 'smtp.mailtrap.io' : $tetapan_mail->mail_gateway;
                 if ($env == 'localhost') {
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'f4350c159bd5a2'; // copy from Mailtrap
-                    $mail->Password = 'ad58eb06c52d01'; // copy from Mailtrap
+                    $mail->Username = config('app.MAIL_USERNAME'); // copy from Mailtrap
+                    $mail->Password = config('app.MAIL_PASSWORD'); // copy from Mailtrap
                     $mail->SMTPSecure = 'tls';
                 }
-                $mail->Port = $env == 'localhost' ? 2525 : $tetapan_mail->mail_port;
+                $mail->Port = $env == 'localhost' ? config('app.MAIL_PORT') : $tetapan_mail->mail_port;
     
                 $mail->setFrom('media@intanbk.intan.my', 'Admin Galeri INTAN');
                 $this->emel_kerajaan ? $mail->addAddress($this->emel_kerajaan) : '';
