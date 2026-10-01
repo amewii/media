@@ -15,25 +15,22 @@
         <div class="box-head row justify-content-between align-items-center mb-10">
             <!-- Page Heading Start -->
             <div class="col-12 col-lg-auto mb-20">
-                <h4 class="title">Senarai <span id="textperanan">Peranan</span><span id="textcapaian" class="hidden">Capaian</span></h4>                
+                <h4 class="title">Pengurusan Peranan &amp; Capaian</h4>
             </div>
             <!-- Page Heading End -->
             
             
             <!-- Page Heading Start -->
             <div class="col-12 col-lg-auto mb-20">
-                <span id="buttonPentadbir"><button id="dftr_users" class="button button-primary"><span><i class="ti-plus"></i>Daftar Pentadbir</span></button></span>
-                <span id="btnSU" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Super Admin</span></button></span>
-                <span id="btnPK" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Pegawai Kluster</span></button></span>
-                <span id="btnPM" onclick="checknoic()" class="hidden"><button class="button button-primary" data-toggle="modal" data-target="#"><span><i class="ti-plus"></i>Daftar Pegawai Media</span></button></span>
+                <button type="button" id="dftr_users" class="button button-primary hidden"><i class="ti-plus"></i>Daftar Pentadbir</button>
             </div><!-- Page Heading End -->
         </div>
         <div class="box-body">     
             
             <ul class="nav nav-pills mb-20">
-                <li class="nav-item"><a class="nav-link active" onclick="tableByPeranan('Super Admin')" data-toggle="pill" href="#dataSuperAdmin" id="superAdmin">Super Admin</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="tableByPeranan('Pentadbir Media')" data-toggle="pill" href="#dataPentadbirMedia" id="pgwMedia">Pegawai Media</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="tableByPeranan('Pentadbir Kluster')" data-toggle="pill" href="#dataPentadbirKluster" id="pgwKluster">Pegawai Kluster</a></li>
+                <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#dataSuperAdmin" id="superAdmin">Super Admin</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPentadbirMedia" id="pgwMedia">Pegawai Media</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPentadbirKluster" id="pgwKluster">Pegawai Kluster</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPengguna" id="pengguna">Pengguna</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#dataPeranan" id="peranan">Peranan & Capaian</a></li>
 
@@ -63,14 +60,14 @@
                 </div>
                 
                 <div class="tab-pane fade" id="dataPengguna">
-                    <div id="tablePengguna" class="table-responsive">
+                    <div class="table-responsive table-pengguna">
                         <textarea class="hidden" id="dataListPengguna"></textarea>
                         <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 pengguna-length"></span></h6>
                         <table id="listPengguna" class="table"></table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dataPeranan">
-                    <div id="tablePengguna" class="table-responsive">
+                    <div class="table-responsive table-pengguna">
                         <textarea class="hidden" id="dataListPeranan"></textarea>
                         <h6 class="d-flex justify-content-end">JUMLAH: <span class="ml-1 mr-3 peranan-length"></span></h6>
                         <table id="listPeranan" class="table"></table>
@@ -91,7 +88,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="nama_peranan"><small class="text-danger">*</small>&nbsp;Nama Peranan</label>
                             <input type="text" class="form-control" id="nama_peranan">
@@ -100,7 +97,7 @@
                             <label for="FK_capaian">Submodul/Capaian</label>
                             <div class="adomx-checkbox-radio-group" id="FK_capaian"></div>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
@@ -121,7 +118,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="nama_peranan"><small class="text-danger">*</small>&nbsp;Nama Peranan</label>
                             <input type="text" class="form-control hidden" id="upt_id">
@@ -131,7 +128,7 @@
                             <label for="FK_capaian">Submodul/Capaian</label>
                             <div class="adomx-checkbox-radio-group" id="upt_FK_capaian"></div>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
@@ -155,7 +152,7 @@
                     <div class="col-md-12">
                         <form id="send_noic" class="input-group">
                             <input type="text" name="noic_check" id="noic_check" required class="form-control form-sm" maxlength="12">
-                            <button id="semak_btn" class="btn btn-primary"><i id="icon_semak" class="fa fa-search"></i> Semak</button>
+                            <button type="submit" id="semak_btn" class="btn btn-primary"><i id="icon_semak" class="fa fa-search"></i> Semak</button>
                         </form>
                     </div>
                 </div>
@@ -321,11 +318,10 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="FK_users"><small class="text-danger">*</small>&nbsp;Pegawai</label>
-                            <input list="FK_userss" id="upt_FK_users" class="form-control" readonly>
-                            <datalist id="FK_userss"></datalist>
+                            <input id="upt_FK_users" class="form-control" readonly>
                             <input type="text" id="upt_FK_user_capaian" class="hidden">
                             <input type="text" id="upt_id_capaian" class="hidden">
                         </div>
@@ -349,7 +345,7 @@
                             <label for="FK_peranan"><small class="text-danger">*</small>&nbsp;Peranan</label>
                             <select class="form-control c-select" required id="upt_FK_peranan"></select>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
@@ -359,4 +355,4 @@
         </div>
     </div>
 </div>
-<script src="./js/ttpn_peranancapaian.js?am=3"></script>
+<script src="./js/ttpn_peranancapaian.js?am=8"></script>

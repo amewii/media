@@ -36,8 +36,8 @@ $.ajax(settings).done(function (response) {
 });
 
 $("#back").click(function () {
-  window.sessionStorage.content = "med_program";
-  $("#content").load("med_program.html");
+  window.sessionStorage.content = "html/med_program";
+  $("#content").load("html/med_program.html");
 });
 
 function listPermohonan() {  
@@ -261,7 +261,7 @@ function detail(i, indexs) {
   let data = d[indexs];
   window.sessionStorage.med_program_id = data.FK_program;
   window.sessionStorage.med_permohonan_id = data.PK;
-  window.sessionStorage.content = "detail_med_program";
+  window.sessionStorage.content = "html/detail_med_program";
   window.location.reload();
 }
 

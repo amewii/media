@@ -1,3 +1,51 @@
+function perananText(value) {
+  return value == null ? "" : String(value);
+}
+
+function perananEscape(value) {
+  return $("<div>").text(perananText(value)).html();
+}
+
+function formatDisplayName(value) {
+  return perananText(value)
+    .trim()
+    .toLocaleLowerCase("ms-MY")
+    .replace(/(^|[\s'/-])([a-z])/g, function (_match, separator, letter) {
+      return separator + letter.toUpperCase();
+    });
+}
+
+function maskNoKadPengenalan(value) {
+  var noKad = perananText(value);
+  if (!noKad) return "-";
+  return noKad.length > 8 ? noKad.slice(0, 8) + "****" : noKad;
+}
+
+function storedRows(selector) {
+  try {
+    return JSON.parse($(selector).val() || "[]");
+  } catch (_error) {
+    return [];
+  }
+}
+
+function refreshActivePerananTable() {
+  var activeId = $(".nav-pills .nav-link.active").attr("id");
+  var roleByTab = {
+    superAdmin: "Super Admin",
+    pgwMedia: "Pentadbir Media",
+    pgwKluster: "Pentadbir Kluster",
+  };
+
+  if (roleByTab[activeId]) tableByPeranan(roleByTab[activeId]);
+  if (activeId === "pengguna") tablePengguna();
+  if (activeId === "peranan") tablePeranan();
+}
+
+function toggleRegistrationButton(isVisible) {
+  $("#dftr_users").toggleClass("hidden", !isVisible);
+}
+
 $(function () {
   $.ajaxSetup({
     cache: false,
@@ -10,51 +58,29 @@ $(function () {
   unitList();
   tablePeranan();
   tablePengguna();
-  tablePentadbir();
   load_select_peranan_capaian();
 });
 
-$("#pentadbir").click(function () {
-  $("#buttonCapaian").removeClass("hidden");
-  $("#buttonPeranan").addClass("hidden");
-  $("#buttonPentadbir").removeClass("hidden");
-});
-$("#peranan").click(function () {
-  $("#buttonPeranan").removeClass("hidden");
-  $("#buttonCapaian").addClass("hidden");
-  $("#buttonPentadbir").addClass("hidden");
-});
-$("#pengguna").click(function () {
-  $("#buttonPentadbir").addClass("hidden");
-  $("#buttonPeranan").addClass("hidden");
-  $("#buttonCapaian").addClass("hidden");
-  $("#btnSU").addClass("hidden");
-  $("#btnPK").addClass("hidden");
-  $("#btnPM").addClass("hidden");
+$("#peranan, #pengguna").click(function () {
+  toggleRegistrationButton(false);
 });
 $("#superAdmin").click(function () {
-  $("#buttonPentadbir").addClass("hidden");
-  $("#btnSU").removeClass("hidden");
-  $("#btnPK").addClass("hidden");
-  $("#btnPM").addClass("hidden");
+  toggleRegistrationButton(true);
+  tableByPeranan("Super Admin");
   $("#upt_FK_peranan").addClass("Superadmin");
   $("#upt_FK_peranan").removeClass("PgwMedia");
   $("#upt_FK_peranan").removeClass("PgwKluster");
 });
 $("#pgwMedia").click(function () {
-  $("#buttonPentadbir").addClass("hidden");
-  $("#btnSU").addClass("hidden");
-  $("#btnPK").addClass("hidden");
-  $("#btnPM").removeClass("hidden");
+  toggleRegistrationButton(true);
+  tableByPeranan("Pentadbir Media");
   $("#upt_FK_peranan").removeClass("Superadmin");
   $("#upt_FK_peranan").addClass("PgwMedia");
   $("#upt_FK_peranan").removeClass("PgwKluster");
 });
 $("#pgwKluster").click(function () {
-  $("#buttonPentadbir").addClass("hidden");
-  $("#btnSU").addClass("hidden");
-  $("#btnPK").removeClass("hidden");
-  $("#btnPM").addClass("hidden");  
+  toggleRegistrationButton(true);
+  tableByPeranan("Pentadbir Kluster");
   $("#upt_FK_peranan").removeClass("Superadmin");
   $("#upt_FK_peranan").removeClass("PgwMedia");
   $("#upt_FK_peranan").addClass("PgwKluster");
@@ -66,18 +92,59 @@ $("#dftr_users").click(function () {
 
 var confirmed = false;
 
+$(document)
+  .off("click.perananPage", ".js-edit-peranan")
+  .on("click.perananPage", ".js-edit-peranan", function () {
+    loadData(Number($(this).attr("data-index")));
+  })
+  .off("change.perananPage", ".js-toggle-user")
+  .on("change.perananPage", ".js-toggle-user", function () {
+    var rows = storedRows("#dataListPengguna");
+    var row = rows[Number($(this).attr("data-index"))];
+    if (row) del_rekod_users(row.id_users, row.statusrekod_users);
+  })
+  .off("click.perananPage", ".js-reset-password")
+  .on("click.perananPage", ".js-reset-password", function () {
+    var rows = storedRows("#dataListPengguna");
+    var row = rows[Number($(this).attr("data-index"))];
+    if (row) resetPassword(row.no_kad_pengenalan, formatDisplayName(row.nama));
+  })
+  .off("change.perananPage", ".js-toggle-access")
+  .on("change.perananPage", ".js-toggle-access", function () {
+    var key = $(this).attr("data-role-key");
+    var rows = storedRows("#dataList" + key);
+    var row = rows[Number($(this).attr("data-index"))];
+    if (row) del_rekod(row.id_capaian, row.statusrekod_capaian);
+  })
+  .off("click.perananPage", ".js-edit-access")
+  .on("click.perananPage", ".js-edit-access", function () {
+    var key = $(this).attr("data-role-key");
+    var rows = storedRows("#dataList" + key);
+    var row = rows[Number($(this).attr("data-index"))];
+    if (row) loaduptCapaian(row.id_capaian, row.no_kad_pengenalan);
+  });
+
 $("#send_noic").on("submit", function (e) {
   let $this = $(this);
   if (!confirmed) {
     e.preventDefault();
     let noic = $("#noic_check").val();
     check_users(noic, function () {
-      if (obj_users.success && obj_users.data.users_intan == "1") {
+      if (obj_users.lookup_failed) {
+        swal({
+          title: "Semak Pengguna",
+          text: "Semakan pengguna tidak berjaya. Sila cuba semula.",
+          type: "error",
+          confirmButtonText: "OK",
+          allowOutsideClick: false,
+        });
+      } else if (obj_users.success && obj_users.data) {
         $("#noic_check").val("");
         $("#check_noic").modal("hide");
-        $("#nama_pegawai").html(
-          '<i class="fa fa-user"></i> ' + obj_users.data.nama
-        );
+        $("#nama_pegawai")
+          .empty()
+          .append('<i class="fa fa-user" aria-hidden="true"></i> ')
+          .append(document.createTextNode(formatDisplayName(obj_users.data.nama)));
         $("#FK_users").val(noic);
         $("#FK_user").val(obj_users.data.id_users);
         $("#FK_kampus").val(obj_users.data.FK_kampus);
@@ -96,80 +163,57 @@ $("#send_noic").on("submit", function (e) {
             $("#semak_btn").prop("disabled", false);
             $("#icon_semak").prop("class", "fa fa-search");
           } else {
-            check_usersIntan(noic, function () {
-              if (obj_usersIntan == "") {
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-                swal({
-                  title: "Daftar Pengguna",
-                  text: "Bukan Pengguna Dalaman INTAN",
-                  confirmButtonText: "OK",
-                  closeOnConfirm: true,
-                  allowOutsideClick: false,
-                  html: false,
-                }).then(function () {
-                  $("#check_noic").modal("hide");
-                  $("#noic_check").val("");
-                });
-              } else {
-                var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
-                $.each(kampus,function(i,item){
-                  if(item == "INTIM"){
-                    $("#FK_kampus_add").val('1');
-                    return false;
-                  }
-                  if(item == "INTURA"){
-                    $("#FK_kampus_add").val('2');
-                    return false;
-                  }
-                  if(item == "IKWAS"){
-                    $("#FK_kampus_add").val('3');
-                    return false;
-                  }
-                  if(item == "INTAN SABAH"){
-                    $("#FK_kampus_add").val('4');
-                    return false;
-                  }
-                  if(item == "INTAN SARAWAK"){
-                    $("#FK_kampus_add").val('5');
-                    return false;
-                  }
-                  if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
-                    $("#FK_kampus_add").val('11');
-                    return false;
-                  }
-                });
-                $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
-                $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
-                  // console.log(item);
-                  // if(item == )
-                });
-                $("#nama_text_add").text(obj_hrmis.peribadi.nama);
-                $("#noic_text_add").text(obj_hrmis.peribadi.icno);
-                $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
-                $("#nama_jawatan_add").val(
-                  obj_hrmis.perkhidmatan.schmofservtitle
-                );
-                $("#nama_add").val(obj_hrmis.peribadi.nama);
-                $("#emel_add").val(obj_hrmis.peribadi.COEmail);
-                $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
-                $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
-                $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
-                $("#noic_check").val("");
-                $("#check_noic").modal("hide");
-                $("#register_users").modal("show");
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-
-                // $.each(obj_usersIntan,function(i,field){
-                //     ezxsSubKluster(field.post.bahagian);
-                // });
+            var kampus = obj_hrmis.perkhidmatan.Bahagian.split(', ');
+            $.each(kampus,function(i,item){
+              if(item == "INTIM"){
+                $("#FK_kampus_add").val('1');
+                return false;
+              }
+              if(item == "INTURA"){
+                $("#FK_kampus_add").val('2');
+                return false;
+              }
+              if(item == "IKWAS"){
+                $("#FK_kampus_add").val('3');
+                return false;
+              }
+              if(item == "INTAN SABAH"){
+                $("#FK_kampus_add").val('4');
+                return false;
+              }
+              if(item == "INTAN SARAWAK"){
+                $("#FK_kampus_add").val('5');
+                return false;
+              }
+              if(item == "INSTITUT TADBIRAN AWAM NEGARA (INTAN)"){
+                $("#FK_kampus_add").val('11');
+                return false;
               }
             });
+            $("#FK_kampus_add_text").html($("#FK_kampus_add option:selected").text());
+            $.each(obj_hrmis.perkhidmatan.Bahagian.split(", "),function(i,item){
+              // console.log(item);
+              // if(item == )
+            });
+            $("#nama_text_add").text(formatDisplayName(obj_hrmis.peribadi.nama));
+            $("#noic_text_add").text(obj_hrmis.peribadi.icno);
+            $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_text_add").text(obj_hrmis.peribadi.COEmail);
+            $("#nama_jawatan_add").val(
+              obj_hrmis.perkhidmatan.schmofservtitle
+            );
+            $("#nama_add").val(obj_hrmis.peribadi.nama);
+            $("#emel_add").val(obj_hrmis.peribadi.COEmail);
+            $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
+            $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
+            $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
+            $("#noic_check").val("");
+            $("#check_noic").modal("hide");
+            $("#register_users").modal("show");
+            $("#noic_check").prop("disabled", false);
+            $("#semak_btn").prop("disabled", false);
+            $("#icon_semak").prop("class", "fa fa-search");
           }
         });
       }
@@ -214,6 +258,9 @@ $("#registergov").on("submit", function (e) {
       url: host + "addUsers",
       method: "POST",
       timeout: 0,
+      headers: {
+        Authorization: window.sessionStorage.token,
+      },
       processData: false,
       mimeType: "multipart/form-data",
       contentType: false,
@@ -224,7 +271,7 @@ $("#registergov").on("submit", function (e) {
       // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        Swal(result.message, result.data, "error");
+        swal(result.message, result.data, "error");
         return;
       }
 
@@ -232,6 +279,9 @@ $("#registergov").on("submit", function (e) {
         url: host + "users",
         method: "POST",
         timeout: 0,
+        headers: {
+          Authorization: window.sessionStorage.token,
+        },
         processData: false,
         mimeType: "multipart/form-data",
         contentType: false,
@@ -293,6 +343,9 @@ $("#registergov").on("submit", function (e) {
           url: host + "addUsersgovs",
           method: "POST",
           timeout: 0,
+          headers: {
+            Authorization: window.sessionStorage.token,
+          },
           processData: false,
           mimeType: "multipart/form-data",
           contentType: false,
@@ -302,7 +355,7 @@ $("#registergov").on("submit", function (e) {
         $.ajax(settingsregusersgovs).done(function (response) {
           result = JSON.parse(response);
           if (!result.success) {
-            Swal(result.message, result.data, "error");
+            swal(result.message, result.data, "error");
             return;
           }
 
@@ -310,6 +363,9 @@ $("#registergov").on("submit", function (e) {
             url: host + "users",
             method: "POST",
             timeout: 0,
+            headers: {
+              Authorization: window.sessionStorage.token,
+            },
             processData: false,
             mimeType: "multipart/form-data",
             contentType: false,
@@ -344,6 +400,9 @@ $("#registergov").on("submit", function (e) {
               url: host + "addCapaian",
               method: "POST",
               timeout: 0,
+              headers: {
+                Authorization: window.sessionStorage.token,
+              },
               processData: false,
               mimeType: "multipart/form-data",
               contentType: false,
@@ -402,48 +461,45 @@ $("#registergov").on("submit", function (e) {
 });
 
 function check_users(noic, returnValue) {
-  var obj = new get(host+`usersgovsIntan/`+noic,window.sessionStorage.token).execute();
-  if(obj.success){
-    obj_users = obj;
-    returnValue();
-  } else {
-    obj_users = obj;
-    returnValue();
-  }
-}
+  var form = new FormData();
+  form.append("no_kad_pengenalan", noic);
 
-function check_usersIntan(noic, returnValue) {
-  var settings = {
-    url: "https://admin.dtims.intan.my/api/ezxs/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
-    method: "GET",
+  $.ajax({
+    url: host + "users",
+    method: "POST",
     timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_usersIntan = response.posts;
-    returnValue();
-  });
-  //     $.ajax({
-  // //        "url": "http://localhost/admin/html/assets/"+noic+".json",
-  //          "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
-  //         "method": "GET",
-  //         "timeout": 0,
-
-  //         success: function(response) {
-  //             obj_usersIntan = response.posts;
-  //         returnValue();
-  //     },
-  //         error: function(){
-  //             obj_usersIntan = false;
-  //         returnValue();
-  //     }
-  //     });
+    headers: {
+      Authorization: window.sessionStorage.token,
+    },
+    processData: false,
+    contentType: false,
+    data: form,
+  })
+    .done(function (response) {
+      try {
+        obj_users = typeof response === "string" ? JSON.parse(response) : response;
+      } catch (_error) {
+        obj_users = {
+          success: false,
+          lookup_failed: true,
+          data: null,
+        };
+      }
+      returnValue();
+    })
+    .fail(function () {
+      obj_users = {
+        success: false,
+        lookup_failed: true,
+        data: null,
+      };
+      returnValue();
+    });
 }
 
 function check_hrmis(noic, returnValue) {
   var settings = {
     url: "https://admin.dtims.intan.my/api/hrmis/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
     method: "GET",
     timeout: 0,
   };
@@ -472,6 +528,7 @@ function tablePeranan() {
     let nama_submodul = "";
     $.each(obj.data, function (i, field) {
       senarai_capaian = "";
+      var capaian = perananText(field.FK_capaian);
       let inc = 1;
       while (inc <= 7) {
         switch (inc) {
@@ -499,13 +556,13 @@ function tablePeranan() {
         }
         senarai_capaian = senarai_capaian + nama_submodul;
         // console.log(senarai_capaian)
-        if (field.FK_capaian.indexOf("C" + inc) >= 0)
+        if (capaian.indexOf("C" + inc) >= 0)
           senarai_capaian = senarai_capaian + "Create, ";
-        if (field.FK_capaian.indexOf("R" + inc) >= 0)
+        if (capaian.indexOf("R" + inc) >= 0)
           senarai_capaian = senarai_capaian + "Read, ";
-        if (field.FK_capaian.indexOf("U" + inc) >= 0)
+        if (capaian.indexOf("U" + inc) >= 0)
           senarai_capaian = senarai_capaian + "Update, ";
-        if (field.FK_capaian.indexOf("D" + inc) >= 0)
+        if (capaian.indexOf("D" + inc) >= 0)
           senarai_capaian = senarai_capaian + "Delete, ";
         senarai_capaian = senarai_capaian + "<br>";
         inc++;
@@ -513,14 +570,14 @@ function tablePeranan() {
       // console.log(senarai_capaian)
       list.push({
         id: field.id_peranan,
-        nama_peranan: field.nama_peranan,
+        nama_peranan: perananEscape(field.nama_peranan),
         nama_senarai:
           '<p style="white-space: pre-line">' + senarai_capaian + "</p>",
         bil: bil++,
         upt_btn:
-          '<button class="button button-box button-sm button-primary" onclick="loadData(\'' +
+          '<button type="button" class="button button-box button-sm button-primary js-edit-peranan" data-index="' +
           i +
-          '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
+          '" aria-label="Kemas kini peranan"><i class="ti-pencil-alt"></i></button>',
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_peranan+'\')"><i class="ti-trash"></i>'
       });
     });
@@ -566,7 +623,10 @@ function tablePengguna() {
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      var checked;
+      var checked = "";
+      var badge;
+      var text_statusrekod;
+      var usersintan;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_users == "1") {
         checked = "checked";
@@ -581,38 +641,31 @@ function tablePengguna() {
       } else {
         usersintan = "Tidak";
       }
-      var ic = field.no_kad_pengenalan.split('');
-      var no_kad_pengenalan = ic[0]+ic[1]+ic[2]+ic[3]+ic[4]+ic[5]+ic[6]+ic[7]+'****';
+      var no_kad_pengenalan = maskNoKadPengenalan(field.no_kad_pengenalan);
       list.push({
         id: field.id_users,
-        nama: field.nama,
-        emel: field.emel,
-        no_kad_pengenalan: no_kad_pengenalan,
-        notel: field.notel,
-        jenis_pengguna: field.jenis_pengguna,
-        nama_peranan: field.nama_peranan,
+        nama: perananEscape(formatDisplayName(field.nama)),
+        emel: perananEscape(field.emel),
+        no_kad_pengenalan: perananEscape(no_kad_pengenalan),
+        notel: perananEscape(field.notel),
+        jenis_pengguna: perananEscape(field.jenis_pengguna),
+        nama_peranan: perananEscape(field.nama_peranan),
         bil: bil++,
         users_intan: usersintan,
         status_rekod:
-          '<label class="adomx-switch-2 success "><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
+          '<label class="adomx-switch-2 success"><input type="checkbox" class="form-control mb-20 js-toggle-user" data-index="' +
+          i +
+          '" ' +
           checked +
-          " onclick=\"del_rekod_users('" +
-          field.id_users +
-          "','" +
-          field.statusrekod_users +
-          '\')"> <i class="lever"></i> <span id="text_statusrekod' +
-          field.id_users +
+          '> <i class="lever"></i> <span id="text_statusrekod' +
+          perananEscape(field.id_users) +
           '" class="badge ' +
           badge +
           '">' +
           text_statusrekod +
           "</span></label>",
-        upt_btn:
-          '<button class="button button-box button-sm button-primary" onclick="loadDataCapaian(\'' +
-          i +
-          '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
         reset_password: `
-          <button class="btn btn-box btn-danger btn-sm" data-ui-toggle-class="zoom" data-ui-target="#animate" onclick="resetPassword('`+field.no_kad_pengenalan+`','`+field.nama+`')"><i class="ti-unlock"></i> Set Semula Katalaluan</button>`
+          <button type="button" class="btn btn-box btn-danger btn-sm js-reset-password" data-index="${i}"><i class="ti-unlock"></i> Set Semula Katalaluan</button>`
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
@@ -661,7 +714,9 @@ function tablePentadbir() {
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      var checked;
+      var checked = "";
+      var badge;
+      var text_statusrekod;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_capaian == "1") {
         checked = "checked";
@@ -673,14 +728,14 @@ function tablePentadbir() {
       }
       list.push({
         id: field.id_users,
-        nama: field.nama,
-        emel: field.emel,
-        no_kad_pengenalan: field.no_kad_pengenalan,
-        notel: field.notel,
-        jenis_pengguna: field.jenis_pengguna,
-        nama_peranan: field.nama_peranan,
+        nama: perananEscape(formatDisplayName(field.nama)),
+        emel: perananEscape(field.emel),
+        no_kad_pengenalan: perananEscape(maskNoKadPengenalan(field.no_kad_pengenalan)),
+        notel: perananEscape(field.notel),
+        jenis_pengguna: perananEscape(field.jenis_pengguna),
+        nama_peranan: perananEscape(field.nama_peranan),
         bil: bil++,
-        nama_kampus: field.nama_kampus,
+        nama_kampus: perananEscape(field.nama_kampus),
           // field.nama_kampus +
           // "/ " +
           // field.nama_kluster +
@@ -689,19 +744,19 @@ function tablePentadbir() {
         status_rekod:
           '<label class="adomx-switch-2 success "><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
           checked +
-          " onclick=\"del_rekod('" +
-          field.id_capaian +
+          " data-legacy-action=\"del_rekod('" +
+          perananEscape(field.id_capaian) +
           "','" +
           field.statusrekod_capaian +
           '\')"> <i class="lever"></i> <span id="text_statusrekod' +
-          field.id_capaian +
+          perananEscape(field.id_capaian) +
           '" class="badge ' +
           badge +
           '">' +
           text_statusrekod +
           "</span></label>",
         upt_btn:
-          '<button class="button button-box button-sm button-primary" onclick="loadDataCapaian(\'' +
+          '<button type="button" class="button button-box button-sm button-primary" data-legacy-action="loadDataCapaian(\'' +
           i +
           '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
@@ -759,7 +814,9 @@ function tableByPeranan(peranan) {
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      var checked;
+      var checked = "";
+      var badge;
+      var text_statusrekod;
       // alert(field.statusrekod_capaian);
       if (field.statusrekod_capaian == "1") {
         checked = "checked";
@@ -769,41 +826,42 @@ function tableByPeranan(peranan) {
         badge = "badge-danger";
         text_statusrekod = "Tidak Aktif";
       }
-      var ic = field.no_kad_pengenalan.split('');
-      var no_kad_pengenalan = ic[0]+ic[1]+ic[2]+ic[3]+ic[4]+ic[5]+ic[6]+ic[7]+'****';
+      var no_kad_pengenalan = maskNoKadPengenalan(field.no_kad_pengenalan);
       list.push({
         id: field.id_users,
-        nama: field.nama,
-        emel: field.emel,
-        no_kad_pengenalan: no_kad_pengenalan,
-        notel: field.notel,
-        jenis_pengguna: field.jenis_pengguna,
-        nama_peranan: field.nama_peranan,
+        nama: perananEscape(formatDisplayName(field.nama)),
+        emel: perananEscape(field.emel),
+        no_kad_pengenalan: perananEscape(no_kad_pengenalan),
+        notel: perananEscape(field.notel),
+        jenis_pengguna: perananEscape(field.jenis_pengguna),
+        nama_peranan: perananEscape(field.nama_peranan),
         bil: bil++,
-        nama_kampus: field.nama_kampus,
+        nama_kampus: perananEscape(field.nama_kampus),
           // field.nama_kampus +
           // "/ " +
           // field.nama_kluster +
           // "/ " +
           // field.nama_subkluster,
         status_rekod:
-          '<label class="adomx-switch-2 success "><input type="checkbox" id="status_sistem" class="form-control mb-20" ' +
+          '<label class="adomx-switch-2 success"><input type="checkbox" class="form-control mb-20 js-toggle-access" data-role-key="' +
+          callPeranan +
+          '" data-index="' +
+          i +
+          '" ' +
           checked +
-          " onclick=\"del_rekod('" +
-          field.id_capaian +
-          "','" +
-          field.statusrekod_capaian +
-          '\')"> <i class="lever"></i> <span id="text_statusrekod' +
-          field.id_capaian +
+          '> <i class="lever"></i> <span id="text_statusrekod' +
+          perananEscape(field.id_capaian) +
           '" class="badge ' +
           badge +
           '">' +
           text_statusrekod +
           "</span></label>",
         upt_btn:
-          '<button class="button button-box button-sm button-primary" onclick="loaduptCapaian(\'' +
-          field.id_capaian + '\',\''+field.no_kad_pengenalan+
-          '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
+          '<button type="button" class="button button-box button-sm button-primary js-edit-access" data-role-key="' +
+          callPeranan +
+          '" data-index="' +
+          i +
+          '" aria-label="Kemas kini capaian"><i class="ti-pencil-alt"></i></button>',
         // '<button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\''+field.id_users+'\')"><i class="ti-trash"></i>'
       });
     });
@@ -837,14 +895,22 @@ function checknoic(){
 }
 
 function loadData(indexs) {
-  let data = JSON.parse($("#dataListPeranan").val());
+  let data = storedRows("#dataListPeranan");
+  if (!data[indexs]) return;
   $("#upt_id").val(data[indexs].id_peranan);
   $("#upt_nama_peranan").val(data[indexs].nama_peranan);
-  var FK_capaian = JSON.parse(data[indexs].FK_capaian);
+  var FK_capaian = data[indexs].FK_capaian;
+  if (!Array.isArray(FK_capaian)) {
+    try {
+      FK_capaian = JSON.parse(FK_capaian || "[]");
+    } catch (_error) {
+      FK_capaian = [];
+    }
+  }
 
   $("#update-peranan").modal("show");
 
-  $("input[type=checkbox]").prop("checked", false);
+  $("#upt_FK_capaian input[name='upt_crud']").prop("checked", false);
 
   $.each(FK_capaian,function(i,item){
     $("#upt_" + item.FK_capaian).prop("checked", true);
@@ -904,6 +970,7 @@ function loadDataCapaian(indexs) {
 function loaduptCapaian(id_capaian, icno) {
   
   $("#upt_FK_users").val(icno);
+  $("#upt_id_capaian").val(id_capaian);
 
 
   var settings = {
@@ -917,8 +984,11 @@ function loaduptCapaian(id_capaian, icno) {
     $("#upt_FK_kampus").val(response.data.FK_kampus);
     $("#upt_FK_kluster").val(response.data.FK_kluster);
     $("#upt_FK_subkluster").val(response.data.FK_subkluster);
-    $("#FK_unit").val(response.data.FK_unit);
+    $("#upt_FK_unit").val(response.data.FK_unit);
     $("#upt_FK_peranan").val(response.data.FK_peranan);
+    $("#upt_FK_user_capaian").val(
+      response.data.FK_users || response.data.id_users || ""
+    );
   });
   // $("#upt_FK_user_capaian").val(data[indexs].id_users);
   // $("#upt_id_capaian").val(data[indexs].id_capaian);
@@ -1311,7 +1381,7 @@ $("#registerCapaian").on("submit", function (e) {
           }).then(function () {
             sessionStorage.token = result.token;
             $("#reg-capaian").modal("hide");
-            tablePentadbir();
+            refreshActivePerananTable();
           });
         } else {
           saveLog(
@@ -1324,7 +1394,7 @@ $("#registerCapaian").on("submit", function (e) {
             window.sessionStorage.browser
           );
           $("#reg-capaian").modal("hide");
-          tablePentadbir();
+          refreshActivePerananTable();
         }
       });
     });
@@ -1397,7 +1467,7 @@ $("#updateCapaian").on("submit", function (e) {
           }).then(function () {
             sessionStorage.token = result.token;
             $("#update-capaian").modal("hide");
-            tablePentadbir();
+            refreshActivePerananTable();
           });
         } else {
           saveLog(
@@ -1410,7 +1480,7 @@ $("#updateCapaian").on("submit", function (e) {
             window.sessionStorage.browser
           );
           $("#update-capaian").modal("hide");
-          tablePentadbir();
+          refreshActivePerananTable();
         }
       });
     });
@@ -1557,11 +1627,7 @@ function del_rekod(i, status) {
     }
     saveLog(
       window.sessionStorage.id,
-      "Update Data for [id_capaian = " +
-        id +
-        "], [FK_users = " +
-        FK_users +
-        "] at Tetapan Peranan & Capaian.",
+      "Update Data for [id_capaian = " + id + "] at Tetapan Peranan & Capaian.",
       window.sessionStorage.browser
     );
   });
@@ -1616,11 +1682,7 @@ function del_rekod_users(i, status) {
     }
     saveLog(
       window.sessionStorage.id,
-      "Update Data for [id_users = " +
-        id +
-        "], [FK_users = " +
-        FK_users +
-        "] at Tetapan Peranan & Capaian.",
+      "Update Data for [id_users = " + id + "] at Tetapan Peranan & Capaian.",
       window.sessionStorage.browser
     );
   });
@@ -2143,8 +2205,10 @@ function checkingPeranan() {
 
   let checking = FK_peranan_master;
   if (checking == 1) {
+    toggleRegistrationButton(true);
     tableByPeranan('Super Admin');
   } else if (checking == 3) {
+    toggleRegistrationButton(true);
     tableByPeranan('Pentadbir Media');
     
     $("#dataSuperAdmin").removeClass("show active");
@@ -2153,7 +2217,10 @@ function checkingPeranan() {
     $("#superAdmin").removeClass("active");
     $("#pgwMedia").addClass("active");
     
-  } 
+  } else {
+    toggleRegistrationButton(true);
+    tableByPeranan('Super Admin');
+  }
 
 
 }
@@ -2239,22 +2306,6 @@ function load_select_peranan_capaian(){
       );
     });
   
-    //LIST OPTION UPDATE
-    $("#upt_FK_users").empty();
-    $("#upt_FK_users").append(
-      $("<option>", {
-        value: "",
-        text: "Pilih Pengguna",
-      })
-    );
-    $.each(obj.data, function (i, item) {
-      $("#upt_FK_users").append(
-        $("<option>", {
-          value: item.PK,
-          text: item.nama,
-        })
-      );
-    });
   } else {
     // console.log(obj);
   }
@@ -2265,33 +2316,36 @@ function load_select_peranan_capaian(){
   var obj = new get(host+`submodulsList`,window.sessionStorage.token).execute();
   if(obj.success){
     $.each(obj.data, function (i, item) {
+      var submodulId = perananText(item.id_submodul).replace(/\D/g, "");
+      var namaSubmodul = perananEscape(item.nama_submodul);
+      if (!submodulId) return;
       $("#FK_capaian").append(
         $(
           '<table width="100%">' +
             "<tbody>" +
             "<tr>" +
             '<td width="30%"><label class="adomx-checkbox">' +
-            item.nama_submodul +
+            namaSubmodul +
             "</label></td>" +
             '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="C' +
-            item.id_submodul +
+            submodulId +
             '" id="c' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Create</label></td>' +
             '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="R' +
-            item.id_submodul +
+            submodulId +
             '" id="r' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Read</label></td>' +
             '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="U' +
-            item.id_submodul +
+            submodulId +
             '" id="u' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Update</label></td>' +
             '<td width="10%"><label class="adomx-checkbox"><input class="form-control" type="checkbox" name="crud" value="D' +
-            item.id_submodul +
+            submodulId +
             '" id="d' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Delete</label></td>' +
             "</tr>" +
             "</tbody>" +
@@ -2305,42 +2359,42 @@ function load_select_peranan_capaian(){
             "<tbody>" +
             "<tr>" +
             '<td width="30%"><label class="adomx-checkbox">' +
-            item.nama_submodul +
+            namaSubmodul +
             "</label></td>" +
             '<td width="10%"><label class="adomx-checkbox" id="tc' +
-            item.id_submodul +
+            submodulId +
             '"><input class="form-control" type="checkbox" name="upt_crud" value="C' +
-            item.id_submodul +
+            submodulId +
             '" id="upt_C' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Create</label></td>' +
             '<td width="10%"><label class="adomx-checkbox" id="tr' +
-            item.id_submodul +
+            submodulId +
             '"><input class="form-control" type="checkbox" name="upt_crud" value="R' +
-            item.id_submodul +
+            submodulId +
             '" id="upt_R' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Read</label></td>' +
             '<td width="10%"><label class="adomx-checkbox" id="tu' +
-            item.id_submodul +
+            submodulId +
             '"><input class="form-control" type="checkbox" name="upt_crud" value="U' +
-            item.id_submodul +
+            submodulId +
             '" id="upt_U' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Update</label></td>' +
             '<td width="10%"><label class="adomx-checkbox" id="td' +
-            item.id_submodul +
+            submodulId +
             '"><input class="form-control" type="checkbox" name="upt_crud" value="D' +
-            item.id_submodul +
+            submodulId +
             '" id="upt_D' +
-            item.id_submodul +
+            submodulId +
             '"/> <i class="icon"></i> Delete</label></td>' +
             "</tr>" +
             "</tbody>" +
             "</table>"
         )
       );
-      listsubmodule.push(item.id_submodul);
+      listsubmodule.push(submodulId);
     });
     listsubmodule_master = listsubmodule;
   

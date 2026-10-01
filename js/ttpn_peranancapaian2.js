@@ -366,7 +366,7 @@ $("#registergov").on("submit", function (e) {
     $.ajax(settingsregusers).done(function (response) {
       result = JSON.parse(response);
       if (!result.success) {
-        Swal(result.message, result.data, "error");
+        swal(result.message, result.data, "error");
         return;
       }
 
@@ -443,7 +443,7 @@ $("#registergov").on("submit", function (e) {
         $.ajax(settingsregusersgovs).done(function (response) {
           result = JSON.parse(response);
           if (!result.success) {
-            Swal(result.message, result.data, "error");
+            swal(result.message, result.data, "error");
             return;
           }
 

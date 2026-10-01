@@ -31,7 +31,7 @@
 
                         <!--Card Header Start-->
                         <div class="card-header">
-                            <h2><button data-toggle="collapse show">Butiran Program</button></h2>
+                            <h2><button type="button">Butiran Program</button></h2>
                         </div>
                         <!--Card Header End-->
 
@@ -135,30 +135,52 @@
                 </div><!-- Page Heading End -->
             </div>
             <div class="box-body">
-                <div class="row justify-content-between align-items-center m-1">
+                <div class="media-library-toolbar">
+                    <div class="media-selection-tools">
+                        <label class="media-select-all" for="checkAll">
+                            <input type="checkbox" id="checkAll">
+                            <span>Pilih semua</span>
+                        </label>
+                        <span class="media-selected-count" id="mediaSelectedCount">0 dipilih</span>
+                    </div>
 
-                    <!-- Page Heading Start -->
-                    <div class="col-12 col-lg-auto mb-20">
-                        <div class="row">
-                            <input type="checkbox" id="checkAll"><label for="checkAll"> Pilih Semua Media</label>
-                            <!-- <br/><br/> -->
-                        </div>
-                    </div><!-- Page Heading End -->
-                    <!-- Page Heading Start -->
-                    <div class="col-12 col-lg-auto mb-20">
-                        <div class="row">
-                            <button class="button button-sm button-primary hidden" id="control_program_media_U2" data-toggle="modal" data-target="#reg-media"><span><i class="ti-plus"></i>Muatnaik</span></button>
-                            <button type="button" class="button button-sm button-danger" id="hapusgambar" onclick="del_media_multiple()"><i class="fa fa-trash"></i> Hapus</button>
-                            <a class="button button-sm button-success hidden" id="control_program_media_U2" href="javascript:void(0);" onclick="publish();"><span><i class="ti-share"></i>Siar</span></a>
-                            <a class="button button-sm button-danger hidden" id="control_program_media_U2" href="javascript:void(0);" onclick="batal_publish();"><span><i class="ti-close"></i>Batal SIar</span></a>
+                    <div class="media-view-switcher" role="group" aria-label="Pilihan paparan media">
+                        <button type="button" class="media-view-button" data-media-view="list" aria-pressed="false" title="Paparan senarai">
+                            <i class="ti-view-list"></i><span>Senarai</span>
+                        </button>
+                        <button type="button" class="media-view-button active" data-media-view="thumbnail" aria-pressed="true" title="Paparan thumbnail">
+                            <i class="ti-view-grid"></i><span>Thumbnail</span>
+                        </button>
+                        <button type="button" class="media-view-button" data-media-view="filmstrip" aria-pressed="false" title="Paparan pratonton">
+                            <i class="ti-layout-slider-alt"></i><span>Pratonton</span>
+                        </button>
+                    </div>
 
+                    <div class="media-library-actions">
+                        <button class="button button-sm button-primary hidden control_program_media_U2" data-toggle="modal" data-target="#reg-media"><span><i class="ti-plus"></i>Muat naik</span></button>
+                        <button type="button" class="button button-sm button-danger" id="hapusgambar" onclick="del_media_multiple()"><i class="fa fa-trash"></i> Hapus</button>
+                        <a class="button button-sm button-success hidden control_program_media_U2" href="javascript:void(0);" onclick="publish();"><span><i class="ti-share"></i>Siar</span></a>
+                        <a class="button button-sm button-danger hidden control_program_media_U2" href="javascript:void(0);" onclick="batal_publish();"><span><i class="ti-close"></i>Batal siar</span></a>
+                    </div>
+                </div>
+
+                <input type="text" id="uptid" class="hidden">
+                <textarea id="dataList" class="hidden"></textarea>
+
+                <div class="media-main-preview hidden" id="mediaPreviewPanel" aria-live="polite">
+                    <div class="media-main-preview-stage" id="mediaPreviewStage"></div>
+                    <div class="media-main-preview-details">
+                        <div>
+                            <span class="media-preview-label">Pratonton media</span>
+                            <strong id="mediaPreviewName">Pilih media untuk dipratonton</strong>
                         </div>
-                    </div><!-- Page Heading End -->
-                
-                </div><!-- Page Headings End -->
-                <div class="row" id="listImages">
-                    <input type="text" id="uptid" class="hidden">
-                    <textarea id="dataList" class="hidden"></textarea>
+                        <button type="button" class="button button-sm button-primary" id="mediaPreviewOpen" disabled>
+                            <i class="ti-new-window"></i>Buka media
+                        </button>
+                    </div>
+                </div>
+
+                <div class="media-gallery media-view-thumbnail" id="listImages">
                 </div>
             </div>
         </div>
@@ -175,7 +197,7 @@
                     <div class="modal-body">                        
                         <div class="col-12 mb-20">
                             <div class="watermark">
-                                <div id="imgTags" align="center"></div>
+                                <div id="imgTags" class="text-center"></div>
                             </div>
                             <h4>
                                 <label for="listvip" class="mt-2">Tag VIP</label>
@@ -191,7 +213,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="button button-success" type="submit"> Ya </button>
-                        <button type="button"class="button button-primary" onclick="del_media()"> Hapus </button>
+                        <button type="button" class="button button-primary" onclick="del_media()">Hapus</button>
                         <button class="button button-danger" data-dismiss="modal" onclick="resetForm();" id="closeButton"><i class="ti-close"></i>Tutup</button>
                     </div>
                 </form>
@@ -199,16 +221,16 @@
         </div>
     </div>
 
-    <div class="modal fade" id="reg-media" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal fade media-upload-modal" id="reg-media" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form role="form" id="register" enctype='multipart/form-data'>
                     <div class="modal-header">
                         <h5 class="modal-title">Muat Naik Fail Baharu</h5>
                     </div>
                     <div class="modal-body">
-                        <p>
-                            <div class="col-12 mb-20">
+                        <div class="row">
+                            <div class="col-12">
                                 <!-- <label for="nama_program">Nama Program</label> -->
                                 <!--FilePond Start-->
                                 <input class="form-control hidden" id="upt_id" type="text">
@@ -216,11 +238,11 @@
                                 <!--FilePond End-->
                                 <div id="upload-2-queue"></div>
                             </div>
-                        </p>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button onclick="$.fileup('upload-2', 'upload', '*')" class="button button-success" type="button"> Muatnaik Semua </button>
-                        <button onclick="$.fileup('upload-2', 'remove', '*')" class="button button-danger" type="button"> Padam Semua </button>
+                        <button onclick="$.fileup('upload-2', 'upload', '*')" class="button button-success" type="button">Muat naik semua</button>
+                        <button onclick="$.fileup('upload-2', 'remove', '*')" class="button button-danger" type="button">Padam semua</button>
                         <button class="button button-danger" data-dismiss="modal" id="finishButton"><i class="ti-close"></i>Tutup</button>
                     </div>
                 </form>
@@ -236,4 +258,4 @@
 
 </div>
 
-<script src="./js/detail_med_program.js?n=8"></script>
+<script src="./js/detail_med_program.js?n=13"></script>

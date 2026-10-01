@@ -50,7 +50,7 @@ $("#registerswasta").on("submit", function (e) {
     $.ajax(settingsregusers).done(function (response) {
       result = JSON.parse(response);
       if (!result.success) {
-        Swal(result.message, result.data, "error");
+        swal(result.message, result.data, "error");
         return;
       }
 
@@ -139,7 +139,7 @@ $("#registerswasta").on("submit", function (e) {
             result = JSON.parse(response);
             $("#loading_modal").modal("hide");
             if (!result.success) {
-              Swal(result.message, result.data, "error");
+              swal(result.message, result.data, "error");
               return;
             }
             swal({

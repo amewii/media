@@ -30,7 +30,7 @@ function tableFormat() {
   ];
   if (window.sessionStorage.control_tetapan_media_U1 == 1) {
     columns.push(
-      { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs" },
+      { name: "upt_btn", title: "Tindakan", breakpoints: "md sm xs", classes: "text-center" },
     );
   }
 
@@ -42,7 +42,9 @@ function tableFormat() {
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      var checked;
+      var checked = "";
+      var badge;
+      var text_statusrekod;
       if (field.statusrekod == "1") {
         checked = "checked";
         badge = "badge-success";
@@ -70,7 +72,7 @@ function tableFormat() {
             text_statusrekod +
             "</span></label>",
           upt_btn:
-            '<button class="button button-bx button-sm button-primary " id="control_tetapan_media_U1" onclick="loadData(\'' +
+            '<button type="button" class="button button-box button-sm button-primary" aria-label="Kemas kini format" onclick="loadData(\'' +
             i +
             '\')" data-ui-toggle-class="zoom" data-ui-target="#animate"><i class="ti-pencil-alt"></i></button> ',
         });

@@ -15,9 +15,7 @@
 	============================================ -->
 
     <!-- Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css"> -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.462.css">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> -->
 
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/material-design-iconic-font.min.css">
@@ -27,9 +25,6 @@
 
     <!-- Plugins CSS -->
     <link rel="stylesheet" href="assets/css/plugins/plugins.css">
-    <!-- <link rel="stylesheet" href="assets/footable2/css/footable.bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="assets/footable2/css/footable.bootstrap.min.css" type="text/css" /> -->
-    <link rel="stylesheet" href="assets/sweet-alert/sweetalert2.css" type="text/css" />
     <link rel="stylesheet" href="assets/sweet-alert/sweetalert2.min.css" type="text/css" />
 
     <!-- UploadImg -->
@@ -43,10 +38,11 @@
 
     <!-- Custom Style CSS Only For Demo Purpose -->
     <link id="cus-style" rel="stylesheet" href="assets/css/style-primary.css">
+    <link rel="stylesheet" href="assets/css/media-admin.css?am=6">
 
 </head>
 
-<body style="display: none;" oncontextmenu="return false;">
+<body class="media-admin" style="display: none;" oncontextmenu="return false;">
 
     <div class="main-wrapper">
 
@@ -57,11 +53,14 @@
                 <div class="row justify-content-between align-items-center">
 
                     <!-- Header Logo (Header Left) Start -->
-                    <div class="header-logo col-auto row">
-                        <img src="assets/images/INTAN.png" width="30px" alt="" class="mr-3"><h4 class="mt-2" style="font-weight: bold;">GALERI MEDIA</h4>
-                        <!-- <a href="index.html">
-                            <img src="assets/images/logo/DCM.png" class="logo-light" width="50%" alt="">
-                        </a> -->
+                    <div class="header-logo col-auto">
+                        <div class="media-brand" role="img" aria-label="Galeri Media INTAN">
+                            <span class="media-brand-mark"><img src="assets/images/INTAN.png" alt=""></span>
+                            <span class="media-brand-copy">
+                                <strong>Galeri Media</strong>
+                                <small>INTAN Malaysia</small>
+                            </span>
+                        </div>
                     </div><!-- Header Logo (Header Left) End -->
 
                     <!-- Header Right Start -->
@@ -80,14 +79,14 @@
 
                                         <div class="header-search">
 
-                                            <button class="header-search-open d-block d-xl-none"><i class="zmdi zmdi-search"></i></button>
+                                            <button class="header-search-open d-block d-xl-none" type="button" aria-label="Buka carian menu"><i class="zmdi zmdi-search"></i></button>
 
-                                            <div class="header-search-form hidden">
-                                                <form action="#">
-                                                    <input type="text" placeholder="Search Here">
-                                                    <button><i class="zmdi zmdi-search"></i></button>
+                                            <div class="header-search-form">
+                                                <form id="admin-menu-search-form" role="search">
+                                                    <input type="search" id="admin-menu-search" placeholder="Cari menu atau modul..." autocomplete="off" aria-label="Cari menu atau modul">
+                                                    <button type="submit" aria-label="Cari"><i class="zmdi zmdi-search"></i></button>
                                                 </form>
-                                                <button class="header-search-close d-block d-xl-none"><i class="zmdi zmdi-close"></i></button>
+                                                <button class="header-search-close d-block d-xl-none" type="button" aria-label="Tutup carian"><i class="zmdi zmdi-close"></i></button>
                                             </div>
 
                                         </div>
@@ -103,7 +102,7 @@
 
                                     <!--Notification-->
                                     <li class="adomx-dropdown col-auto">
-                                        <a class="toggle" href="#"><i class="zmdi zmdi-notifications"></i><span id="badge"></span></a>
+                                        <a class="toggle" href="#" aria-label="Notifikasi"><i class="zmdi zmdi-notifications"></i><span id="badge"></span></a>
 
                                         <!-- Dropdown -->
                                         <div class="adomx-dropdown-menu dropdown-menu-notifications">
@@ -119,7 +118,7 @@
                                     
                                     <!--User-->
                                     <li class="adomx-dropdown col-auto">
-                                        <a class="toggle" id="">
+                                        <a class="toggle media-user-toggle" aria-label="Menu pengguna">
                                             <span class="user_nama"></span>
                                             <!-- <span class="user">
                                                 <span class="avatar">
@@ -138,9 +137,9 @@
                                             </div>
                                             <div class="body">
                                                 <ul class="hidden">
-                                                    <li class="hidden"><a id=""><i class="zmdi zmdi-account"></i>Profile</a></li>
-                                                    <li class="hidden"><a id=""><i class="zmdi zmdi-email-open"></i>Mesej</a></li>
-                                                    <li class="hidden"><a id=""><i class="zmdi zmdi-wallpaper"></i>Aktiviti</a></li>
+                                                    <li class="hidden"><a><i class="zmdi zmdi-account"></i>Profil</a></li>
+                                                    <li class="hidden"><a><i class="zmdi zmdi-email-open"></i>Mesej</a></li>
+                                                    <li class="hidden"><a><i class="zmdi zmdi-wallpaper"></i>Aktiviti</a></li>
                                                 </ul>
                                                 <ul>
                                                     <li><a id="editprofile"><i class="zmdi zmdi-account-circle"></i>Edit Profil</a></li>
@@ -170,56 +169,55 @@
             <div class="side-header-inner custom-scroll">        
                 <nav class="side-header-menu" id="side-header-menu">
                     <ul>
-                        <li style="margin-bottom: 10px;"><a id="home"><i style="font-size: large;" class="ti-home"></i> <span class="font-weight-bold" style="font-size: large;">Laman Utama</span></a></li>
-                        <li style="margin-bottom: 10px;" class="hidden" id="control_sysadmin"><a id="sysadmin"></a>
+                        <li><a id="home"><i class="ti-home"></i><span>Laman Utama</span></a></li>
+                        <li class="hidden" id="control_sysadmin"><a id="sysadmin"><i class="ti-settings"></i><span>Pentadbiran Sistem</span></a>
                             <ul class="side-header-sub-menu">
-                                <li class="hidden" id="control_pentadbir_sistem"><a id="pentadbir_sistem"></a>
+                                <li class="hidden" id="control_pentadbir_sistem"><a id="pentadbir_sistem"><span>Kawalan Sistem</span></a>
                                     <ul class="side-header-sub-menu">
-                                        <li class="hidden"><a id="ttpn_nama_menu"></a></li>
-                                        <li class="hidden" id="control_ttpn_sistem"><a id="ttpn_sistem"></a></li>
-                                        <li class="hidden"><a id="ttpn_kumpulan_pengguna"></a></li>
-                                        <li class="hidden"><a id="ttpn_capaian"></a></li>
-                                        <li class="hidden"><a id="ttpn_useradmin"></a></li>
-
-                                        <li class="hidden" id="control_senarai_pengguna"><a id="senarai_pengguna"></a></li>
-                                        <li class="hidden" id="control_ttpn_peranancapaian"><a id="ttpn_peranancapaian"></a></li>
-                                        <li class="hidden" id="control_log"><a id="log"></a></li>
+                                        <li class="hidden"><a id="ttpn_nama_menu"><span>Nama Menu</span></a></li>
+                                        <li class="hidden" id="control_ttpn_sistem"><a id="ttpn_sistem"><span>Tetapan Sistem</span></a></li>
+                                        <li class="hidden"><a id="ttpn_kumpulan_pengguna"><span>Kumpulan Pengguna</span></a></li>
+                                        <li class="hidden"><a id="ttpn_capaian"><span>Capaian Pengguna</span></a></li>
+                                        <li class="hidden"><a id="ttpn_useradmin"><span>Pentadbir</span></a></li>
+                                        <li class="hidden" id="control_senarai_pengguna"><a id="senarai_pengguna"><span>Senarai Pengguna</span></a></li>
+                                        <li class="hidden" id="control_ttpn_peranancapaian"><a id="ttpn_peranancapaian"><span>Peranan &amp; Capaian</span></a></li>
+                                        <li class="hidden" id="control_log"><a id="log"><span>Jejak Audit</span></a></li>
                                     </ul>
                                 </li>
-                                <li class=" hidden"><a id="master_induk"></a>
+                                <li class="hidden"><a id="master_induk"><span>Data Induk</span></a>
                                     <ul class="side-header-sub-menu">
-                                        <li class=""><a id="ttpn_agama"></a></li>
-                                        <li class=""><a id="ttpn_bangsa"></a></li>
-                                        <li class=""><a id="ttpn_etnik"></a></li>
-                                        <li class=""><a id="ttpn_gelaran"></a></li>
-                                        <li class=""><a id="ttpn_kampus"></a></li>
-                                        <li class=""><a id="ttpn_kluster"></a></li>
-                                        <li class=""><a id="ttpn_modul"></a></li>
-                                        <li class=""><a id="ttpn_negara"></a></li>
-                                        <li class=""><a id="ttpn_negeri"></a></li>
-                                        <li class=""><a id="ttpn_unit"></a></li>
-                                        <li class=""><a id="ttpn_warganegara"></a></li>
+                                        <li><a id="ttpn_agama"><span>Agama</span></a></li>
+                                        <li><a id="ttpn_bangsa"><span>Bangsa</span></a></li>
+                                        <li><a id="ttpn_etnik"><span>Etnik</span></a></li>
+                                        <li><a id="ttpn_gelaran"><span>Gelaran</span></a></li>
+                                        <li><a id="ttpn_kampus"><span>Kampus</span></a></li>
+                                        <li><a id="ttpn_kluster"><span>Kluster</span></a></li>
+                                        <li><a id="ttpn_modul"><span>Modul</span></a></li>
+                                        <li><a id="ttpn_negara"><span>Negara</span></a></li>
+                                        <li><a id="ttpn_negeri"><span>Negeri</span></a></li>
+                                        <li><a id="ttpn_unit"><span>Unit</span></a></li>
+                                        <li><a id="ttpn_warganegara"><span>Warganegara</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        <li style="margin-bottom: 10px;" class="hidden" id="control_media"><a id="media"></a>
+                        <li class="hidden" id="control_media"><a id="media"><i class="ti-gallery"></i><span>Pengurusan Media</span></a>
                             <ul class="side-header-sub-menu">
-                                <li class="hidden" id="control_tetapan_media"><a id="tetapan_media"></a>
+                                <li class="hidden" id="control_tetapan_media"><a id="tetapan_media"><span>Tetapan Media</span></a>
                                     <ul class="side-header-sub-menu">
-                                        <li class=""><a id="ttpn_med_format"></a></li>
-                                        <li class=""><a id="ttpn_med_kategori"></a></li>
-                                        <li class=""><a id="ttpn_med_status"></a></li>
-                                        <li class=""><a id="ttpn_med_tempoh"></a></li>
-                                        <li class=""><a id="ttpn_vip"></a></li>
+                                        <li><a id="ttpn_med_format"><span>Format Fail</span></a></li>
+                                        <li><a id="ttpn_med_kategori"><span>Kategori Media</span></a></li>
+                                        <li><a id="ttpn_med_status"><span>Status Permohonan</span></a></li>
+                                        <li><a id="ttpn_med_tempoh"><span>Tempoh Simpanan</span></a></li>
+                                        <li><a id="ttpn_vip"><span>Senarai VIP</span></a></li>
                                     </ul>
                                 </li>
-                                <li class="hidden" id="control_med_program"><a id="med_program"></a></li>
-                                <li class="hidden" id="control_med_permohonan"><a id="med_permohonan"></a></li>
-                                <li class="hidden" id="control_laporan_media"><a id="laporan_media"></a>
+                                <li class="hidden" id="control_med_program"><a id="med_program"><span>Program Media</span></a></li>
+                                <li class="hidden" id="control_med_permohonan"><a id="med_permohonan"><span>Permohonan Media</span></a></li>
+                                <li class="hidden" id="control_laporan_media"><a id="laporan_media"><span>Laporan Media</span></a>
                                     <ul class="side-header-sub-menu">
-                                        <li class=""><a id="med_laporan_program"></a></li>
-                                        <li class=""><a id="med_laporan_permohonan"></a></li>
+                                        <li><a id="med_laporan_program"><span>Laporan Program</span></a></li>
+                                        <li><a id="med_laporan_permohonan"><span>Laporan Permohonan</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -238,7 +236,17 @@
                 <!-- Page Heading Start -->
                 <div class="col-12 col-lg-auto mb-20">
                     <div class="page-heading">
-                        <h3 class="title">Laman Utama</span></h3>
+                        <div class="media-dashboard-hero">
+                            <div>
+                                <span class="media-eyebrow">Pusat Kandungan Digital</span>
+                                <h3 class="title">Selamat datang ke Galeri Media</h3>
+                                <p>Urus program, permohonan, foto dan video agensi dalam satu ruang yang tersusun.</p>
+                            </div>
+                            <div class="media-type-badges" aria-label="Jenis media">
+                                <span><i class="zmdi zmdi-collection-image"></i> Foto</span>
+                                <span><i class="zmdi zmdi-videocam"></i> Video</span>
+                            </div>
+                        </div>
                     </div>
                 </div><!-- Page Heading End -->
 
@@ -278,7 +286,7 @@
                         <!-- Head -->
                         <div class="head">
                             <h4>Bilangan Program</h4>
-                            <a href="#" class="view"><i class="zmdi zmdi-eye"></i></a>
+                            <button type="button" class="view" data-admin-target="med_program" aria-label="Lihat program"><i class="zmdi zmdi-eye"></i></button>
                         </div>
 
                         <!-- Content -->
@@ -309,69 +317,28 @@
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
-    <!-- <script src="../assets/js/vendor/popper.min.js"></script> -->
     <script src="assets/js/vendor/popper.min.462.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script> -->
     <script src="assets/js/vendor/bootstrap.min.462.js"></script>
-    <!-- <script src="../assets/js/vendor/bootstrap.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> -->
     <script src="action.min.js"></script>
     <!--Plugins JS-->
-    <script src="assets/sweet-alert/sweetalert2.js"></script>
     <script src="assets/sweet-alert/sweetalert2.min.js"></script>
-    <!-- <script src="assets/footable2/js/footable.js"></script>
-    <script src="assets/footable2/js/footable.min.js"></script> -->
     <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="assets/js/plugins/tippy4.min.js.js"></script>
 
     <!-- Plugins & Activation JS For Only This Page -->
     <script src="assets/js/plugins/moment/moment.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js" integrity="sha512-aVkYzM2YOmzQjeGEWEU35q7PkozW0vYwEXYi0Ko06oVC4NdNzALflDEyqMB5/wB4wH50DmizI1nLDxBE6swF3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="assets/js/plugins/footable/footable.min.js"></script>
-    <script src="assets/js/plugins/footable/footable.active.js"></script>
     <script src="assets/js/plugins/select2/select2.full.min.js"></script>
-    <script src="assets/js/plugins/select2/select2.active.js"></script>
-    <script src="assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
-    <script src="assets/js/plugins/nice-select/niceSelect.active.js"></script>
-    <!-- <script src="assets/js/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="assets/js/plugins/bootstrap-select/bootstrapSelect.active.js"></script> -->
-
-    <!-- Plugins & Activation JS For Only This Page -->
-
-    <!--Moment-->
-    <script src="assets/js/plugins/moment/moment.min.js"></script>
-
-    <!--Daterange Picker-->
-    <script src="assets/js/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="assets/js/plugins/daterangepicker/daterangepicker.active.js"></script>
-
-    <!--Echarts-->
     <script src="assets/js/plugins/chartjs/Chart.min.js"></script>
-
-    <!--VMap-->
-    <script src="assets/js/plugins/vmap/jquery.vmap.min.js"></script>
-    <script src="assets/js/plugins/vmap/maps/jquery.vmap.world.js"></script>
-    <script src="assets/js/plugins/vmap/maps/samples/jquery.vmap.sampledata.js"></script>
-    <script src="assets/js/plugins/vmap/vmap.active.js"></script>
-
-    <!-- Plugins & Activation JS For Only This Page -->
-    <script src="assets/js/plugins/filepond/filepond.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-file-validate-size.js"></script>
-    <script src="assets/js/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
-    <script src="assets/js/plugins/filepond/filepond.active.js"></script>
-    <script src="assets/js/plugins/dropify/dropify.min.js"></script>
-    <script src="assets/js/plugins/dropify/dropify.active.js"></script>
 
     <!-- UploadImg -->
     <script src="assets/js/vendor/fileup.min.js"></script>
     <!--Main JS-->
     <!-- <script src="livejs.js?am=1"></script> -->
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?am=2"></script>
+    <script src="assets/js/media-admin.js?am=2"></script>
     <script src="config.js?am=1"></script>
-    <script src="index.js?am=2"></script>
-    <script src="menu.js"></script>
+    <script src="index.js?am=3"></script>
     <div id="chart"></div>
 
 </body>

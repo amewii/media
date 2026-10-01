@@ -28,13 +28,13 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="dataPengguna">
-                    <div id="tablePengguna" class="table-responsive">
+                    <div class="table-responsive table-pengguna">
                         <textarea class="hidden" id="dataListPengguna"></textarea>
                         <table id="listPengguna" class="table"></table>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="dataPeranan">
-                    <div id="tablePengguna" class="table-responsive">
+                    <div class="table-responsive table-pengguna">
                         <textarea class="hidden" id="dataListPeranan"></textarea>
                         <table id="listPeranan" class="table"></table>
                     </div>
@@ -54,7 +54,7 @@
                     <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="nama_peranan">Nama Peranan</label>
                             <input type="text" class="form-control" id="nama_peranan">
@@ -63,7 +63,7 @@
                             <label for="FK_capaian">Submodul/Capaian</label>
                             <div class="adomx-checkbox-radio-group" id="FK_capaian"></div>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
@@ -84,7 +84,7 @@
                     <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="nama_peranan">Nama Peranan</label>
                             <input type="text" class="form-control hidden" id="upt_id">
@@ -94,7 +94,7 @@
                             <label for="FK_capaian">Submodul/Capaian</label>
                             <div class="adomx-checkbox-radio-group" id="upt_FK_capaian"></div>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>
@@ -284,11 +284,10 @@
                     <button type="button" class="close" data-dismiss="modal" onclick="resetForm();"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div class="row">
                         <div class="col-12 mb-20">
                             <label for="FK_users">Pegawai</label>
-                            <input list="FK_userss" id="upt_FK_users" class="form-control" readonly>
-                            <datalist id="FK_userss"></datalist>
+                            <input id="upt_FK_users" class="form-control" readonly>
                             <input type="text" id="upt_FK_user_capaian" class="hidden">
                             <input type="text" id="upt_id_capaian" class="hidden">
                         </div>
@@ -312,7 +311,7 @@
                             <label for="FK_peranan">Peranan</label>
                             <select class="form-control c-select" required id="upt_FK_peranan"></select>
                         </div>
-                    </p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="button button-primary" type="submit"><i class="ti-check"></i> Ya</button>

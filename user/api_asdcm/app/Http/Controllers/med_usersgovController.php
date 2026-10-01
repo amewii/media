@@ -40,7 +40,7 @@ class med_usersgovController extends Controller
         $negeri_pejabat = $request->input('negeri_pejabat');
         $statusrekod = $request->input('statusrekod');
 
-        $register = med_usersgov::create([
+        $govData = [
             'FK_users' => $FK_users,
             'emel_kerajaan' => $emel_kerajaan,
             'notel_kerajaan' => $notel_kerajaan,
@@ -67,36 +67,54 @@ class med_usersgovController extends Controller
             'negeri_pejabat' => $negeri_pejabat,
             'gred' => $gred,
             'statusrekod' => $statusrekod,
-        ]);
+        ];
+
+        $register = med_usersgov::where('FK_users', $FK_users)
+            ->orderBy('id_usersgov', 'asc')
+            ->first();
+        $isNew = !$register;
+
+        if ($isNew) {
+            $register = med_usersgov::create($govData);
+        } else {
+            med_usersgov::where('id_usersgov', $register->id_usersgov)->update($govData);
+            $register = med_usersgov::where('id_usersgov', $register->id_usersgov)->first();
+        }
+
         $med_users_search = med_users::where('id_users',$FK_users)->first();
         if ($register)  {
-            $tetapan_mail = med_tetapan::first();
+            if ($isNew) {
+                $tetapan_mail = med_tetapan::first();
 
-            Queue::push(new SendRegistrationEmail([
-                'env' => request()->getHost(),
-                'emel' => $emel_kerajaan,
-                'nama' => $med_users_search->nama,
-                'mail_gateway' => $tetapan_mail->mail_gateway,
-                'port' => $tetapan_mail->mail_port,
-                'link_sistem' => $tetapan_mail->link_sistem,
-                'body' => '<b>Pendaftaran Akaun Pengguna</b><br><br>
-                            Assalamualaikum dan salam sejahtera<br>
-                            '.$med_users_search->nama.'<br><br>
-                            Tahniah! Anda berjaya mendaftar akaun. <br>
-                            Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
-                            Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
-                            <a href="'.$tetapan_mail->link_sistem.'/user">Sistem Pengurusan Media INTAN Malaysia</a><br><br>
-                            Terima kasih.'
-            ]));
+                Queue::push(new SendRegistrationEmail([
+                    'env' => request()->getHost(),
+                    'emel' => $emel_kerajaan,
+                    'nama' => $med_users_search->nama,
+                    'mail_gateway' => $tetapan_mail->mail_gateway,
+                    'port' => $tetapan_mail->mail_port,
+                    'link_sistem' => $tetapan_mail->link_sistem,
+                    'body' => '<b>Pendaftaran Akaun Pengguna</b><br><br>
+                                Assalamualaikum dan salam sejahtera<br>
+                                '.$med_users_search->nama.'<br><br>
+                                Tahniah! Anda berjaya mendaftar akaun. <br>
+                                Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
+                                Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
+                                <a href="'.$tetapan_mail->link_sistem.'/user">Sistem Pengurusan Media INTAN Malaysia</a><br><br>
+                                Terima kasih.'
+                ]));
+            }
 
             return response()->json([
-                'success'=>'true',
-                'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                'data'=>''
+                'success'=>true,
+                'message'=>$isNew
+                    ? 'Maklumat perkhidmatan berjaya didaftarkan.'
+                    : 'Maklumat perkhidmatan sedia ada berjaya dikemas kini.',
+                'data'=>$register,
+                'created'=>$isNew,
             ], 200);
         } else {
             return response()->json([
-                'success'=>'false',
+                'success'=>false,
                 'message'=>'Bad Request',
                 'data'=>$register
             ],400);

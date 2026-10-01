@@ -62,7 +62,7 @@ $("#register").on("submit", function (e) {
       // console.log(response);
       result = JSON.parse(response);
       if (!result.success) {
-        Swal(result.message, result.data, "error");
+        swal(result.message, result.data, "error");
         return;
       }
       swal({

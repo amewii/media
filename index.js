@@ -19,14 +19,13 @@ $(function () {
   if (window.sessionStorage.content == null) {
     statBilProgram();
     $("#chart").html(
-      '<script src="assets/js/plugins/chartjs/chartjs.active.js"></script>'
+      '<script src="assets/js/plugins/chartjs/chartjs.active.js?am=2"></script>'
     );
   }
   settingCapaian();
-  $('#user_nama').innerHTML = nama_master;
-  var str = nama_master;
-  var matches = str.match(/\b(\w)/g); // ['J','S','O','N']
-  var acronym = matches.join(""); // JSON
+  var str = nama_master || "Pentadbir Media";
+  var matches = str.match(/\b(\w)/g) || ["P", "M"];
+  var acronym = matches.join("").slice(0, 3);
   $("#nama_pendek").text(acronym);
   $(".user_nama").text(nama_master);
   $("#user_nama").text(nama_master);
@@ -178,7 +177,24 @@ $(document).ready(function () {
   let content = window.sessionStorage.content;
   let token = window.sessionStorage.token;
   if (content != null && token != null) {
-    $("#content").load(content + ".html");
+    const legacyRoutes = {
+      med_program: "html/med_program",
+      med_permohonan: "html/med_permohonan",
+      detail_med_program: "html/detail_med_program",
+    };
+    content = legacyRoutes[content] || content;
+    window.sessionStorage.content = content;
+    $("#content").load(content + ".html", function (_response, status) {
+      if (status !== "error") return;
+      $("#content").html(
+        '<div class="box"><div class="box-body text-center py-5">' +
+          '<i class="zmdi zmdi-alert-circle-o mb-3" style="font-size:42px;color:#c96067"></i>' +
+          '<h4>Halaman tidak dapat dimuatkan</h4>' +
+          '<p>Sila kembali ke Laman Utama atau cuba semula.</p>' +
+          '<button class="button button-primary" type="button" onclick="sessionStorage.removeItem(\'content\');location.reload();">Laman Utama</button>' +
+        "</div></div>"
+      );
+    });
   } else if (token == null) {
     window.location.replace("login/");
   }
@@ -256,12 +272,28 @@ var settings = {
 };
 $.ajax(settings).done(function (response) {
   $.each(response.data, function (i, item) {
-    document.getElementById(item.idmenu).innerHTML =
-      '<i style="font-size: large;" class="' +
-      item.icon +
-      '"></i> <span style="font-size: medium;"><p style="white-space: pre-line">' +
-      item.menu +
-      "</p></span>";
+    const menuElement = document.getElementById(item.idmenu);
+    if (!menuElement) return;
+
+    const icon = document.createElement("i");
+    icon.className = item.icon || "ti-angle-right";
+    const label = document.createElement("span");
+    label.textContent = item.menu || menuElement.textContent;
+    menuElement.replaceChildren(icon, label);
+
+    if (
+      menuElement.nextElementSibling &&
+      menuElement.nextElementSibling.classList.contains("side-header-sub-menu")
+    ) {
+      const expand = document.createElement("span");
+      expand.className = "menu-expand";
+      const chevron = document.createElement("i");
+      chevron.className = menuElement.parentElement.classList.contains("active")
+        ? "zmdi zmdi-chevron-up"
+        : "zmdi zmdi-chevron-down";
+      expand.appendChild(chevron);
+      menuElement.appendChild(expand);
+    }
   });
 });
 
@@ -410,16 +442,6 @@ $("#log").click(function () {
   $("#content").load("html/log.html");
 });
 
-$("#ttpn_usersubmodul").click(function () {
-  window.sessionStorage.content = "html/ttpn_usersubmodul";
-  saveLog(
-    id_users_master,
-    "View Tetapan Capaian.",
-    window.sessionStorage.browser
-  );
-  $("#content").load("html/ttpn_usersubmodul.html");
-});
-
 $("#ttpn_capaian").click(function () {
   window.sessionStorage.content = "html/ttpn_capaian";
   saveLog(
@@ -547,7 +569,7 @@ $("#ubahkatalaluan").click(function () {
     "Ubah Katalaluan.",
     window.sessionStorage.browser
   );
-  $("#content").load("html/ubahkatalaluan/ubahkatalaluan.html");
+  $("#content").load("html/ubahkatalaluan.html");
 });
 
 $("#med_laporan_program").click(function () {

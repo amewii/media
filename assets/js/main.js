@@ -83,11 +83,16 @@ $sideHeaderClose.on('click', function(){
 var $sideHeaderNav = $('.side-header-menu'),
     $sideHeaderSubMenu = $sideHeaderNav.find('.side-header-sub-menu');
 
-/*Add Toggle Button in Off Canvas Sub Menu*/
-$sideHeaderSubMenu.siblings('a').append('<span class="menu-expand"><i class="zmdi zmdi-chevron-down"></i></span>');
+/*Mark every menu that owns a submenu so the whole parent row can toggle it.*/
+$sideHeaderSubMenu.parent('li').addClass('has-sub-menu');
 
-/*Close Off Canvas Sub Menu*/
-$sideHeaderSubMenu.slideDown();
+/*Add Toggle Button in Off Canvas Sub Menu*/
+$sideHeaderSubMenu.siblings('a')
+    .attr({'role': 'button', 'aria-expanded': 'false'})
+    .append('<span class="menu-expand"><i class="zmdi zmdi-chevron-down"></i></span>');
+
+/*Start with a compact menu. The active branch is restored by media-admin.js.*/
+$sideHeaderSubMenu.hide();
 
 /*Category Sub Menu Toggle*/
 $sideHeaderNav.on('click', 'li a, li .menu-expand', function(e) {
@@ -95,11 +100,11 @@ $sideHeaderNav.on('click', 'li a, li .menu-expand', function(e) {
     if ( $this.parent('li').hasClass('has-sub-menu') || ($this.attr('href') === '#' || $this.hasClass('menu-expand')) ) {
         e.preventDefault();
         if ($this.siblings('ul:visible').length){
-            $this.parent('li').removeClass('active').children('ul').slideUp().siblings('a').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
-            $this.parent('li').siblings('li').removeClass('active').find('ul:visible').slideUp().siblings('a').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
+            $this.parent('li').removeClass('active').children('ul').slideUp().siblings('a').attr('aria-expanded', 'false').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
+            $this.parent('li').siblings('li').removeClass('active').find('ul:visible').slideUp().siblings('a').attr('aria-expanded', 'false').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
         } else {
-            $this.parent('li').addClass('active').children('ul').slideDown().siblings('a').find('.menu-expand i').removeClass('zmdi-chevron-down').addClass('zmdi-chevron-up');
-            $this.parent('li').siblings('li').removeClass('active').find('ul:visible').slideUp().siblings('a').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
+            $this.parent('li').addClass('active').children('ul').slideDown().siblings('a').attr('aria-expanded', 'true').find('.menu-expand i').removeClass('zmdi-chevron-down').addClass('zmdi-chevron-up');
+            $this.parent('li').siblings('li').removeClass('active').find('ul:visible').slideUp().siblings('a').attr('aria-expanded', 'false').find('.menu-expand i').removeClass('zmdi-chevron-up').addClass('zmdi-chevron-down');
         }
     }
 });
@@ -245,4 +250,3 @@ $('.custom-scroll').each( function() {
 });
     
 })(jQuery);
-

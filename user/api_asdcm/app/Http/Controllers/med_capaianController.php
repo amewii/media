@@ -21,9 +21,12 @@ class med_capaianController extends Controller
         $updated_by = $request->input('updated_by');
         $statusrekod = "1";
 
-        $checkexist = med_capaian::where('med_capaian.FK_users',$FK_users) -> 
-                                        first(); // list all data
-        if (!$checkexist)   {
+        $checkexist = med_capaian::where('med_capaian.FK_users',$FK_users)
+            ->orderBy('id_capaian', 'asc')
+            ->first();
+        $isNew = !$checkexist;
+
+        if ($isNew)   {
             $register = med_capaian::create([
                 'FK_kampus' => $FK_kampus,
                 'FK_kluster' => $FK_kluster,
@@ -36,24 +39,30 @@ class med_capaianController extends Controller
                 'statusrekod' => $statusrekod
             ]);
         } else  {
-            return response()->json([
-                'success'=>'false',
-                'message'=>'Data Exist',
-                'data'=>$checkexist
-            ],201);
-        }        
+            med_capaian::where('id_capaian', $checkexist->id_capaian)->update([
+                'FK_kampus' => $FK_kampus,
+                'FK_kluster' => $FK_kluster,
+                'FK_subkluster' => $FK_subkluster,
+                'FK_unit' => $FK_unit,
+                'FK_peranan' => $FK_peranan,
+                'updated_by' => $updated_by,
+                'statusrekod' => $statusrekod
+            ]);
+            $register = med_capaian::where('id_capaian', $checkexist->id_capaian)->first();
+        }
 
         if ($register)  {
             return response()->json([
-                'success'=>'true',
-                'message'=>'Pendaftaran Rekod Berjaya!',
-                'data'=>$register
+                'success'=>true,
+                'message'=>$isNew ? 'Pendaftaran Rekod Berjaya!' : 'Rekod capaian berjaya dikemas kini.',
+                'data'=>$register,
+                'created'=>$isNew,
             ],201);
         }
 
         else    {
             return response()->json([
-                'success'=>'false',
+                'success'=>false,
                 'message'=>'Register Failed',
                 'data'=>$register
             ],406);

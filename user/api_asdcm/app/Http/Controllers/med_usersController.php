@@ -55,38 +55,55 @@ class med_usersController extends Controller
         $FK_gelaran = $request->input('FK_gelaran');
 
 
-        $register = med_users::create([
+        $register = med_users::where('no_kad_pengenalan', $no_kad_pengenalan)
+            ->orderBy('id_users', 'asc')
+            ->first();
+        $isNew = !$register;
+
+        $userData = [
             'nama' => $nama,
             'emel' => $emel,
             'no_kad_pengenalan' => $no_kad_pengenalan,
-            'katalaluan' => $enc_katalaluan,
             'notel' => $notel,
             'FK_jenis_pengguna' => $FK_jenis_pengguna,
             'FK_gelaran' => $FK_gelaran,
-        ]);
+        ];
+
+        if ($isNew) {
+            $userData['katalaluan'] = $enc_katalaluan;
+            $register = med_users::create($userData);
+        } else {
+            med_users::where('id_users', $register->id_users)->update($userData);
+            $register = med_users::where('id_users', $register->id_users)->first();
+        }
 
         if ($register) {
-            $tetapan_mail = med_tetapan::first();
+            if ($isNew) {
+                $tetapan_mail = med_tetapan::first();
 
-            Queue::push(new SendRegistrationEmail([
-                'env' => request()->getHost(),
-                'no_kad_pengenalan' => $no_kad_pengenalan,
-                'kata_laluan' => $katalaluan,
-                'emel' => $emel,
-                'nama' => $nama,
-                'mail_gateway' => $tetapan_mail->mail_gateway,
-                'port' => $tetapan_mail->mail_port,
-                'link_sistem' => $tetapan_mail->link_sistem,
-            ]));
+                Queue::push(new SendRegistrationEmail([
+                    'env' => request()->getHost(),
+                    'no_kad_pengenalan' => $no_kad_pengenalan,
+                    'kata_laluan' => $katalaluan,
+                    'emel' => $emel,
+                    'nama' => $nama,
+                    'mail_gateway' => $tetapan_mail->mail_gateway,
+                    'port' => $tetapan_mail->mail_port,
+                    'link_sistem' => $tetapan_mail->link_sistem,
+                ]));
+            }
 
             return response()->json([
-                'success'=>'true',
-                'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                'data'=>''
+                'success'=>true,
+                'message'=>$isNew
+                    ? 'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.'
+                    : 'Maklumat pengguna sedia ada berjaya dikemas kini.',
+                'data'=>$register,
+                'created'=>$isNew,
             ], 200);
         } else    {
             return response()->json([
-                'success'=>'false',
+                'success'=>false,
                 'message'=>'Bad Request',
                 'data'=>$register
             ], 400);
@@ -157,10 +174,11 @@ class med_usersController extends Controller
     public function show(Request $request)  {
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
 
-        $med_users = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
-                                leftjoin('med_usersswasta', 'med_usersswasta.FK_users', '=', 'med_users.id_users') -> 
-                                leftjoin('med_userspelajar', 'med_userspelajar.FK_users', '=', 'med_users.id_users') -> 
-                                where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        $med_users = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') ->
+                                leftjoin('med_usersswasta', 'med_usersswasta.FK_users', '=', 'med_users.id_users') ->
+                                leftjoin('med_userspelajar', 'med_userspelajar.FK_users', '=', 'med_users.id_users') ->
+                                where('no_kad_pengenalan',$no_kad_pengenalan) ->
+                                orderBy('med_users.id_users', 'asc') -> first();
 
         if ($med_users)   {
             return response()->json([

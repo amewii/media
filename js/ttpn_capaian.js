@@ -103,7 +103,7 @@ $("#register").on("submit", function (e) {
       $.ajax(settings).done(function (response) {
         result = JSON.parse(response);
         if (!result.success) {
-          Swal(result.message, result.data, "error");
+          swal(result.message, result.data, "error");
           return;
         }
         sessionStorage.token = result.token;
@@ -157,7 +157,7 @@ $("#update").on("submit", function (e) {
       $.ajax(settings).done(function (response) {
         result = JSON.parse(response);
         if (!result.success) {
-          Swal(result.message, result.data, "error");
+          swal(result.message, result.data, "error");
           return;
         }
 
@@ -208,7 +208,7 @@ function del_rekod(i) {
     $.ajax(settings).done(function (response) {
       result = JSON.parse(response);
       if (!result.success) {
-        Swal(result.message, result.data, "error");
+        swal(result.message, result.data, "error");
         return;
       }
 

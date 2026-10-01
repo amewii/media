@@ -1,5 +1,48 @@
 window.sessionStorage.med_permohonan_id = 0;
 
+function programText(value) {
+  return value == null ? "" : String(value);
+}
+
+function titleCaseProgramSegment(value) {
+  return programText(value)
+    .toLocaleLowerCase("ms-MY")
+    .replace(/(^|[\s'/-])([a-z])/g, function (_match, separator, letter) {
+      return separator + letter.toUpperCase();
+    });
+}
+
+function formatProgramDisplayName(value) {
+  var source = programText(value).trim();
+  var result = "";
+  var outside = "";
+  var bracketDepth = 0;
+
+  for (var i = 0; i < source.length; i++) {
+    var character = source.charAt(i);
+
+    if (character === "(") {
+      if (bracketDepth === 0) {
+        result += titleCaseProgramSegment(outside);
+        outside = "";
+      }
+      bracketDepth++;
+      result += character;
+    } else if (bracketDepth > 0) {
+      result += character;
+      if (character === ")") bracketDepth--;
+    } else {
+      outside += character;
+    }
+  }
+
+  return result + titleCaseProgramSegment(outside);
+}
+
+function escapeProgramDisplay(value) {
+  return $("<div>").text(programText(value)).html();
+}
+
 $(function () {
   $.ajaxSetup({
     cache: false,
@@ -53,9 +96,10 @@ function tableProgram() {
   
   
   colums.push({
-    name: "upt_btn", 
+    name: "upt_btn",
     title: "Tindakan",
-    breakpoints: "md sm xs"
+    breakpoints: "md sm xs",
+    classes: "text-center"
   });
 
   var settings = {};
@@ -71,8 +115,13 @@ function tableProgram() {
     let bil = 1;
 
     $.each(obj.data, function (i, field) {
-      t_program = new Date(field.tarikh_program);
-      var checked;
+      var t_program = new Date(field.tarikh_program);
+      var displayProgramName = escapeProgramDisplay(
+        formatProgramDisplayName(field.nama_program)
+      );
+      var checked = "";
+      var badge;
+      var text_statusrekod;
       if (field.programstatusrekod == "1") {
         checked = "checked";
         badge = "badge-success";
@@ -89,7 +138,7 @@ function tableProgram() {
         list.push({
           id: field.id_program,
           butiran_program:
-            field.nama_program +
+            displayProgramName +
             "</br>" +
             t_program.getDate() +
             "/" +
@@ -110,7 +159,7 @@ function tableProgram() {
             field.id_program +
             "','" +
             i +
-            '\')" id="btnPerincian"><i class="ti-menu"></i></button>' +
+            '\')" aria-label="Lihat perincian program"><i class="ti-arrow-right"></i></button>' +
             ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
             field.id_program +
             '\')"><i class="ti-trash"></i>',
@@ -123,7 +172,7 @@ function tableProgram() {
             (t_program.getMonth() + 1) +
             "/" +
             t_program.getFullYear(),
-          nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
+          nama_program: `<p style="white-space: pre-line;">`+displayProgramName + `</p>`,
           saiz_fail: field.saiz_fail,
           bil: bil++,
           nama_kampus: `<p style="white-space: pre-line;">`+field.nama_kampus + `</p>`,
@@ -148,14 +197,14 @@ function tableProgram() {
             field.id_program +
             "','" +
             i +
-            '\')" id="btnPerinncian"><i class="ti-menu"></i></button>',
+            '\')" aria-label="Lihat perincian program"><i class="ti-arrow-right"></i></button>',
           nama_pegawai: field.created_by_users.nama
         });
       } else {
         list.push({
           id: field.id_program,
           butiran_program:
-            field.nama_program +
+            displayProgramName +
             "</br>" +
             t_program.getDate() +
             "/" +
@@ -176,7 +225,7 @@ function tableProgram() {
             field.id_program +
             "','" +
             i +
-            '\')" id="btnPerincian"><i class="ti-menu"></i></button>' +
+            '\')" aria-label="Lihat perincian program"><i class="ti-arrow-right"></i></button>' +
             ' <button class="button button-box button-sm button-danger" title="Hapus" onclick="del_rekod(\'' +
             field.id_program +
             '\')"><i class="ti-trash"></i>',
@@ -189,7 +238,7 @@ function tableProgram() {
             (t_program.getMonth() + 1) +
             "/" +
             t_program.getFullYear(),
-          nama_program: `<p style="white-space: pre-line;">`+field.nama_program + `</p>`,
+          nama_program: `<p style="white-space: pre-line;">`+displayProgramName + `</p>`,
           saiz_fail: field.saiz_fail,
           bil: bil++,
           status_publish: status_publish,
@@ -202,7 +251,7 @@ function tableProgram() {
             text_statusrekod +
             "</span></label>",
           upt_btn:
-            ` <button class="button button-box button-sm button-info" title="Terperinci" onclick="detail('`+field.id_program+`','`+i+`')" id="btnPerincian"><i class="ti-arrow-right" style="font-weight: 900;"></i></button>`,
+            ` <button class="button button-box button-sm button-info" title="Terperinci" aria-label="Lihat perincian program" onclick="detail('`+field.id_program+`','`+i+`')"><i class="ti-arrow-right"></i></button>`,
           nama_pegawai: field.created_by_users.nama
         });
       }
