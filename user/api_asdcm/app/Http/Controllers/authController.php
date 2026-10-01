@@ -36,13 +36,13 @@ class authController extends Controller
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
             'nama'                 => 'required|string|max:255|not_regex:/<[^>]*script/',
-            'no_kad_pengenalan'    => 'required|string|max:20',
+            'no_kad_pengenalan'    => 'required|string|max:20|unique:med_users,no_kad_pengenalan',
             'emel'                 => 'required|email|max:255',
             'notel'                => 'nullable|string|max:20|not_regex:/<[^>]*script/',
             'FK_jenis_pengguna'    => 'required|integer',
             'FK_gelaran'           => 'nullable|integer',
-            'nama_majikan' => 'required|string|max:255|not_regex:/<[^>]*script/',
-            'jawatan' => 'required|string|max:255|not_regex:/<[^>]*script/',
+            'nama_majikan' => 'required_if:FK_jenis_pengguna,2|nullable|string|max:255|not_regex:/<[^>]*script/',
+            'jawatan' => 'required_if:FK_jenis_pengguna,2|nullable|string|max:255|not_regex:/<[^>]*script/',
             'katalaluan' => [
                 'required',
                 'string',

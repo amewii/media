@@ -42,7 +42,7 @@ $("#checkusers").on("submit", function (e) {
     let no_kad_pengenalan = $("#no_kad_pengenalan_semak").val();
     check_users(no_kad_pengenalan, function () {
       if (obj_users.success) {
-        result = JSON.parse(response);
+        result = obj_users;
         // console.log(result);
         if (!result.success) {
           swal({
@@ -205,32 +205,13 @@ function check_users(noic, returnValue) {
   });
 }
 
-function check_usersIntan(noic, returnValue) {
-  $.ajax({
-    //        "url": "http://localhost/user/register/"+noic+".json",
-    url: "https://admin.dtims.intan.my/api/ezxs/check/" + noic,
-    method: "GET",
-    timeout: 0,
-
-    success: function (response) {
-      obj_usersIntan = response.posts;
-      returnValue();
-    },
-    error: function () {
-      obj_usersIntan = false;
-      returnValue();
-    },
-  });
-}
-
 function check_hrmis(noic, returnValue) {
   $.ajax({
-    url: " https://admin.dtims.intan.my/api/hrmis/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
+    url: "https://admin.dtims.intan.my/api/hrmis/check/" + noic,
     method: "GET",
     timeout: 0,
     success: function (response) {
-      obj_hrmis = JSON.parse(response);
+      obj_hrmis = typeof response === "string" ? JSON.parse(response) : response;
       returnValue();
     },
     error: function () {

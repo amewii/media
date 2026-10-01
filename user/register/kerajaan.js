@@ -1,3 +1,25 @@
+function isIntanHrmis(hrmis) {
+  var bahagian =
+    hrmis && hrmis.perkhidmatan ? hrmis.perkhidmatan.Bahagian || "" : "";
+  var unitIntan = [
+    "INTIM",
+    "INTURA",
+    "IKWAS",
+    "INTAN SABAH",
+    "INTAN SARAWAK",
+    "INSTITUT TADBIRAN AWAM NEGARA (INTAN)",
+  ];
+  var bahagianPegawai = String(bahagian)
+    .split(",")
+    .map(function (item) {
+      return item.trim().toUpperCase();
+    });
+
+  return unitIntan.some(function (unit) {
+    return bahagianPegawai.indexOf(unit) !== -1;
+  });
+}
+
 $(function () {
   $.ajaxSetup({
     cache: false,
@@ -270,14 +292,10 @@ $(function () {
           }
         );
       });
-      check_usersIntan(noic, function () {
-        if (obj_usersIntan == "") {
-          $("#users_intan").val(0).attr("style", "pointer-events: none;");
-        } else {
-          $("#users_intan").val(1).attr("style", "pointer-events: none;");
-        }
-        $("#loading_modal").modal("hide");
-      });
+      $("#users_intan")
+        .val(isIntanHrmis(obj_hrmis) ? 1 : 0)
+        .attr("style", "pointer-events: none;");
+      $("#loading_modal").modal("hide");
     }
   });
 });
@@ -315,7 +333,7 @@ $("#registergov").on("submit", function (e) {
     form.append("katalaluan", katalaluan);
     // formData.append("token",window.sessionStorage.token);
     var settingsregusers = {
-      url: host + "addUsers",
+      url: host + "registerSiteAwam",
       method: "POST",
       timeout: 0,
       processData: false,
@@ -324,101 +342,146 @@ $("#registergov").on("submit", function (e) {
       data: form,
     };
 
-    $.ajax(settingsregusers).done(function (response) {
-      result = JSON.parse(response);
-      if (!result.success) {
-        Swal(result.message, result.data, "error");
-        return;
-      }
+    $.ajax(settingsregusers)
+      .fail(function (xhr) {
+        $("#loading_modal").modal("hide");
+        $("#daftar").prop("disabled", false);
 
-      var settingsfetchusers = {
-        url: host + "users",
-        method: "POST",
-        timeout: 0,
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
+        if (xhr.status == 422) {
+          var validation = JSON.parse(xhr.responseText);
+          var content = '<ul class="text-danger">';
+          $.each(validation.errors, function (_key, messages) {
+            $.each(messages, function (_index, message) {
+              content += '<li style="list-style: disc !important;">' + message + "</li>";
+            });
+          });
+          content += "</ul>";
+          $("#validation_modal").find(".modal-body").html(content);
+          $("#validation_modal").modal("show");
+        } else {
+          Swal("Daftar Pengguna", "Pendaftaran gagal. Sila cuba semula.", "error");
+        }
+      })
+      .done(function (response) {
+        result = typeof response === "string" ? JSON.parse(response) : response;
+        if (!result.success) {
+          $("#loading_modal").modal("hide");
+          $("#daftar").prop("disabled", false);
+          Swal(result.message, result.data, "error");
+          return;
+        }
 
-      $.ajax(settingsfetchusers).done(function (response) {
-        // console.log(response);
-        result = JSON.parse(response);
-        let FK_users = result.data.id_users;
-        let emel_kerajaan = $("#emel_kerajaan").val();
-        let notel_kerajaan = $("#notel_kerajaan").val();
-        let nama_jawatan = $("#nama_jawatan").val();
-        let kategori_perkhidmatan = $("#kategori_perkhidmatan").val();
-        let skim = $("#skim").val();
-        let gred = $("#gred").val();
-        let users_intan = $("#users_intan").val();
-        let FK_kampus = $("#FK_kampus").val();
-        let FK_kluster = $("#FK_kluster").val();
-        let FK_subkluster = $("#FK_subkluster").val();
-        let FK_unit = $("#FK_unit").val();
-        let FK_kementerian = $("#FK_kementerian").val();
-        let FK_agensi = $("#FK_agensi").val();
-        let FK_bahagian = $("#FK_bahagian").val();
-        let FK_ila = $("#FK_ila").val();
-        let bahagian = $("#bahagian").val();
-        let alamat1_pejabat = $("#alamat1_pejabat").val();
-        let alamat2_pejabat = $("#alamat2_pejabat").val();
-        let poskod_pejabat = $("#poskod_pejabat").val();
-        let daerah_pejabat = $("#daerah_pejabat").val();
-        let negeri_pejabat = $("#negeri_pejabat").val();
-
-        var formgov = new FormData();
-        formgov.append("FK_users", FK_users);
-        formgov.append("emel_kerajaan", emel_kerajaan);
-        formgov.append("notel_kerajaan", notel_kerajaan);
-        formgov.append("nama_jawatan", nama_jawatan);
-        formgov.append("kategori_perkhidmatan", kategori_perkhidmatan);
-        formgov.append("skim", skim);
-        formgov.append("gred", gred);
-        formgov.append("users_intan", users_intan);
-        formgov.append("FK_kampus", FK_kampus);
-        formgov.append("FK_kluster", FK_kluster);
-        formgov.append("FK_subkluster", FK_subkluster);
-        formgov.append("FK_unit", FK_unit);
-        formgov.append("FK_kementerian", FK_kementerian);
-        formgov.append("FK_agensi", FK_agensi);
-        formgov.append("FK_bahagian", FK_bahagian);
-        formgov.append("FK_ila", FK_ila);
-        formgov.append("bahagian", bahagian);
-        formgov.append("alamat1_pejabat", alamat1_pejabat);
-        formgov.append("alamat2_pejabat", alamat2_pejabat);
-        formgov.append("poskod_pejabat", poskod_pejabat);
-        formgov.append("daerah_pejabat", daerah_pejabat);
-        formgov.append("negeri_pejabat", negeri_pejabat);
-        formgov.append("statusrekod", "1");
-
-        var settingsregusersgovs = {
-          url: host + "addUsersgovs",
+        var settingsfetchusers = {
+          url: host + "checkUsers",
           method: "POST",
           timeout: 0,
           processData: false,
           mimeType: "multipart/form-data",
           contentType: false,
-          data: formgov,
+          data: form,
         };
 
-        $.ajax(settingsregusersgovs).done(function (response) {
-          // console.log(response);
-          result = JSON.parse(response);
-          $("#loading_modal").modal("hide");
-          swal({
-            title: "Daftar Pengguna",
-            text: "Pendaftaran berjaya! Sila log masuk ke dalam sistem.",
-            confirmButtonText: "OK",
-            closeOnConfirm: true,
-            allowOutsideClick: false,
-            html: false,
-          }).then(function () {
-            window.location.replace("../login");
+        $.ajax(settingsfetchusers)
+          .fail(function () {
+            $("#loading_modal").modal("hide");
+            $("#daftar").prop("disabled", false);
+            Swal("Daftar Pengguna", "Maklumat pengguna tidak dapat disemak.", "error");
+          })
+          .done(function (response) {
+            result = typeof response === "string" ? JSON.parse(response) : response;
+            if (!result.success || !result.data) {
+              $("#loading_modal").modal("hide");
+              $("#daftar").prop("disabled", false);
+              Swal("Daftar Pengguna", "Maklumat pengguna tidak ditemui selepas pendaftaran.", "error");
+              return;
+            }
+
+            let FK_users = result.data.id_users;
+            let emel_kerajaan = $("#emel_kerajaan").val();
+            let notel_kerajaan = $("#notel_kerajaan").val();
+            let nama_jawatan = $("#nama_jawatan").val();
+            let kategori_perkhidmatan = $("#kategori_perkhidmatan").val();
+            let skim = $("#skim").val();
+            let gred = $("#gred").val();
+            let users_intan = $("#users_intan").val();
+            let FK_kampus = $("#FK_kampus").val();
+            let FK_kluster = $("#FK_kluster").val();
+            let FK_subkluster = $("#FK_subkluster").val();
+            let FK_unit = $("#FK_unit").val();
+            let FK_kementerian = $("#FK_kementerian").val();
+            let FK_agensi = $("#FK_agensi").val();
+            let FK_bahagian = $("#FK_bahagian").val();
+            let FK_ila = $("#FK_ila").val();
+            let bahagian = $("#bahagian").val();
+            let alamat1_pejabat = $("#alamat1_pejabat").val();
+            let alamat2_pejabat = $("#alamat2_pejabat").val();
+            let poskod_pejabat = $("#poskod_pejabat").val();
+            let daerah_pejabat = $("#daerah_pejabat").val();
+            let negeri_pejabat = $("#negeri_pejabat").val();
+
+            var formgov = new FormData();
+            formgov.append("FK_users", FK_users);
+            formgov.append("emel_kerajaan", emel_kerajaan);
+            formgov.append("notel_kerajaan", notel_kerajaan);
+            formgov.append("nama_jawatan", nama_jawatan);
+            formgov.append("kategori_perkhidmatan", kategori_perkhidmatan);
+            formgov.append("skim", skim);
+            formgov.append("gred", gred);
+            formgov.append("users_intan", users_intan);
+            formgov.append("FK_kampus", FK_kampus);
+            formgov.append("FK_kluster", FK_kluster);
+            formgov.append("FK_subkluster", FK_subkluster);
+            formgov.append("FK_unit", FK_unit);
+            formgov.append("FK_kementerian", FK_kementerian);
+            formgov.append("FK_agensi", FK_agensi);
+            formgov.append("FK_bahagian", FK_bahagian);
+            formgov.append("FK_ila", FK_ila);
+            formgov.append("bahagian", bahagian);
+            formgov.append("alamat1_pejabat", alamat1_pejabat);
+            formgov.append("alamat2_pejabat", alamat2_pejabat);
+            formgov.append("poskod_pejabat", poskod_pejabat);
+            formgov.append("daerah_pejabat", daerah_pejabat);
+            formgov.append("negeri_pejabat", negeri_pejabat);
+            formgov.append("statusrekod", "1");
+
+            var settingsregusersgovs = {
+              url: host + "addUsersgovs",
+              method: "POST",
+              timeout: 0,
+              processData: false,
+              mimeType: "multipart/form-data",
+              contentType: false,
+              data: formgov,
+            };
+
+            $.ajax(settingsregusersgovs)
+              .fail(function () {
+                $("#loading_modal").modal("hide");
+                $("#daftar").prop("disabled", false);
+                Swal("Daftar Pengguna", "Maklumat perkhidmatan gagal disimpan.", "error");
+              })
+              .done(function (response) {
+                result = typeof response === "string" ? JSON.parse(response) : response;
+                if (!result.success) {
+                  $("#loading_modal").modal("hide");
+                  $("#daftar").prop("disabled", false);
+                  Swal(result.message, result.data, "error");
+                  return;
+                }
+                $("#loading_modal").modal("hide");
+                swal({
+                  title: "Daftar Pengguna",
+                  text: "Pendaftaran berjaya! Sila log masuk ke dalam sistem.",
+                  confirmButtonText: "OK",
+                  closeOnConfirm: true,
+                  allowOutsideClick: false,
+                  html: false,
+                }).then(function () {
+                  window.location.replace("../login");
+                });
+              });
           });
-        });
       });
-    });
   }
 });
 
@@ -874,31 +937,21 @@ function check_users(noic, returnValue) {
 function check_hrmis(noic, returnValue) {
   var settings = {
     url: "https://admin.dtims.intan.my/api/hrmis/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
     method: "GET",
     timeout: 0,
   };
-  $.ajax(settings).done(function (response) {
-    obj_hrmis = JSON.parse(response);
-
-    returnValue();
-  });
+  $.ajax(settings)
+    .done(function (response) {
+      obj_hrmis = typeof response === "string" ? JSON.parse(response) : response;
+      returnValue();
+    })
+    .fail(function () {
+      obj_hrmis = 2;
+      returnValue();
+    });
 }
 
-function check_usersIntan(noic, returnValue) {
-  var settings = {
-    url: "https://admin.dtims.intan.my/api/ezxs/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_usersIntan = response.posts;
-    returnValue();
-  });
-}
-
-function ezxsKampus(id_kampus) {
+function loadRegisterKampus(id_kampus) {
   //Dropdown Kluster List
   var form = new FormData();
   form.append("id_kampus", id_kampus);
@@ -931,7 +984,7 @@ function ezxsKampus(id_kampus) {
   // END Dropdown Kampus List
 }
 
-function ezxsKluster(id_kluster) {
+function loadRegisterKluster(id_kluster) {
   //Dropdown Kluster List
   var form = new FormData();
   form.append("id_kluster", id_kluster);
@@ -959,13 +1012,13 @@ function ezxsKluster(id_kluster) {
           text: item.nama_kluster,
         })
       );
-      ezxsKampus(item.FK_kampus);
+      loadRegisterKampus(item.FK_kampus);
     });
   });
   // END Dropdown Kluster List
 }
 
-function ezxsSubKluster(id_subkluster) {
+function loadRegisterSubKluster(id_subkluster) {
   //Dropdown Subkluster List
   var form = new FormData();
   form.append("id_subkluster", id_subkluster);
@@ -992,7 +1045,7 @@ function ezxsSubKluster(id_subkluster) {
           text: item.nama_subkluster,
         })
       );
-      ezxsKluster(item.FK_kluster);
+      loadRegisterKluster(item.FK_kluster);
     });
   });
   // END Dropdown Subkluster List
