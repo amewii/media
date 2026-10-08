@@ -13,23 +13,17 @@ $(function () {
     window.location.replace('login/');
   }
   listNotification();
-  loadHalamanUtama();
   kategoriProgram();
   listVip();
   listProgram();
-  if (window.sessionStorage.content == "halamanutama") {
-    $("#data_load").html("");
-    $("#page_title").html(
-      '<li class="breadcrumb-item active"><a href="javascript:void(0)">Laman Utama</a></li>'
-    );
-    loadHalamanUtama();
-  } else if (window.sessionStorage.content == "list") {
+  if (window.sessionStorage.content == "list") {
     $("#data_load").html("");
     $("#page_title").html(
       '<li class="breadcrumb-item active"><a href="javascript:void(0)">Senarai Permohonan</a></li>'
     );
     list();
   } else if (window.sessionStorage.content == "profil") {
+    setPortalNavigation("");
     $("#data_load").html("");
     $("#permohonan").hide();
     $("#page_title").html(
@@ -37,15 +31,20 @@ $(function () {
     );
     $("#data_load").load("profil/profil.html");
   } else if (window.sessionStorage.content == "ubahkatalaluan") {
+    setPortalNavigation("");
     $("#data_load").html("");
     $("#permohonan").hide();
     $("#page_title").html(
       '<li class="breadcrumb-item active"><a href="javascript:void(0)">Ubah Katalaluan</a></li>'
     );
     $("#data_load").load("ubahkatalaluan/ubahkatalaluan.html");
+  } else {
+    window.sessionStorage.content = "halamanutama";
+    loadHalamanUtama();
   }
 });
 $(document).ready(function () {
+  $("#portal-year").text(new Date().getFullYear());
   let token = window.sessionStorage.token;
   if (token == null) {
     window.location.replace("login/");
@@ -122,9 +121,9 @@ function listProgram() {
   if(obj.success){
     // console.log(obj);
     var data = obj.data;
-    $("#nama_program").empty();
+    $("#nama_program_options").empty();
     $.each(data, function (i, item) {
-      $("#nama_program").append(
+      $("#nama_program_options").append(
         $("<option>", {
           value: item.nama_program,
           text: item.nama_program,
@@ -136,7 +135,27 @@ function listProgram() {
   }
 }
 
+function portalEscape(value) {
+  return $("<div>").text(value == null ? "" : String(value)).html();
+}
+
+function portalDate(value) {
+  var date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Tarikh tidak dinyatakan";
+  return date.toLocaleDateString("ms-MY", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function setPortalNavigation(activeId) {
+  $("#menu > li").removeClass("mm-active");
+  $("#" + activeId).closest("li").addClass("mm-active");
+}
+
 function loadHalamanUtama() {
+  setPortalNavigation("home");
   $("#permohonan").hide();
   $("#data_load").html("");
   $("#page_title").html(
@@ -144,17 +163,36 @@ function loadHalamanUtama() {
   );
   $("#checkAll").prop("checked", "");
 
+  var displayName = portalEscape(nama_master || window.sessionStorage.nama || "Pengguna");
   var gallery_tab =
-    '<div class="default-tab mt-60">' +
+    '<section class="portal-hero">' +
+    '<div class="portal-hero-content">' +
+    '<span class="portal-hero-eyebrow"><i class="fa fa-circle"></i> Koleksi rasmi INTAN</span>' +
+    '<h1>Selamat datang, ' + displayName + '</h1>' +
+    '<p>Terokai koleksi foto, video dan dokumen program INTAN. Pilih media yang diperlukan dan hantar permohonan dalam beberapa langkah mudah.</p>' +
+    '<div class="portal-hero-points">' +
+    '<span class="portal-hero-point"><i class="fa fa-search"></i> Carian pantas</span>' +
+    '<span class="portal-hero-point"><i class="fa fa-check-circle"></i> Permohonan tersusun</span>' +
+    '<span class="portal-hero-point"><i class="fa fa-download"></i> Muat turun selamat</span>' +
+    '</div></div></section>' +
+    '<section class="portal-gallery-shell">' +
+    '<div class="portal-section-heading"><div><h2>Koleksi media terkini</h2>' +
+    '<p>Pilih jenis media untuk melihat program yang tersedia.</p></div></div>' +
+    '<label class="portal-mobile-search d-xl-none" for="MobileSearch">' +
+    '<i class="fa fa-search" aria-hidden="true"></i>' +
+    '<span class="sr-only">Cari program atau media</span>' +
+    '<input type="search" id="MobileSearch" placeholder="Cari program atau media..." autocomplete="off">' +
+    '</label>' +
+    '<div class="default-tab">' +
     '<ul class="nav nav-tabs" role="tablist">' +
     '<li class="nav-item">' +
-    '<a class="nav-link active" data-toggle="tab" href="#images"><i class="la la-image mr-2"></i> Galeri Gambar</a>' +
+    '<a class="nav-link active" data-toggle="tab" href="#images"><i class="la la-image"></i> Gambar <span class="portal-tab-count" id="count-image">0</span></a>' +
     "</li>" +
     '<li class="nav-item">' +
-    '<a class="nav-link" data-toggle="tab" href="#videos"><i class="la la-file-video-o mr-2"></i> Galeri Video</a>' +
+    '<a class="nav-link" data-toggle="tab" href="#videos"><i class="la la-file-video-o"></i> Video <span class="portal-tab-count" id="count-video">0</span></a>' +
     "</li>" +
     '<li class="nav-item">' +
-    '<a class="nav-link" data-toggle="tab" href="#document"><i class="la la-file-pdf-o mr-2"></i> Galeri Dokumen</a>' +
+    '<a class="nav-link" data-toggle="tab" href="#document"><i class="la la-file-pdf-o"></i> Dokumen <span class="portal-tab-count" id="count-dokumen">0</span></a>' +
     "</li>" +
     "</ul>" +
     '<div class="tab-content">' +
@@ -172,7 +210,8 @@ function loadHalamanUtama() {
     "</div>" +
 
     "</div>" +
-    "</div>";
+    '<div class="portal-search-empty"><i class="fa fa-search mr-2"></i>Tiada program sepadan dengan carian anda.</div>' +
+    "</div></div></section>";
 
   $("#data_load").append(gallery_tab);
 
@@ -188,110 +227,84 @@ function loadHalamanUtama() {
 
 function loadSenaraiProgramBergambar(varAPI, varAppend) {
   var obj = new get(host+varAPI,window.sessionStorage.token).execute();
-  // console.log(obj)
+  var emptyLabel = varAppend === "image" ? "gambar" : (varAppend === "video" ? "video" : "dokumen");
   if(obj.success){
-    // console.log(obj);
-    var data = obj.data;
+    var data = Array.isArray(obj.data) ? obj.data : [];
+    $("#count-" + varAppend).text(data.length);
     $.each(data, function (f, field) {
-      imgsrc = "";
+      var imgsrc = "";
       if (field.media_path != null) {
-        img = JSON.parse(field.media_path);
-        imgsrc = img[0].images;
+        try {
+          var media = JSON.parse(field.media_path);
+          imgsrc = media.length && media[0].images ? media[0].images : "";
+        } catch (_error) {
+          imgsrc = "";
+        }
       }
-      t_program = new Date(field.tarikh_program);
-
+      var mediaUrl = "api_asdcm/public/uploads/" + encodeURI(imgsrc);
+      var mediaPreview = "";
+      var mediaLabel = "Gambar";
+      var mediaIcon = "la-image";
+      var flag = 1;
       if (varAppend == "image") {
-        flag = 1;
-        thumbnail =
-          '<img class="img-fluid" src="../api_asdcm/public/uploads/' +
-          imgsrc +
-          '" alt="">';
+        mediaPreview = '<img src="' + mediaUrl + '" loading="lazy" alt="Pratonton ' + portalEscape(field.nama_program) + '">';
       } else if(varAppend == "video"){
         flag = 2;
-        thumbnail =
-          '<video id="video-element" src="../api_asdcm/public/uploads/' +
-          imgsrc +
-          '" controls>' +
-          '<source type="video/mp4">' +
-          "</video>" +
-          '<canvas id="canvas-element"></canvas>';
+        mediaLabel = "Video";
+        mediaIcon = "la-file-video-o";
+        mediaPreview = '<video src="' + mediaUrl + '" muted preload="metadata" playsinline aria-label="Pratonton video ' + portalEscape(field.nama_program) + '"></video>';
       } else{
-        let fileSrc = "../api_asdcm/public/uploads/" + imgsrc;
         flag = 3;
-        thumbnail =
-          '<a href="' + fileSrc + '" target="_blank" class="document-link">' +
-          imgsrc +
-          "</a>";      
+        mediaLabel = "Dokumen";
+        mediaIcon = "la-file-pdf-o";
+        mediaPreview = '<div class="portal-document-preview"><div><i class="la la-file-text-o"></i><span>' + portalEscape(imgsrc || "Dokumen program") + '</span></div></div>';
         }
-
-
-      
-      data_programs =
-        '<div class="col-lg-12 col-xl-6">' +
-        '<div class="card">' +
-        '<div class="card-body">' +
-        '<div class="row m-b-30">' +
-        '<div class="col-md-5 col-xxl-12">' +
-        '<div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">' +
-        '<div class="new-arrivals-img-contnent">' +
-        '<img class="img-fluid" src="api_asdcm/public/uploads/' +
-        imgsrc +
-        '" onclick="detail_media(' +
-        field.PK +
-        "," +
-        flag +
-        ')" alt="">' +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        '<div class="col-md-7 col-xxl-12">' +
-        '<div class="new-arrival-content position-relative">' +
-        "<h4>" +
-        field.nama_program +
-        "</h4>" +
-        '<p>Tarikh: <span class="item" id="tarikh"> ' +
-        t_program.getDate() +
-        "/" +
-        (t_program.getMonth() + 1) +
-        "/" +
-        t_program.getFullYear() +
-        " </span></p>" +
-        '<p>Kategori Program: <span class="item">' +
-        field.nama_kategori +
-        "</span> </p>" +
-        '<p>Lokasi: <span class="item">' +
-        field.nama_kampus +
-        "</span></p>" +
-        '<p>Kluster: <span class="item">' +
-        field.nama_kluster +
-        "</span></p>" +
-        '<p>VIP: <span class="item">' +
-        field.FK_vip +
-        "</span></p>" +
-        '<button class="btn btn-info" onclick="detail_media(' +
-        field.PK +
-        "," +
-        flag +
-        ')"><i class="la la-image"></i> <span style="font-size: 12px;">Lihat</span></button>' +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "</div>";
+      var data_programs =
+        '<div class="col-xl-4 col-lg-6 col-md-6 portal-program-column">' +
+        '<article class="portal-program-card" data-search="' + portalEscape([field.nama_program, field.nama_kategori, field.nama_kampus, field.nama_kluster].join(" ").toLowerCase()) + '">' +
+        '<div class="portal-program-media">' + mediaPreview +
+        '<span class="portal-media-type"><i class="la ' + mediaIcon + '"></i>' + mediaLabel + '</span></div>' +
+        '<div class="portal-program-body">' +
+        '<span class="portal-program-category">' + portalEscape(field.nama_kategori || "Program INTAN") + '</span>' +
+        '<h3 class="portal-program-title">' + portalEscape(field.nama_program) + '</h3>' +
+        '<div class="portal-program-meta">' +
+        '<span><i class="fa fa-calendar"></i>' + portalDate(field.tarikh_program) + '</span>' +
+        '<span><i class="fa fa-map-marker"></i>' + portalEscape(field.nama_kampus || "Lokasi tidak dinyatakan") + '</span>' +
+        '<span><i class="fa fa-sitemap"></i>' + portalEscape(field.nama_kluster || "Kluster tidak dinyatakan") + '</span>' +
+        '</div>' +
+        '<div class="portal-program-action"><span></span>' +
+        '<button type="button" class="btn" onclick="detail_media(' + Number(field.PK) + ',' + flag + ')">Lihat koleksi <i class="fa fa-arrow-right"></i></button>' +
+        '</div></div></article></div>';
       $("#" + varAppend).append(data_programs);
     });
+    if (!data.length) {
+      $("#" + varAppend).html(portalEmptyState(emptyLabel));
+    }
   }else {
-    $("#" + varAppend).html(
-      '<div class="alert alert-info text-center text-black" role="alert">Tiada maklumat dipaparkan</div>'
-    );  }
+    $("#count-" + varAppend).text("0");
+    $("#" + varAppend).html(portalEmptyState("media"));
+  }
 }
 
-$("#Search").on("keyup", function () {
-  val = $(this).val().toLowerCase();
-  $(".card").each(function () {
-    $(this).toggle($(this).text().toLowerCase().includes(val));
+function portalEmptyState(mediaType) {
+  return '<div class="portal-empty-state"><i class="fa fa-folder-open-o"></i>' +
+    '<strong>Tiada ' + portalEscape(String(mediaType).toLowerCase()) + ' tersedia</strong>' +
+    '<span>Koleksi baharu akan dipaparkan di sini apabila diterbitkan.</span></div>';
+}
+
+$(document).on("input", "#Search, #MobileSearch", function () {
+  var val = $(this).val().trim().toLowerCase();
+  if ($.fn.dataTable && $.fn.dataTable.isDataTable("#permohonanList")) {
+    $("#permohonanList").DataTable().search(val).draw();
+    return;
+  }
+  var visible = 0;
+  $(".portal-program-card").each(function () {
+    var matches = !val || $(this).attr("data-search").includes(val);
+    $(this).closest(".portal-program-column").toggle(matches);
+    if (matches) visible++;
   });
+  $(".portal-search-empty").toggle(Boolean(val) && visible === 0);
 });
 
 // End Carian
@@ -308,6 +321,7 @@ $("#home").click(function () {
 });
 
 $("#profil").click(function () {
+  setPortalNavigation("");
   sessionStorage.content = "profil";
   $("#data_load").html("");
   $("#permohonan").hide();
@@ -319,6 +333,7 @@ $("#profil").click(function () {
 });
 
 $("#ubahkatalaluan").click(function () {
+  setPortalNavigation("");
   sessionStorage.content = "ubahkatalaluan";
   $("#data_load").html("");
   $("#permohonan").hide();
@@ -352,7 +367,7 @@ $("#list").click(function () {
 $("#logKeluar").click(function () {
   swal({
     title: "Log Keluar",
-    text: "Anda Pasti Untuk Log Keluars?",
+    text: "Adakah anda pasti mahu log keluar?",
     type: "question",
     showCancelButton: true,
     confirmButtonText: "Ya",
@@ -666,6 +681,7 @@ function data_program() {
 }
 
 function list() {
+  setPortalNavigation("list");
   $("#data_load").html("");
   $("#permohonan").hide();
   $("#page_title").html(
@@ -673,9 +689,10 @@ function list() {
   );
   data_programs =
     "" +
-    '<div class="col-lg-12 col-xl-12 mt-60">' +
-    '<div class="card">' +
+    '<div class="col-lg-12 col-xl-12">' +
+    '<div class="card portal-list-shell">' +
     '<div class="card-body">' +
+    '<div class="portal-list-heading"><h2>Senarai permohonan media</h2><p>Semak status, kemas kini permohonan atau muat turun media yang telah diluluskan.</p></div>' +
     '<div id="tablePermohonan">' +
     '<textarea style="display: none;" id="dataList"></textarea>' +
     '<table id="permohonanList" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; font-size: 12px;"></table>' +
@@ -1358,36 +1375,36 @@ $("#checkAll").click(function () {
 //MIMI : CHECKED ALL CHECKBOX END
 
 function listNotification(returnValue) {
-  var obj = new get(host+`permohonanByUsersNotification/`+window.sessionStorage.id).execute();
+  var obj = new get(
+    host + `permohonanByUsersNotification/` + window.sessionStorage.id,
+    window.sessionStorage.token
+  ).execute();
+  var notificationHtml = "";
+  $("#notification").empty();
+  $("#icon_notification").hide();
   if(obj.success){
-    obj_listNotification = obj;
-    if (JSON.stringify(obj_listNotification.data) != "[]") {
-      $.each(obj_listNotification.data, function (i, item) {
-        t_luput = new Date(item.tarikh_luput);
+    var notifications = Array.isArray(obj.data) ? obj.data : [];
+    if (notifications.length) {
+      $.each(notifications, function (i, item) {
         $("#icon_notification").show();
-        listnotification =
+        notificationHtml +=
           "<li>" +
           '<div class="timeline-panel">' +
           '<div class="media-body">' +
           '<h6 class="mb-1">' +
-          item.nama_program +
+          portalEscape(item.nama_program) +
           "<br>Status: " +
-          item.nama_status +
+          portalEscape(item.nama_status) +
           "</h6>" +
           '<small class="d-block">Sah Sehingga: ' +
-          t_luput.getDate() +
-          "/" +
-          (t_luput.getMonth() + 1) +
-          "/" +
-          t_luput.getFullYear() +
+          portalDate(item.tarikh_luput) +
           "</small>" +
           "</div>" +
           "</div>" +
           "</li>";
-        $("#notification").append(listnotification);
       });
     } else {
-      listnotification =
+      notificationHtml =
         "<li>" +
         '<div class="timeline-panel">' +
         '<div class="media-body">' +
@@ -1395,11 +1412,13 @@ function listNotification(returnValue) {
         "</div>" +
         "</div>" +
         "</li>";
-      $("#notification").append(listnotification);
     }
   } else {
-
+    notificationHtml = '<li><div class="timeline-panel"><div class="media-body">' +
+      '<h6 class="mb-1">Notifikasi tidak dapat dimuatkan</h6>' +
+      '<small class="d-block">Sila cuba semula sebentar lagi.</small></div></div></li>';
   }
+  $("#notification").html(notificationHtml);
 }
 
 var timeoutSession;

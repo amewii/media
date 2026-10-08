@@ -1,5 +1,12 @@
-<div class="col-lg-12 mt-5">
-    <div class="pt-3">
+<div class="col-lg-12 portal-settings-page">
+    <div class="portal-settings-heading">
+        <span class="portal-settings-icon"><i class="fa fa-lock"></i></span>
+        <div>
+            <h2>Ubah katalaluan</h2>
+            <p>Sahkan katalaluan semasa sebelum menetapkan katalaluan baharu.</p>
+        </div>
+    </div>
+    <div class="portal-settings-card">
         <div class="settings-form">
             <form id="update">
                 <div class="">
@@ -21,7 +28,11 @@
                         <input type="password" id="sahkankatalaluan" disabled class="form-control" required>
                     </div>
                 </div>
-                <button class="btn btn-primary" id="kemaskini" style="display: none;" type="submit">Kemaskini</button>
+                <div class="portal-form-actions">
+                    <button class="btn btn-primary portal-primary-action" id="kemaskini" style="display: none;" type="submit">
+                        <i class="fa fa-lock mr-2"></i>Kemaskini katalaluan
+                    </button>
+                </div>
             </form>
         </div>
     </div>

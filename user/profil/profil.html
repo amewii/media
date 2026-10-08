@@ -1,5 +1,12 @@
-<div class="col-lg-12 mt-5">
-    <div class="pt-3">
+<div class="col-lg-12 portal-settings-page">
+    <div class="portal-settings-heading">
+        <span class="portal-settings-icon"><i class="fa fa-user"></i></span>
+        <div>
+            <h2>Profil pengguna</h2>
+            <p>Pastikan maklumat hubungan anda sentiasa tepat dan terkini.</p>
+        </div>
+    </div>
+    <div class="portal-settings-card">
         <div class="settings-form">
             <form id="update">
                 <div class="form-row">
@@ -14,7 +21,7 @@
                     </div>
                     <div class="form-group col-md-6 input-success-o">
                         <label>Emel Peribadi</label>
-                        <input type="Emel" id="displayemel" class="form-control">
+                        <input type="email" id="displayemel" class="form-control">
                     </div>
                     <div class="form-group col-md-6" style="display: none;">
                         <label>Tarikh Lahir</label>
@@ -26,7 +33,7 @@
                     </div>
                     <div class="form-group col-md-6 input-success-o" id="divNotel_kerajaan">
                         <label>No. Telefon Rasmi</label>
-                        <input type="Emel" id="notel_kerajaan" class="form-control">
+                        <input type="tel" id="notel_kerajaan" class="form-control">
                     </div>
                     <div class="form-group col-md-6" style="display: none;" id="divNotel">
                         <label>No. Telefon</label>
@@ -154,7 +161,11 @@
                         <input type="text" id="nama_sekolah" class="form-control">
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Kemaskini</button>
+                <div class="portal-form-actions">
+                    <button class="btn btn-primary portal-primary-action" type="submit">
+                        <i class="fa fa-check mr-2"></i>Simpan perubahan
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -162,7 +173,7 @@
 <div class="modal fade" id="validation_modal" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <form role="form" id="validation_modal" enctype='multipart/form-data'>
+            <form role="form" id="validation_form" enctype='multipart/form-data'>
                 <div class="modal-header">
                     <h5 class="modal-title">Validation Error</h5>
                     <hr />

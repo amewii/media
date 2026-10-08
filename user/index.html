@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -15,10 +15,9 @@
 		<link rel="stylesheet" href="./css/bootstrap.min.462.css">
     <link href="./css/style.css" rel="stylesheet" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;family=Roboto:wght@100;300;400;500;700;900&amp;display=swap"
       rel="stylesheet"
     />
-
     <!-- DataTables -->
     <link
       href="./vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
@@ -38,27 +37,10 @@
       href="./vendor/sweet-alert/sweetalert2.min.css"
       type="text/css"
     />
+    <link href="./css/media-portal.css?v=20261008-3" rel="stylesheet" />
   </head>
-  <style>
-      .dashboard_cards_overall {
-      height: 41vh;
-      /* overflow-y: auto; */
-      }
-      .dashboard_cards_per_fas {
-      height: 20vh;
-      overflow-y: auto;
-      }
-      @media screen and (max-width: 600px) {
-
-      /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
-        .mobile-hide {
-          display: none !important;
-        }
-
-      }
-  </style>
-
-  <body style="display: none" oncontextmenu="return false;">
+  <body class="media-portal" style="display: none" oncontextmenu="return false;">
+    <a class="portal-skip-link" href="#data_load">Langkau ke kandungan utama</a>
     <!--*******************
         Preloader start
     ********************-->
@@ -81,8 +63,12 @@
             Nav header start
         ***********************************-->
       <div class="nav-header">
-        <a href="index.html" class="brand-logo">
-          <img class="logo-abbr mobile-hide" src="./images/DCM.png" alt="" />
+        <a href="index.html" class="brand-logo" aria-label="Galeri Media INTAN">
+          <img class="logo-abbr" src="./images/DCM.png" alt="Logo INTAN" />
+          <span class="portal-brand-copy">
+            <strong>Galeri Media</strong>
+            <small>INTAN Malaysia</small>
+          </span>
           <!-- <img class="logo-compact" src="./images/logo-text.png" alt=""> -->
           <!-- <img class="brand-title" src="./images/logo-text.png" alt=""> -->
         </a>
@@ -114,7 +100,10 @@
           <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
               <div class="header-left">
-                <div class="dashboard_bar">Galeri Media</div>
+                <div class="portal-page-heading">
+                  <span class="portal-page-eyebrow">Portal Pengguna</span>
+                  <div class="dashboard_bar">Terokai Media INTAN</div>
+                </div>
               </div>
               <ul class="navbar-nav header-right">
                 <li class="nav-item">
@@ -129,16 +118,23 @@
                       type="text"
                       class="form-control"
                       id="Search"
-                      placeholder="Carian..."
+                      placeholder="Cari program atau media..."
+                      aria-label="Cari program atau media"
                     />
                   </div>
                 </li>
                 <li class="nav-item dropdown notification_dropdown">
                   <a
-                    class="nav-link ai-icon"
+                    class="nav-link ai-icon portal-icon-button"
                     role="button"
                     data-toggle="dropdown"
+                    aria-label="Buka notifikasi"
                   >
+                    <span
+                      class="portal-notification-dot"
+                      id="icon_notification"
+                      aria-hidden="true"
+                    ></span>
                     <svg
                       width="28"
                       height="28"
@@ -163,8 +159,12 @@
                 </li>
 
                 <li class="nav-item dropdown notification_dropdown">
-                  <a class="nav-link ai-icon bg-white" role="button" data-toggle="dropdown" href="javascript:void(0);">
-                    <label class="text_nama mt-2"></label>
+                  <a class="nav-link ai-icon portal-user-menu" role="button" data-toggle="dropdown" href="javascript:void(0);" aria-label="Buka menu pengguna">
+                    <span class="portal-user-avatar"><i class="fa fa-user"></i></span>
+                    <span class="portal-user-copy">
+                      <small>Akaun Saya</small>
+                      <strong class="text_nama"></strong>
+                    </span>
                     <!-- <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                       <circle cx="12" cy="7" r="4"></circle>
@@ -227,14 +227,14 @@
       <!--**********************************
             Sidebar start
         ***********************************-->
-      <div class="deznav">
+      <nav class="deznav portal-primary-nav" aria-label="Navigasi utama pengguna">
         <div class="deznav-scroll">
           <ul class="metismenu" id="menu">
-            <li>
+            <li class="mm-active">
               <a
                 class="ai-icon"
                 id="home"
-                href="javascript:void()"
+                href="javascript:void(0)"
                 aria-expanded="false"
               >
                 <i class="flaticon-381-home"></i>
@@ -242,7 +242,7 @@
               </a>
             </li>
             <li>
-              <a class="ai-icon" id="list" href="javascript:void()" aria-expanded="false" >
+              <a class="ai-icon" id="list" href="javascript:void(0)" aria-expanded="false" >
                 <i class="flaticon-381-list"></i>
                 <span class="nav-text">Senarai Permohonan</span>
               </a>
@@ -251,7 +251,7 @@
               <a
                 class="ai-icon"
                 id="contact"
-                href="javascript:void()"
+                href="javascript:void(0)"
                 aria-expanded="false"
                 style="display: none"
               >
@@ -261,7 +261,7 @@
             </li>
           </ul>
         </div>
-      </div>
+      </nav>
       <!--**********************************
             Sidebar end
         ***********************************-->
@@ -269,19 +269,19 @@
       <!--**********************************
             Content body start
         ***********************************-->
-      <div class="content-body">
+      <main class="content-body" id="main-content">
         <div class="container-fluid">
           <div class="page-titles">
-            <ol class="breadcrumb mt-5" id="page_title">
+            <ol class="breadcrumb" id="page_title" aria-label="Breadcrumb">
               <!-- <li class="breadcrumb-item"><a href="javascript:void(0)">Layout</a></li> -->
               <li class="breadcrumb-item active">
                 <a href="javascript:void(0)">Laman Utama</a>
               </li>
             </ol>
-            <span id="permohonan">
+            <div id="permohonan" class="portal-selection-toolbar">
               <input type="text" id="disp_id" style="display: none" />
               <button type="button" class="btn btn-success mb-3 btn-download-r" id="modal-permohonan"><i class="fa fa-download mb-1" style="margin-top: 3px;"></i> Muat Turun</button>
-              <div align="left" style="margin-top: 20px;">
+              <div class="portal-select-all">
                 <input type="checkbox" id="checkAll" /><label for="checkAll">&nbsp;&nbsp;Pilih Semua Media</label><br /><br />
               </div>
               <a
@@ -290,16 +290,15 @@
                 id="download-item-media"
                 class="hidden"
               ></a>
-            </span>
+            </div>
           </div>
 
           <!-- MIMI : TAMBAH BUTTON MUAT TURUN ZIP START -->
-          <div align="right" id="muatturun" style="display: none">
-            <input type="text" id="disp_id" style="display: none" />
+          <div class="text-right" id="muatturun" style="display: none">
             <button type="button" class="btn btn-success mb-3" id="muatturun-permohonan"><i class="fa fa-download mb-2"></i> Muat Turun</button>
           </div>
           <!-- TAMBAH BUTTON MUAT TURUN ZIP END -->
-          <div class="row mt-5" id="data_load">
+          <div class="row" id="data_load" aria-live="polite">
             <!-- review -->
           </div>
 
@@ -381,7 +380,7 @@
                     <button
                       class="badge badge-danger"
                       data-dismiss="modal"
-                      id="closeButton"
+                      id="closeRegisterButton"
                     >
                       <i class="fa fa-times"></i> Tutup
                     </button>
@@ -481,13 +480,12 @@
                       class="badge badge-warning"
                       style="color: white"
                       onclick="del_record()"
-                      name="batal"
                       ><i class="fa fa-trash"></i> Batal Permohonan
                     </a>
                     <button
                       class="badge badge-danger"
                       data-dismiss="modal"
-                      id="closeButton"
+                      id="closeUpdateButton"
                     >
                       <i class="fa fa-times"></i> Tutup
                     </button>
@@ -497,7 +495,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <!--**********************************
             Content body end
         ***********************************-->
@@ -507,7 +505,7 @@
         ***********************************-->
       <div class="footer">
         <div class="copyright">
-          <p>Copyright © <a href="#" target="_blank">MEDIA INTAN</a> 2022</p>
+          <p>© <span id="portal-year"></span> Galeri Media INTAN Malaysia</p>
         </div>
       </div>
       <!--**********************************
@@ -558,12 +556,12 @@
                     <label for="nama_programs">Nama Program</label>
                     <input
                       type="text"
-                      list="nama_program"
+                      list="nama_program_options"
                       id="nama_programs"
                       class="form-control"
                       style="color: black"
                     />
-                    <datalist id="nama_program"></datalist>
+                    <datalist id="nama_program_options"></datalist>
                   </div>
                   <div class="col-12 mb-3">
                     <label for="listvip">VIP</label>
@@ -604,7 +602,7 @@
 
     <script src="./vendor/sweet-alert/sweetalert2.min.js?v=20261008"></script>
     <script src="config.js?v=20261008"></script>
-    <script src="index.js?v=20261008"></script>
+    <script src="index.js?v=20261008-3"></script>
     <!-- <script src="livejs.js?v=20261008"></script> -->
   </body>
 </html>
