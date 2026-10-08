@@ -43,7 +43,8 @@ class med_gredController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_gred');
 
-        $med_gred = med_gred::where('id_gred',$id)->first();
+        $med_gred = med_gred::where('id_gred',$id)
+            ->first(['id_gred', 'nama_gred', 'statusrekod']);
 
         if ($med_gred)   {
             return response()->json([
@@ -55,7 +56,7 @@ class med_gredController extends Controller
     }
 
     public function list()  {
-        $med_gred = med_gred::where('statusrekod','1') -> get();
+        $med_gred = med_gred::where('statusrekod','1')->get(['id_gred', 'nama_gred']);
 
         if ($med_gred)   {
             return response()->json([

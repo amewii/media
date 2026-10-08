@@ -7,30 +7,31 @@ use App\Jobs\SendRegistrationEmail;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\med_users;
 use App\Models\med_tetapan;
 use Illuminate\Support\Facades\Queue;
+use App\Security\AccessToken;
+use App\Security\PasswordResetToken;
+use App\Security\Passwords;
 
 class authController extends Controller
 {
+    public function __construct(
+        private AccessToken $accessToken,
+        private PasswordResetToken $passwordResetToken,
+        private Passwords $passwords
+    )
+    {
+        parent::__construct();
+        $this->middleware('auth.throttle:5,60', [
+            'only' => ['login', 'loginUser', 'resetpasswordtomail'],
+        ]);
+    }
 
     public function getToken($id)  {
-        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $token     = hash("sha256", Str::random(32).$ajinomoto);
-        $obj = med_users::where('id_users',$id)->update([
-            'token' => $token
-        ]);
+        $user = med_users::find($id);
 
-        $token = false;
-
-        if($obj){
-            $obj = med_users::where('id_users',$id)->first(['token']);
-            $random = hash("sha256", Str::random(32)).'0L1v3';
-            $token = $random.$obj->token;
-        }
-
-        return $token;
+        return $user ? $this->accessToken->issue($user) : false;
     }
 
     public function register(Request $request) {
@@ -63,8 +64,7 @@ class authController extends Controller
 
         $validated = $validator->validated();
         $katalaluan = $validated['katalaluan'];        
-        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
+        $enc_katalaluan = $this->passwords->make($katalaluan);
         $nama = $validated['nama'];    
         $emel = $validated['emel'];  
         $no_kad_pengenalan = $validated['no_kad_pengenalan'];      
@@ -83,12 +83,12 @@ class authController extends Controller
         ]);
 
         if ($register)  {
+            $token = $this->accessToken->issue($register);
             $tetapan_mail = med_tetapan::first();
 
             Queue::push(new SendRegistrationEmail([
                 'env' => request()->getHost(),
                 'no_kad_pengenalan' => $no_kad_pengenalan,
-                'kata_laluan' => $katalaluan,
                 'emel' => $emel,
                 'nama' => $nama,
                 'mail_gateway' => $tetapan_mail->mail_gateway,
@@ -99,7 +99,8 @@ class authController extends Controller
             return response()->json([
                 'success'=>'true',
                 'message'=>'Berjaya Mendaftar Akaun! Sila log masuk menggunakan No. Kad Pengenalan & Katalaluan yang didaftarkan.',
-                'data'=>''
+                'data'=>['id_users' => $register->id_users],
+                'token'=>$token,
             ], 200);
         } else {
             return response()->json([
@@ -110,41 +111,35 @@ class authController extends Controller
         }
     }
     
-    public function logout($no_kad_pengenalan){
-        med_users::query()
-            ->where('no_kad_pengenalan', $no_kad_pengenalan)
-            ->update([
-                'token' => null
-            ]);
+    public function logout(Request $request, $no_kad_pengenalan = null){
+        $request->user()->forceFill(['token' => null])->save();
 
-        return response()->json(['success' => true], 200);
+        return response()->json(['success' => true], 200, ['Cache-Control' => 'no-store']);
     }
 
     public function login(Request $request){
-        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
-        $katalaluan = $request->input('katalaluan');
-        $userS = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
-                        join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users') -> 
-                        where('no_kad_pengenalan',$no_kad_pengenalan)->where('FK_jenis_pengguna','1')->first();
+        $no_kad_pengenalan = (string) $request->input('no_kad_pengenalan');
+        $katalaluan = (string) $request->input('katalaluan');
+        $userS = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users')
+            ->where('med_users.no_kad_pengenalan', $no_kad_pengenalan)
+            ->where('med_users.FK_jenis_pengguna', '1')
+            ->first([
+                'med_users.id_users',
+                'med_users.katalaluan',
+            ]);
         if($userS){
-            $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-            $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
-            
-            if($userS->katalaluan === $enc_katalaluan){
-                $token = Str::random(32);
-    
-                $user = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->update([
-                    'token' => $token
-                ]);
-    
-                if($user){
-                    $token = $this->getToken($userS->id_users);
+            if ($this->passwords->verify($katalaluan, (string) $userS->katalaluan)) {
+                $this->upgradePasswordIfNeeded($userS, $katalaluan);
+                $token = $this->getToken($userS->id_users);
+
+                if($token){
                     return response()->json([
                         'success'=>true,
                         'token'=>$token,
-                        'no_kad_pengenalan' => $no_kad_pengenalan,
                         'messages'=>'Log Masuk Berjaya',
-                        'data'=>$userS,
+                        'data'=>[
+                            'id_users' => $userS->id_users,
+                        ],
                     ],200);
                 }
                 else {
@@ -174,31 +169,32 @@ class authController extends Controller
     }
 
     public function loginUser(Request $request){
-        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
-        $katalaluan = $request->input('katalaluan');
+        $no_kad_pengenalan = (string) $request->input('no_kad_pengenalan');
+        $katalaluan = (string) $request->input('katalaluan');
 
-        $userS = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
-                        where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        $userS = med_users::where('no_kad_pengenalan', $no_kad_pengenalan)
+            ->first([
+                'id_users',
+                'nama',
+                'emel',
+                'katalaluan',
+            ]);
         if($userS){
-            $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-            $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
-            
-            if($userS->katalaluan === $enc_katalaluan){
-                $token = Str::random(32);
-    
-                $user = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->update([
-                    'token' => $token
-                ]);
-    
-                if($user){
-                    $token = $this->getToken($userS->id_users);
+            if ($this->passwords->verify($katalaluan, (string) $userS->katalaluan)) {
+                $this->upgradePasswordIfNeeded($userS, $katalaluan);
+                $token = $this->getToken($userS->id_users);
+
+                if($token){
                     return response()->json([
                         'success'=>true,
                         'token'=>$token,
-                        'no_kad_pengenalan' => $no_kad_pengenalan,
                         'messages'=>'Log Masuk Berjaya',
-                        'data'=>$userS,
-                    ],201);
+                        'data'=>[
+                            'id_users' => $userS->id_users,
+                            'nama' => $userS->nama,
+                            'emel' => $userS->emel,
+                        ],
+                    ],200);
                 }
                 else {
                     return response()->json([
@@ -206,7 +202,7 @@ class authController extends Controller
                         'token'=>$token,
                         'messages'=>'Log Masuk Gagal',
                         'data'=>'',
-                    ],201);
+                    ],500);
                 }
             }
             else{
@@ -214,7 +210,7 @@ class authController extends Controller
                     'success'=>false,
                     'messages'=>'Log Masuk Gagal',
                     'data'=>'Log masuk gagal. Sila cuba lagi.',
-                ],201);
+                ],401);
             }
         }
         else {
@@ -222,17 +218,15 @@ class authController extends Controller
                 'success'=>false,
                 'messages'=>'Log Masuk Gagal',
                 'data'=>'Log masuk gagal. Sila cuba lagi.',
-            ],201);
+            ],401);
         }
     }
 
     public function show(Request $request)  {
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
 
-        $med_users = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
-                                leftjoin('med_usersswasta', 'med_usersswasta.FK_users', '=', 'med_users.id_users') -> 
-                                leftjoin('med_userspelajar', 'med_userspelajar.FK_users', '=', 'med_users.id_users') -> 
-                                where('no_kad_pengenalan',$no_kad_pengenalan)->first();
+        $med_users = med_users::where('no_kad_pengenalan', $no_kad_pengenalan)
+            ->first(['id_users']);
 
         if ($med_users)   {
             return response()->json([
@@ -252,20 +246,22 @@ class authController extends Controller
 
     public function resetpasswordtomail(Request $request)  {
         $no_kad_pengenalan = $request->input('no_kad_pengenalan');
-        $masa = $request->input('masa');
-        $landing_page = $request->input('landing_page');
+        $landing_page = '/reset';
 
-        $med_users_search = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') -> 
-                                        where('no_kad_pengenalan',$no_kad_pengenalan)->first();
-        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_link = hash("sha256", $masa.$ajinomoto);
-        
+        $med_users_search = med_users::leftjoin('med_usersgov', 'med_usersgov.FK_users', '=', 'med_users.id_users') ->
+                                        where('med_users.no_kad_pengenalan',$no_kad_pengenalan)->first([
+                                            'med_users.id_users',
+                                            'med_users.no_kad_pengenalan',
+                                            'med_users.emel',
+                                            'med_users.nama',
+                                            'med_usersgov.emel_kerajaan',
+                                        ]);
         if ($med_users_search) {
+            $resetToken = $this->passwordResetToken->issue($med_users_search);
             Queue::push(new SendEmailResetPassword([
                 'no_kad_pengenalan' => $no_kad_pengenalan,
-                'masa' => $masa,
                 'landing_page' => $landing_page,
-                'enc_link' => $enc_link,
+                'reset_token' => $resetToken,
                 'emel_kerajaan' => $med_users_search->emel_kerajaan,
                 'emel' => $med_users_search->emel,
                 'nama' => $med_users_search->nama
@@ -277,24 +273,24 @@ class authController extends Controller
                 // 'message' => 'Permintaan set semula katalaluan telah dihantar ke<br><br>Emel Rasmi ['.$med_users_search->emel_kerajaan.']<br>Emel Peribadi ['.$med_users_search->emel.']<br><br>Sekiranya Emel Rasmi tidak tepat sila kemaskini di <br><span style="font-weight: bold;">Sistem HRMIS</span>',
                 'data' => '',
             ], 200);
-        } else  {
-            return response()->json([
-                'success' => false,
-                'message' => "No Data!",
-                'data' => ''
-            ],400);
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan set semula katalaluan akan dihantar ke emel anda sekiranya wujud.',
+            'data' => '',
+        ], 200);
     }
 
     public function showGetResetKatalaluan($resetkatalaluan)  {
 
-        $med_users = med_users::where('resetkatalaluan',$resetkatalaluan)->first();
+        $med_users = $this->passwordResetToken->userFromToken($resetkatalaluan);
 
         if ($med_users)   {
             return response()->json([
                 'success'=>true,
                 'message'=>'Show Success!',
-                'data'=>$med_users
+                'data'=>['valid' => true]
             ],200);
         }
         else{
@@ -307,17 +303,41 @@ class authController extends Controller
     }
 
     public function resetpassword(Request $request)  {
-        $no_kad_pengenalan = $request->input('no_kad_pengenalan');
-        $katalaluan = $request->input('katalaluan');
+        $katalaluan = (string) $request->input('katalaluan');
 
-        $med_users_search = med_users::where('no_kad_pengenalan',$no_kad_pengenalan)->first();
-        $ajinomoto = "RMY7nZ3+s8xpU1n0O*0o_EGfdoYtd|iU_AzhKCMoSu_xhh-e|~y8FOG*-xLZ";
-        $enc_katalaluan     = hash("sha256", $katalaluan.$ajinomoto);
+        $validator = Validator::make(['katalaluan' => $katalaluan], [
+            'katalaluan' => ['required', 'string', 'min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Katalaluan baharu tidak memenuhi syarat keselamatan.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $med_users_search = $request->user();
+
+        if (!$med_users_search) {
+            $med_users_search = $this->passwordResetToken
+                ->userFromToken($request->input('reset_token'));
+        }
+
+        if (!$med_users_search) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pautan set semula tidak sah atau telah luput.',
+                'data' => '',
+            ], 403);
+        }
+
+        $enc_katalaluan = $this->passwords->make($katalaluan);
         
         if ($med_users_search)  {
-            $med_users = med_users::where('no_kad_pengenalan',$no_kad_pengenalan) -> update([
+            $med_users = med_users::where('id_users', $med_users_search->id_users)->update([
                 'katalaluan' => $enc_katalaluan,
-                'resetkatalaluan' => NULL
+                'resetkatalaluan' => null,
+                'token' => null,
             ]);
             if ($med_users)   {
                 return response()->json([
@@ -332,6 +352,15 @@ class authController extends Controller
                 'message'=>"No Data!",
                 'data'=>''
             ],400);
+        }
+    }
+
+    private function upgradePasswordIfNeeded(med_users $user, string $password): void
+    {
+        if ($this->passwords->needsUpgrade($user->katalaluan)) {
+            med_users::where('id_users', $user->id_users)->update([
+                'katalaluan' => $this->passwords->make($password),
+            ]);
         }
     }
 }

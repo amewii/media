@@ -29,10 +29,6 @@ $router->get('/', function () use ($router) {
     // die();
 });
 
-$router->get('key', function () {
-    return MD5('ASDCM-PROTIGAT');
-});
-
 //Daripada api_auth_asdm
 
 $router->post('/login','authController@login');

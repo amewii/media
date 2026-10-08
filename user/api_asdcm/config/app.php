@@ -109,7 +109,9 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'key' => env('APP_KEY'),
+    'MAIL_HOST' => env('MAIL_HOST'),
     'MAIL_PORT' => env('MAIL_PORT'),
     'MAIL_USERNAME' => env('MAIL_USERNAME'),
     'MAIL_PASSWORD' => env('MAIL_PASSWORD'),
+    'MAIL_ENCRYPTION' => env('MAIL_ENCRYPTION', 'tls'),
 ];

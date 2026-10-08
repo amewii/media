@@ -19,6 +19,7 @@ class med_users extends Model implements AuthenticatableContract, AuthorizableCo
      * @var array
      */
     protected $table = 'med_users';
+    protected $primaryKey = 'id_users';
     protected $fillable = [
         'id_users', 'nama', 'emel', 'no_kad_pengenalan', 'katalaluan', 'notel', 'tarikh_lahir', 'FK_jenis_pengguna', 'FK_gelaran',
         'FK_negara_lahir', 'FK_negeri_lahir', 'FK_jantina', 'FK_warganegara', 'FK_bangsa', 'FK_etnik', 'FK_agama', 'status_rekod', 'token'
@@ -30,6 +31,7 @@ class med_users extends Model implements AuthenticatableContract, AuthorizableCo
      * @var array
      */
     protected $hidden = [
-        'katalaluan', 'token'
+        'katalaluan', 'token', 'resetkatalaluan', 'remember_token',
+        'created_by', 'updated_by', 'deleted_by'
     ];
 }

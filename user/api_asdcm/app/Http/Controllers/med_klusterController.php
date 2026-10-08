@@ -41,7 +41,8 @@ class med_klusterController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kluster');
 
-        $med_kluster = med_kluster::where('id_kluster',$id)->get();
+        $med_kluster = med_kluster::where('id_kluster',$id)
+            ->get(['id_kluster', 'nama_kluster', 'FK_kampus', 'statusrekod']);
 
         if ($med_kluster)   {
             return response()->json([
@@ -54,7 +55,8 @@ class med_klusterController extends Controller
 
     public function showGet($FK_kampus)  {
 
-        $med_kluster = med_kluster::where('FK_kampus',$FK_kampus)->get();
+        $med_kluster = med_kluster::where('FK_kampus',$FK_kampus)
+            ->get(['id_kluster', 'nama_kluster', 'FK_kampus']);
 
         if ($med_kluster)   {
             return response()->json([
@@ -66,7 +68,8 @@ class med_klusterController extends Controller
     }
 
     public function list()  {
-        $med_kluster = med_kluster::where('statusrekod','1') -> get(); // list all data
+        $med_kluster = med_kluster::where('statusrekod','1')
+            ->get(['id_kluster', 'nama_kluster', 'FK_kampus']);
 
         if ($med_kluster)   {
             return response()->json([

@@ -43,7 +43,8 @@ class med_tarafjawatanController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_tarafjawatan');
 
-        $med_tarafjawatan = med_tarafjawatan::where('id_tarafjawatan',$id)->first();
+        $med_tarafjawatan = med_tarafjawatan::where('id_tarafjawatan',$id)
+            ->first(['id_tarafjawatan', 'nama_tarafjawatan', 'statusrekod']);
 
         if ($med_tarafjawatan)   {
             return response()->json([
@@ -55,7 +56,8 @@ class med_tarafjawatanController extends Controller
     }
 
     public function list()  {
-        $med_tarafjawatan = med_tarafjawatan::where('statusrekod','1') -> get();
+        $med_tarafjawatan = med_tarafjawatan::where('statusrekod','1')
+            ->get(['id_tarafjawatan', 'nama_tarafjawatan']);
 
         if ($med_tarafjawatan)   {
             return response()->json([

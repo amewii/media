@@ -12,6 +12,9 @@ class med_userspelajarController extends Controller
 
     public function register(Request $request) {
         $FK_users = $request->input('FK_users');
+        if (!$this->canActForUser($request, $FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $nama_sekolah = $request->input('nama_sekolah');
         $statusrekod = $request->input('statusrekod');
 
@@ -41,7 +44,8 @@ class med_userspelajarController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_userspelajar');
 
-        $med_userspelajar = med_userspelajar::where('id_userspelajar',$id)->first();
+        $med_userspelajar = med_userspelajar::where('id_userspelajar',$id)
+            ->first($this->responseFields());
 
         if ($med_userspelajar)   {
             return response()->json([
@@ -53,7 +57,7 @@ class med_userspelajarController extends Controller
     }
 
     public function list()  {
-        $med_userspelajar = med_userspelajar::all();
+        $med_userspelajar = med_userspelajar::get($this->responseFields());
 
         if ($med_userspelajar)   {
             return response()->json([
@@ -67,6 +71,11 @@ class med_userspelajarController extends Controller
     
     public function editprofile(Request $request)    {
         $id = $request->input('id_userspelajar');
+        $profile = med_userspelajar::where('id_userspelajar', $id)
+            ->first(['id_userspelajar', 'FK_users']);
+        if (!$profile || !$this->canActForUser($request, $profile->FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $nama_sekolah = $request->input('nama_sekolah');
         $updated_by = $request->input('updated_by');
 
@@ -88,5 +97,16 @@ class med_userspelajarController extends Controller
                 'data'=>''
             ],200);
         }
+    }
+
+    private function responseFields(): array
+    {
+        return [
+            'id_userspelajar', 'FK_users', 'FK_kategori_pengguna',
+            'alamat1_rumah', 'alamat2_rumah', 'poskod_rumah', 'daerah_rumah',
+            'negeri_rumah', 'negara_rumah', 'nama_sekolah', 'alamat1_sekolah',
+            'alamat2_sekolah', 'poskod_sekolah', 'daerah_sekolah',
+            'negeri_sekolah', 'statusrekod',
+        ];
     }
 }

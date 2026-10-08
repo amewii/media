@@ -43,7 +43,8 @@ class med_tempohController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id');
 
-        $med_tempoh = med_tempoh::where('id_tempoh',$id)->first();
+        $med_tempoh = med_tempoh::where('id_tempoh',$id)
+            ->first(['id_tempoh', 'tempoh', 'statusrekod']);
 
         if ($med_tempoh)   {
             return response()->json([
@@ -56,7 +57,8 @@ class med_tempohController extends Controller
 
     public function showGet(Request $request, $id)  {
 
-        $med_tempoh = med_tempoh::where('id_tempoh',$id)->first();
+        $med_tempoh = med_tempoh::where('id_tempoh',$id)
+            ->first(['id_tempoh', 'tempoh', 'statusrekod']);
 
         if ($med_tempoh)   {
             return response()->json([
@@ -68,7 +70,7 @@ class med_tempohController extends Controller
     }
 
     public function list()  {
-        $med_tempoh = med_tempoh::where('statusrekod','1') -> get();
+        $med_tempoh = med_tempoh::where('statusrekod','1')->get(['id_tempoh', 'tempoh']);
 
         if ($med_tempoh)   {
             return response()->json([
@@ -81,7 +83,7 @@ class med_tempohController extends Controller
     }
 
     public function listAll()  {
-        $med_tempoh = med_tempoh::select('*') -> get();
+        $med_tempoh = med_tempoh::get(['id_tempoh', 'tempoh', 'statusrekod']);
 
         if ($med_tempoh)   {
             return response()->json([
@@ -98,7 +100,7 @@ class med_tempohController extends Controller
         $tempoh = $request->input('tempoh');
         $updated_by = $request->input('updated_by');
 
-        $med_tempoh_check = med_tempoh::where('tempoh',$tempoh) -> first(); 
+        $med_tempoh_check = med_tempoh::where('tempoh',$tempoh)->first(['id_tempoh']);
 
         if ($med_tempoh_check)  {
             return response()->json([
@@ -132,7 +134,8 @@ class med_tempohController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_tempoh');
 
-        $med_status_search = med_tempoh::where('id_tempoh',$id) -> first(); 
+        $med_status_search = med_tempoh::where('id_tempoh',$id)
+            ->first(['id_tempoh', 'tempoh', 'tempoh_prev', 'statusrekod']);
 
         switch($med_status_search->statusrekod)    {
             case 0: $med_format = med_tempoh::where('id_tempoh', $id) -> update([
@@ -149,7 +152,8 @@ class med_tempohController extends Controller
                     break;
         }
 
-        $med_status_search = med_tempoh::where('id_tempoh',$id) -> first(); 
+        $med_status_search = med_tempoh::where('id_tempoh',$id)
+            ->first(['id_tempoh', 'tempoh', 'statusrekod']);
 
         if ($med_format)  {
             return response()->json([

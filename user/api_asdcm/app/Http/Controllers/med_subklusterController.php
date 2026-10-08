@@ -43,7 +43,8 @@ class med_subklusterController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_subkluster');
 
-        $med_subkluster = med_subkluster::where('id_subkluster',$id)->get();
+        $med_subkluster = med_subkluster::where('id_subkluster',$id)
+            ->get(['id_subkluster', 'nama_subkluster', 'FK_kluster', 'statusrekod']);
 
         if ($med_subkluster)   {
             return response()->json([
@@ -56,7 +57,8 @@ class med_subklusterController extends Controller
 
     public function showGet($FK_kluster)  {
 
-        $med_subkluster = med_subkluster::where('FK_kluster',$FK_kluster)->get();
+        $med_subkluster = med_subkluster::where('FK_kluster',$FK_kluster)
+            ->get(['id_subkluster', 'nama_subkluster', 'FK_kluster']);
 
         if ($med_subkluster)   {
             return response()->json([
@@ -68,8 +70,11 @@ class med_subklusterController extends Controller
     }
 
     public function list()  {
-        $med_subkluster = med_subkluster::join('med_kluster', 'med_kluster.id_kluster', '=', 'med_subkluster.FK_kluster') -> 
-                                        where('med_subkluster.statusrekod','1') -> where('med_kluster.statusrekod','1') -> get(); // list all data
+        $med_subkluster = med_subkluster::join('med_kluster', 'med_kluster.id_kluster', '=', 'med_subkluster.FK_kluster')
+            ->where('med_subkluster.statusrekod','1')->where('med_kluster.statusrekod','1')->get([
+                'med_subkluster.id_subkluster', 'med_subkluster.nama_subkluster',
+                'med_subkluster.FK_kluster', 'med_kluster.nama_kluster',
+            ]);
 
         if ($med_subkluster)   {
             return response()->json([
@@ -82,9 +87,12 @@ class med_subklusterController extends Controller
     }
 
     public function listall()  {
-        $med_subkluster = med_subkluster::select("*", "med_subkluster.statusrekod AS med_subklustertatusrekod") -> 
-                                    join('med_kluster', 'med_kluster.id_kluster', '=', 'med_subkluster.FK_kluster') -> 
-                                    get(); // list all data
+        $med_subkluster = med_subkluster::join('med_kluster', 'med_kluster.id_kluster', '=', 'med_subkluster.FK_kluster')
+            ->get([
+                'med_subkluster.id_subkluster', 'med_subkluster.nama_subkluster',
+                'med_subkluster.FK_kluster', 'med_kluster.nama_kluster',
+                'med_subkluster.statusrekod AS med_subklustertatusrekod',
+            ]);
 
         if ($med_subkluster)   {
             return response()->json([

@@ -18,7 +18,7 @@ class med_kampusController extends Controller
         $created_by = $request->input('created_by');
         $updated_by = $request->input('updated_by');
 
-        $med_kampus = med_kampus::where('nama_kampus',$nama_kampus)->first();
+        $med_kampus = med_kampus::where('nama_kampus',$nama_kampus)->first(['id_kampus']);
 
         if ($med_kampus)   {
             return response()->json([
@@ -57,7 +57,9 @@ class med_kampusController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kampus');
 
-        $med_kampus = med_kampus::where('id_kampus',$id)->get();
+        $med_kampus = med_kampus::where('id_kampus',$id)->get([
+            'id_kampus', 'nama_kampus', 'alamat', 'bandar', 'poskod', 'FK_negeri', 'statusrekod',
+        ]);
 
         if ($med_kampus)   {
             return response()->json([
@@ -69,7 +71,9 @@ class med_kampusController extends Controller
     }
 
     public function list()  {
-        $med_kampus = med_kampus::where('med_kampus.statusrekod','1') -> get(); // list all data
+        $med_kampus = med_kampus::where('med_kampus.statusrekod','1')->get([
+            'id_kampus', 'nama_kampus', 'alamat', 'bandar', 'poskod', 'FK_negeri',
+        ]);
 
         if ($med_kampus)   {
             return response()->json([
@@ -82,7 +86,9 @@ class med_kampusController extends Controller
     }
 
     public function listall()  {
-        $med_kampus = med_kampus::get(); // list all data
+        $med_kampus = med_kampus::get([
+            'id_kampus', 'nama_kampus', 'alamat', 'bandar', 'poskod', 'FK_negeri', 'statusrekod',
+        ]);
 
         if ($med_kampus)   {
             return response()->json([
@@ -102,7 +108,7 @@ class med_kampusController extends Controller
         $bandar = $request->input('bandar');
         $updated_by = $request->input('updated_by');
 
-        $med_kampus = med_kampus::where('nama_kampus',$nama_kampus)->first();
+        $med_kampus = med_kampus::where('nama_kampus',$nama_kampus)->first(['id_kampus']);
 
         if ($med_kampus)   {
             return response()->json([

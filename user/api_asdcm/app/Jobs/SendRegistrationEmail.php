@@ -54,7 +54,7 @@ class SendRegistrationEmail extends Job
                                 Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
                                 Sekiranya anda membuat permintaan ini, Sila klik pautan dibawah untuk masuk ke dalam sistem:<br><br>
                                 No. Kad Pengenalan: '. $this->data['no_kad_pengenalan'] .'<br>
-                                Katalaluan: '. $this->data['kata_laluan'] .'<br><br>
+                                Katalaluan anda tidak disertakan dalam emel atas faktor keselamatan.<br><br>
                                 <a href="'.$this->data['link_sistem'].'/user">Galeri Media INTAN Malaysia</a><br><br>
                                 Terima kasih.';
             $mail->AltBody = 'Alternate Message';

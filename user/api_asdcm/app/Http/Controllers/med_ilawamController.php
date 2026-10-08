@@ -45,7 +45,8 @@ class med_ilawamController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_ilawam');
 
-        $med_ilawam = med_ilawam::where('id_ilawam',$id)->first();
+        $med_ilawam = med_ilawam::where('id_ilawam',$id)
+            ->first(['id_ilawam', 'nama_ila', 'kod_ila', 'statusrekod']);
 
         if ($med_ilawam)   {
             return response()->json([
@@ -59,7 +60,8 @@ class med_ilawamController extends Controller
     public function showGet($kod_bahagian)  {
         // $id = $request->input('id_ilawam');
         $condition = $kod_bahagian;
-        $med_ilawam = med_ilawam::where('kod_ila','LIKE', "{$condition}%")->get();
+        $med_ilawam = med_ilawam::where('kod_ila','LIKE', "{$condition}%")
+            ->get(['id_ilawam', 'nama_ila', 'kod_ila']);
 
         if ($med_ilawam)   {
             return response()->json([
@@ -71,7 +73,8 @@ class med_ilawamController extends Controller
     }
 
     public function list()  {
-        $med_ilawam = med_ilawam::where('med_ilawam.statusrekod','1') -> get(); // list all data
+        $med_ilawam = med_ilawam::where('med_ilawam.statusrekod','1')
+            ->get(['id_ilawam', 'nama_ila', 'kod_ila']);
 
         if ($med_ilawam)   {
             return response()->json([

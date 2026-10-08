@@ -45,7 +45,9 @@ class med_modulController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_modul');
 
-        $med_modul = med_modul::where('id_modul',$id)->first();
+        $med_modul = med_modul::where('id_modul',$id)->first([
+            'id_modul', 'kod_modul', 'nama_modul', 'nama_menu_modul', 'statusrekod',
+        ]);
 
         if ($med_modul)   {
             return response()->json([
@@ -57,7 +59,9 @@ class med_modulController extends Controller
     }
 
     public function list()  {
-        $med_modul = med_modul::where('statusrekod','1') -> get(); // list all data
+        $med_modul = med_modul::where('statusrekod','1')->get([
+            'id_modul', 'kod_modul', 'nama_modul', 'nama_menu_modul',
+        ]);
 
         if ($med_modul)   {
             return response()->json([

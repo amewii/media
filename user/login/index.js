@@ -28,7 +28,7 @@ $("#login").on("submit", function (e) {
         var data = obj.data;
         sessionStorage.id = data.id_users;
         sessionStorage.token = obj.token;
-        sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
+        sessionStorage.no_kad_pengenalan = no_kad_pengenalan;
         sessionStorage.nama = data.nama;
         sessionStorage.emel = data.emel;
         window.location.replace("../");

@@ -68,11 +68,14 @@ class med_programController extends Controller
         $FK_kluster = $request->input('FK_kluster');
         $tahun_program = $request->input('tahun_program');
 
-        $med_program = med_program::select("*", med_program::raw("substr(tarikh_program,1,4) as tahun")) -> 
+        $med_program = med_program::select(array_merge($this->programListFields(), [
+                                            med_program::raw("substr(med_program.tarikh_program,1,4) as tahun"),
+                                        ])) ->
                                         join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
-                                        join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
-                                        join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
-                                        join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster');
+                                        join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
+                                        join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') ->
+                                        join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') ->
+                                        leftJoin('med_unit', 'med_unit.id_unit', '=', 'med_program.FK_unit');
 
         if($FK_kategori != '') {
             $med_program = $med_program -> where('FK_kategori',$FK_kategori);
@@ -110,8 +113,8 @@ class med_programController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_program');
 
-        $med_program = med_program::select("*", "med_program.id AS PK") ->
-                                        where('id_program',$id)->first();
+        $med_program = med_program::where('id_program',$id)
+            ->first($this->programRecordFields());
 
         if ($med_program)   {
             return response()->json([
@@ -123,7 +126,8 @@ class med_programController extends Controller
     }
 
     public function showGet(Request $request, $id)  {
-        $med_program = med_program::join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+        $med_program = med_program::select($this->programListFields()) ->
+                                    join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') ->
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     leftjoin('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
@@ -169,7 +173,8 @@ class med_programController extends Controller
     }
 
     public function list()  {
-        $med_program = med_program::join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+        $med_program = med_program::select($this->programListFields()) ->
+                                    join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') ->
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
@@ -196,7 +201,8 @@ class med_programController extends Controller
     }
 
     public function list_publish()  {
-        $med_program = med_program::join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+        $med_program = med_program::select($this->programListFields()) ->
+                                    join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') ->
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
@@ -239,7 +245,8 @@ class med_programController extends Controller
     }
 
     public function listpdf()  {
-        $med_program = med_program::join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
+        $med_program = med_program::select($this->programListFields()) ->
+                                    join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') ->
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
                                     join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_program.FK_subkluster') -> 
@@ -263,7 +270,7 @@ class med_programController extends Controller
 
     public function listbergambar()  {
 
-        $med_program = med_program::select("*", "med_program.id_program AS PK") ->
+        $med_program = med_program::select($this->programListFields()) ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
@@ -325,7 +332,7 @@ class med_programController extends Controller
 
     public function listvideo()  {
 
-        $med_program = med_program::select("*", "med_program.id_program AS PK") ->
+        $med_program = med_program::select($this->programListFields()) ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
@@ -392,7 +399,7 @@ class med_programController extends Controller
 
     public function listdokumen()  
     {
-        $med_program = med_program::select("*", "med_program.id_program AS PK")
+        $med_program = med_program::select($this->programListFields())
             ->join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori')
             ->join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
             ->join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster')
@@ -469,7 +476,7 @@ class med_programController extends Controller
     
 
     public function listall()  {
-        $med_program = med_program::select("*", "med_program.statusrekod AS programstatusrekod") ->
+        $med_program = med_program::select($this->programListFields()) ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
@@ -480,7 +487,9 @@ class med_programController extends Controller
 
         if (sizeof($med_program)>0)   {
             for($i=0;$i<sizeof($med_program);$i++){
-                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')->where('med_program.id_program',$med_program[$i]->id_program)->first();
+                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')
+                    ->where('med_program.id_program',$med_program[$i]->id_program)
+                    ->first(['med_users.nama']);
                 if($obj_created_by){
                     $med_program[$i]->created_by_users = $obj_created_by;
                 }
@@ -503,7 +512,7 @@ class med_programController extends Controller
     }
 
     public function listallbykluster($id)  {
-        $med_program = med_program::select("*", "med_program.statusrekod AS programstatusrekod") ->
+        $med_program = med_program::select($this->programListFields()) ->
                                     join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                                     join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                                     join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
@@ -515,7 +524,9 @@ class med_programController extends Controller
 
         if (sizeof($med_program)>0)   {
             for($i=0;$i<sizeof($med_program);$i++){
-                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')->where('med_program.id_program',$med_program[$i]->id_program)->first();
+                $obj_created_by = med_program::leftjoin('med_users','id_users','med_program.created_by')
+                    ->where('med_program.id_program',$med_program[$i]->id_program)
+                    ->first(['med_users.nama']);
                 if($obj_created_by){
                     $med_program[$i]->created_by_users = $obj_created_by;
                 }
@@ -545,9 +556,9 @@ class med_programController extends Controller
                                            where('FK_kategori',$FK_kategori) -> 
                                            where('FK_kluster',$FK_kluster) -> 
                                            where('FK_subkluster',$FK_subkluster) -> 
-                                           where('FK_kampus',$FK_kampus) -> 
-                                           where('FK_unit',$FK_unit) -> 
-                                           first(); 
+                                           where('FK_kampus',$FK_kampus) ->
+                                           where('FK_unit',$FK_unit) ->
+                                           first(['id_program']);
 
         if ($med_program_search)    {
             return response()->json([
@@ -641,7 +652,7 @@ class med_programController extends Controller
         $nama_program = $request->input('nama_program');
         $Fk_vip = $request->input('Fk_vip');
 
-        $med_program = med_program::select("*", "med_program.statusrekod AS programstatusrekod") ->
+        $med_program = med_program::select($this->programListFields()) ->
                 join('med_kategoriprogram', 'med_kategoriprogram.id_kategoriprogram', '=', 'med_program.FK_kategori') -> 
                 join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') -> 
                 join('med_kluster', 'med_kluster.id_kluster', '=', 'med_program.FK_kluster') -> 
@@ -681,7 +692,8 @@ class med_programController extends Controller
         $id = $request->input('id_program');
         $updated_by = $request->input('updated_by');
         
-        $med_program = med_program::select('*')->where('id_program',$id)->first();
+        $med_program = med_program::where('id_program',$id)
+            ->first(['id_program', 'media_path', 'FK_vip']);
         
         $media_path = $med_program->media_path;
         $obj_media = json_decode($media_path);
@@ -769,9 +781,6 @@ class med_programController extends Controller
         $last_uploaded_at = Carbon::now()->toDateTimeString();
 
         try {
-            $med_program = med_program::select('*')->where('id_program',$id)->first();
-            
-            $media_path = $media_path;
             $med_program = med_program::where('id_program',$id) -> update([
                 'media_path' => $media_path,
                 'last_uploaded_at' => $last_uploaded_at,
@@ -797,7 +806,8 @@ class med_programController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_program');
 
-        $med_program_search = med_program::where('id_program',$id) -> first(); 
+        $med_program_search = med_program::where('id_program',$id)
+            ->first(['id_program', 'statusrekod']);
 
         switch($med_program_search->statusrekod)    {
             case 0: $med_program = med_program::where('id_program',$id) -> update([
@@ -810,7 +820,8 @@ class med_programController extends Controller
                     break;
         }
 
-        $med_program_search = med_program::where('id_program',$id) -> first(); 
+        $med_program_search = med_program::where('id_program',$id)
+            ->first($this->programRecordFields());
 
         if ($med_program)  {
             return response()->json([
@@ -835,7 +846,7 @@ class med_programController extends Controller
         $updated_by = $request->input('updated_by');
         $imgText = $request->input('imgText');
         
-        $med_program = med_program::select('*')->where('id_program',$id)->first();
+        $med_program = med_program::where('id_program',$id)->first(['id_program', 'media_path']);
         
         $media_path = $med_program -> media_path;
 
@@ -891,7 +902,7 @@ class med_programController extends Controller
         foreach($obj_media_delete as $val) { 
             $bil++;
             $media_list = "";
-            $med_program = med_program::select('*')->where('id_program',$id)->first();            
+            $med_program = med_program::where('id_program',$id)->first(['id_program', 'media_path']);
             $media_path = $med_program -> media_path;
             $obj_media = json_decode($media_path);
             foreach($obj_media as $y => $valdb) {
@@ -930,5 +941,35 @@ class med_programController extends Controller
                 'data'=>''
             ],200);
         }
+    }
+
+    private function programRecordFields(): array
+    {
+        return [
+            'id_program', 'id_program AS PK', 'nama_program', 'tarikh_program',
+            'FK_kategori', 'FK_kluster', 'FK_subkluster', 'FK_kampus', 'FK_unit',
+            'FK_vip', 'media_path', 'status_publish', 'last_uploaded_at', 'statusrekod',
+        ];
+    }
+
+    private function programListFields(): array
+    {
+        return [
+            'med_program.id_program', 'med_program.id_program AS PK',
+            'med_program.nama_program', 'med_program.tarikh_program',
+            'med_program.FK_kategori', 'med_program.FK_kluster',
+            'med_program.FK_subkluster', 'med_program.FK_kampus',
+            'med_program.FK_unit', 'med_program.FK_vip', 'med_program.media_path',
+            'med_program.status_publish', 'med_program.last_uploaded_at',
+            'med_program.statusrekod AS programstatusrekod',
+            'med_kategoriprogram.id_kategoriprogram',
+            'med_kategoriprogram.kod_kategori', 'med_kategoriprogram.nama_kategori',
+            'med_kategoriprogram.bilangan_fail', 'med_kategoriprogram.kod_format',
+            'med_kategoriprogram.flag_kod_format', 'med_kategoriprogram.saiz_fail',
+            'med_kampus.id_kampus', 'med_kampus.nama_kampus',
+            'med_kluster.id_kluster', 'med_kluster.nama_kluster',
+            'med_subkluster.id_subkluster', 'med_subkluster.nama_subkluster',
+            'med_unit.id_unit', 'med_unit.nama_unit',
+        ];
     }
 }

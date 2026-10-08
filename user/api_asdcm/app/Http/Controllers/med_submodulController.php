@@ -45,7 +45,9 @@ class med_submodulController extends Controller
     public function show(Request $request)  {
         $FK_modul = $request->input('FK_modul');
 
-        $med_submodul = med_submodul::get();
+        $med_submodul = med_submodul::get([
+            'id_submodul', 'nama_submodul', 'nama_menu_submodul', 'FK_modul', 'statusrekod',
+        ]);
 
         $q = $med_submodul->where('FK_modul',$FK_modul);
 
@@ -60,7 +62,9 @@ class med_submodulController extends Controller
 
     public function showSubmodul(Request $request, $FK_modul)  {
 
-        $med_submodul = med_submodul::get();
+        $med_submodul = med_submodul::get([
+            'id_submodul', 'nama_submodul', 'nama_menu_submodul', 'FK_modul', 'statusrekod',
+        ]);
 
         $q = $med_submodul->where('FK_modul',$FK_modul);
 
@@ -74,9 +78,11 @@ class med_submodulController extends Controller
     }
 
     public function list()  {
-        $med_submodul = med_submodul::select("med_submodul.id_submodul", "nama_submodul", "FK_modul", "nama_modul", "med_submodul.statusrekod", "med_modul.statusrekod") -> 
-                                    join('med_modul', 'med_modul.id_modul', '=', 'med_submodul.FK_modul') -> 
-                                    where('med_submodul.statusrekod','1') -> where('med_modul.statusrekod','1') -> get(); // list all data
+        $med_submodul = med_submodul::join('med_modul', 'med_modul.id_modul', '=', 'med_submodul.FK_modul')
+            ->where('med_submodul.statusrekod','1')->where('med_modul.statusrekod','1')->get([
+                'med_submodul.id_submodul', 'med_submodul.nama_submodul',
+                'med_submodul.nama_menu_submodul', 'med_submodul.FK_modul', 'med_modul.nama_modul',
+            ]);
 
         if ($med_submodul)   {
             return response()->json([

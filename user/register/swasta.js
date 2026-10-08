@@ -150,6 +150,7 @@ $("#registerswasta").on("submit", function (e) {
           Swal(result.message, result.data, "error");
           return;
         }
+        const registrationToken = result.token;
 
         var settingsfetchusers = {
           url: host + "checkUsers",
@@ -177,6 +178,9 @@ $("#registerswasta").on("submit", function (e) {
             url: host + "addUserswastas",
             method: "POST",
             timeout: 0,
+            headers: {
+              Authorization: "Bearer " + registrationToken,
+            },
             processData: false,
             mimeType: "multipart/form-data",
             contentType: false,

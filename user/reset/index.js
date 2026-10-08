@@ -1,11 +1,12 @@
 const queryString = window.location.search;
+let passwordResetToken = null;
 if (queryString != "") {
   const urlParams = new URLSearchParams(queryString);
   const temp = urlParams.get("temp");
+  passwordResetToken = temp;
   var obj = new get(host+`usersResetKatalaluan/`+temp,window.sessionStorage.token).execute();
   if(obj.success){
-    $("#no_kad_pengenalan_final").val(obj.data.no_kad_pengenalan);
-    if (typeof obj.data.no_kad_pengenalan !== "undefined") {
+    if (obj.data.valid === true) {
       $("#checkic").hide();
       $("#backtologin").hide();
       $("#checkic3").show();
@@ -137,12 +138,13 @@ $("#checkusers3").on("submit", function (e) {
   let $this = $(this);
   if (!confirmed) {
     e.preventDefault();
-    let no_kad_pengenalan = $("#no_kad_pengenalan_final").val();
     let katalaluan = $("#katalaluan").val();
 
     var form = new FormData();
-    form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("katalaluan", katalaluan);
+    if (passwordResetToken) {
+      form.append("reset_token", passwordResetToken);
+    }
 
     var obj = new post(host+`usersReset`,form,window.sessionStorage.token).execute();
     if(obj.success){

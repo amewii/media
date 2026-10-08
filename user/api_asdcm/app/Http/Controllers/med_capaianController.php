@@ -23,7 +23,7 @@ class med_capaianController extends Controller
 
         $checkexist = med_capaian::where('med_capaian.FK_users',$FK_users)
             ->orderBy('id_capaian', 'asc')
-            ->first();
+            ->first(['id_capaian']);
         $isNew = !$checkexist;
 
         if ($isNew)   {
@@ -48,7 +48,8 @@ class med_capaianController extends Controller
                 'updated_by' => $updated_by,
                 'statusrekod' => $statusrekod
             ]);
-            $register = med_capaian::where('id_capaian', $checkexist->id_capaian)->first();
+            $register = med_capaian::where('id_capaian', $checkexist->id_capaian)
+                ->first($this->responseColumns());
         }
 
         if ($register)  {
@@ -72,7 +73,8 @@ class med_capaianController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_capaian');
 
-        $med_capaian = med_capaian::where('id_capaian',$id)->first();
+        $med_capaian = med_capaian::where('id_capaian',$id)
+            ->first($this->responseColumns());
 
         if ($med_capaian)   {
             return response()->json([
@@ -85,7 +87,14 @@ class med_capaianController extends Controller
 
     public function showGet($FK_users)  {
 
-        $med_capaian = med_capaian::select("*", "med_capaian.statusrekod AS med_capaianstatusrekod") ->
+        $med_capaian = med_capaian::select(
+                            'med_capaian.id_capaian', 'med_capaian.FK_peranan',
+                            'med_capaian.FK_kampus', 'med_capaian.FK_kluster',
+                            'med_capaian.FK_subkluster', 'med_capaian.FK_unit',
+                            'med_capaian.FK_users',
+                            'med_capaian.statusrekod AS med_capaianstatusrekod',
+                            'med_peranan.nama_peranan'
+                        ) ->
                             join('med_peranan', 'med_peranan.id_peranan', '=', 'med_capaian.FK_peranan') -> 
                             where('FK_users',$FK_users)->first();
 
@@ -99,7 +108,14 @@ class med_capaianController extends Controller
     }
 
     public function list()  {
-        $med_capaian = med_capaian::select("*", "med_capaian.statusrekod AS med_capaianstatusrekod") ->
+        $med_capaian = med_capaian::select(
+                            'med_capaian.id_capaian', 'med_capaian.FK_peranan',
+                            'med_capaian.FK_kampus', 'med_capaian.FK_kluster',
+                            'med_capaian.FK_subkluster', 'med_capaian.FK_unit',
+                            'med_capaian.FK_users',
+                            'med_capaian.statusrekod AS med_capaianstatusrekod',
+                            'med_users.nama', 'med_peranan.nama_peranan'
+                        ) ->
                             join('med_users', 'med_users.id_users', '=', 'med_capaian.FK_users') -> 
                             join('med_peranan', 'med_peranan.id_peranan', '=', 'med_capaian.FK_peranan') -> 
                             where('med_capaian.statusrekod','1') -> get(); // list all data
@@ -158,7 +174,8 @@ class med_capaianController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_capaian');
 
-        $med_capaian_search = med_capaian::where('id_capaian',$id)->first(); 
+        $med_capaian_search = med_capaian::where('id_capaian',$id)
+            ->first(['id_capaian', 'statusrekod']);
         switch($med_capaian_search->statusrekod)    {
             case 0: $med_capaian = med_capaian::where('id_capaian',$id) -> update([
                         'statusrekod' => '1',
@@ -169,7 +186,8 @@ class med_capaianController extends Controller
                     ]);
                     break;
         }
-        $med_capaian_search = med_capaian::where('id_capaian',$id)->first(); 
+        $med_capaian_search = med_capaian::where('id_capaian',$id)
+            ->first(['id_capaian', 'statusrekod']);
         
         if ($med_capaian)  {
             return response()->json([
@@ -189,7 +207,8 @@ class med_capaianController extends Controller
 
     public function showbyID($idcapaian)    {
 
-        $med_capaian = med_capaian::where('id_capaian',$idcapaian)->first(); 
+        $med_capaian = med_capaian::where('id_capaian',$idcapaian)
+            ->first($this->responseColumns());
       
         
         if ($med_capaian)  {
@@ -206,5 +225,13 @@ class med_capaianController extends Controller
                 'data'=>''
             ],404);
         }
+    }
+
+    private function responseColumns(): array
+    {
+        return [
+            'id_capaian', 'FK_peranan', 'FK_kampus', 'FK_kluster',
+            'FK_subkluster', 'FK_unit', 'FK_users', 'statusrekod',
+        ];
     }
 }

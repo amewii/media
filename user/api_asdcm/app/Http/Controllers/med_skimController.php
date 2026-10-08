@@ -45,7 +45,8 @@ class med_skimController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_skim');
 
-        $med_skim = med_skim::where('id_skim',$id)->first();
+        $med_skim = med_skim::where('id_skim',$id)
+            ->first(['id_skim', 'nama_skim', 'kod_skim', 'statusrekod']);
 
         if ($med_skim)   {
             return response()->json([
@@ -57,7 +58,8 @@ class med_skimController extends Controller
     }
 
     public function list()  {
-        $med_skim = med_skim::where('statusrekod','1') -> get();
+        $med_skim = med_skim::where('statusrekod','1')
+            ->get(['id_skim', 'nama_skim', 'kod_skim']);
 
         if ($med_skim)   {
             return response()->json([

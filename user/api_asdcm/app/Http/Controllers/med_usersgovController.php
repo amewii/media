@@ -14,6 +14,9 @@ class med_usersgovController extends Controller
 
     public function register(Request $request) {
         $FK_users = $request->input('FK_users');
+        if (!$this->canActForUser($request, $FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $emel_kerajaan = $request->input('emel_kerajaan');
         $notel_kerajaan = $request->input('notel_kerajaan');
         $kod_jawatan = $request->input('kod_jawatan');
@@ -71,20 +74,21 @@ class med_usersgovController extends Controller
 
         $register = med_usersgov::where('FK_users', $FK_users)
             ->orderBy('id_usersgov', 'asc')
-            ->first();
+            ->first(['id_usersgov']);
         $isNew = !$register;
 
         if ($isNew) {
             $register = med_usersgov::create($govData);
         } else {
             med_usersgov::where('id_usersgov', $register->id_usersgov)->update($govData);
-            $register = med_usersgov::where('id_usersgov', $register->id_usersgov)->first();
+            $register = med_usersgov::where('id_usersgov', $register->id_usersgov)
+                ->first($this->responseFields());
         }
 
-        $med_users_search = med_users::where('id_users',$FK_users)->first();
+        $med_users_search = med_users::where('id_users',$FK_users)->first(['id_users', 'nama']);
         if ($register)  {
             if ($isNew) {
-                $tetapan_mail = med_tetapan::first();
+                $tetapan_mail = med_tetapan::first(['mail_gateway', 'mail_port', 'link_sistem']);
 
                 Queue::push(new SendRegistrationEmail([
                     'env' => request()->getHost(),
@@ -124,7 +128,7 @@ class med_usersgovController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_usersgov');
 
-        $med_usersgov = med_usersgov::where('id_usersgov',$id)->first();
+        $med_usersgov = med_usersgov::where('id_usersgov',$id)->first($this->responseFields());
 
         if ($med_usersgov)   {
             return response()->json([
@@ -136,7 +140,7 @@ class med_usersgovController extends Controller
     }
 
     public function list()  {
-        $med_usersgov = med_usersgov::all();
+        $med_usersgov = med_usersgov::get($this->responseFields());
 
         if ($med_usersgov)   {
             return response()->json([
@@ -198,6 +202,10 @@ class med_usersgovController extends Controller
 
     public function editprofile(Request $request)    {
         $id = $request->input('id_usersgov');
+        $profile = med_usersgov::where('id_usersgov', $id)->first(['id_usersgov', 'FK_users']);
+        if (!$profile || !$this->canActForUser($request, $profile->FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $nama_jawatan = $request->input('nama_jawatan');
         $emel_kerajaan = $request->input('emel_kerajaan');
         $notel_kerajaan = $request->input('notel_kerajaan');
@@ -253,5 +261,19 @@ class med_usersgovController extends Controller
                 'data'=>''
             ],200);
         }
+    }
+
+    private function responseFields(): array
+    {
+        return [
+            'id_usersgov', 'FK_users', 'emel_kerajaan', 'notel_kerajaan',
+            'FK_kategori_pengguna', 'kod_jawatan', 'nama_jawatan',
+            'kategori_perkhidmatan', 'skim', 'gred', 'taraf_jawatan',
+            'jenis_perkhidmatan', 'tarikh_lantikan', 'unit_organisasi',
+            'users_intan', 'FK_kampus', 'FK_kluster', 'FK_subkluster', 'FK_unit',
+            'FK_kementerian', 'FK_agensi', 'FK_bahagian', 'FK_ila',
+            'alamat1_pejabat', 'alamat2_pejabat', 'poskod_pejabat',
+            'daerah_pejabat', 'negeri_pejabat', 'statusrekod',
+        ];
     }
 }

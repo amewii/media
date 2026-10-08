@@ -20,7 +20,7 @@ $("#login").on("submit", function (e) {
     if(obj.success){
       var data = obj.data;
       window.sessionStorage.token = obj.token;
-      window.sessionStorage.no_kad_pengenalan = data.no_kad_pengenalan;
+      window.sessionStorage.no_kad_pengenalan = no_kad_pengenalan;
       sessionStorage.browser = getBrowser();
       saveLog(data.id_users, "Login.", window.sessionStorage.browser);
       if(no_kad_pengenalan == katalaluan){
@@ -63,6 +63,9 @@ function saveLog(FK_users, action_made, browser_name) {
     url: host + "addLogs",
     method: "POST",
     timeout: 0,
+    headers: {
+      Authorization: "Bearer " + window.sessionStorage.token,
+    },
     processData: false,
     contentType: false,
     data: form,
@@ -114,7 +117,7 @@ $("#updatePassword").on('submit',function(e){
           "method": "POST",
           "timeout": 0,
           "headers": {
-              "Authorization": "media " + window.sessionStorage.token
+              "Authorization": "Bearer " + window.sessionStorage.token
           },
           "processData": false,
           "mimeType": "multipart/form-data",

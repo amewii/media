@@ -15,7 +15,7 @@ class med_gelaranController extends Controller
         $created_by = $request->input('created_by');
         $updated_by = $request->input('updated_by');
 
-        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)->first();
+        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)->first(['id_gelaran']);
 
         if ($gelarans)   {
             return response()->json([
@@ -51,7 +51,8 @@ class med_gelaranController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_gelaran');
 
-        $gelarans = med_gelaran::where('id_gelaran',$id)->first();
+        $gelarans = med_gelaran::where('id_gelaran',$id)
+            ->first(['id_gelaran', 'nama_gelaran', 'statusrekod']);
 
         if ($gelarans)   {
             return response()->json([
@@ -65,7 +66,8 @@ class med_gelaranController extends Controller
     public function showHrmis(Request $request)  {
         $nama_gelaran = $request->input('nama_gelaran');
 
-        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)->first();
+        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)
+            ->first(['id_gelaran', 'nama_gelaran']);
 
         if ($gelarans)   {
             return response()->json([
@@ -77,7 +79,7 @@ class med_gelaranController extends Controller
     }
 
     public function list()  {
-        $gelarans = med_gelaran::where('statusrekod','1') -> get(); // list all data
+        $gelarans = med_gelaran::where('statusrekod','1')->get(['id_gelaran', 'nama_gelaran']);
 
         if ($gelarans)   {
             return response()->json([
@@ -90,7 +92,7 @@ class med_gelaranController extends Controller
     }
 
     public function listall()  {
-        $gelarans = med_gelaran::get(); // list all data
+        $gelarans = med_gelaran::get(['id_gelaran', 'nama_gelaran', 'statusrekod']);
 
         if ($gelarans)   {
             return response()->json([
@@ -107,7 +109,7 @@ class med_gelaranController extends Controller
         $nama_gelaran = $request->input('nama_gelaran');
         $updated_by = $request->input('updated_by');
 
-        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)->first();
+        $gelarans = med_gelaran::where('nama_gelaran',$nama_gelaran)->first(['id_gelaran']);
 
         if ($gelarans)   {
             return response()->json([

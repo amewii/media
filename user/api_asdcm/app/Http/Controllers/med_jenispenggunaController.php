@@ -39,7 +39,8 @@ class med_jenispenggunaController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_jenispengguna');
 
-        $med_jenispengguna = med_jenispengguna::where('id_jenispengguna',$id)->first();
+        $med_jenispengguna = med_jenispengguna::where('id_jenispengguna',$id)
+            ->first(['id_jenispengguna', 'jenis_pengguna', 'kod_jenis_pengguna']);
 
         if ($med_jenispengguna)   {
             return response()->json([
@@ -51,7 +52,9 @@ class med_jenispenggunaController extends Controller
     }
 
     public function list()  {
-        $med_jenispengguna = med_jenispengguna::get();
+        $med_jenispengguna = med_jenispengguna::get([
+            'id_jenispengguna', 'jenis_pengguna', 'kod_jenis_pengguna',
+        ]);
 
         if ($med_jenispengguna)   {
             return response()->json([

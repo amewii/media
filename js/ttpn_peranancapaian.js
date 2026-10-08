@@ -18,6 +18,7 @@ function formatDisplayName(value) {
 function maskNoKadPengenalan(value) {
   var noKad = perananText(value);
   if (!noKad) return "-";
+  if (noKad.indexOf("*") !== -1) return noKad;
   return noKad.length > 8 ? noKad.slice(0, 8) + "****" : noKad;
 }
 
@@ -107,7 +108,7 @@ $(document)
   .on("click.perananPage", ".js-reset-password", function () {
     var rows = storedRows("#dataListPengguna");
     var row = rows[Number($(this).attr("data-index"))];
-    if (row) resetPassword(row.no_kad_pengenalan, formatDisplayName(row.nama));
+    if (row) resetPassword(row.id_users, formatDisplayName(row.nama), row.no_kad_pengenalan);
   })
   .off("change.perananPage", ".js-toggle-access")
   .on("change.perananPage", ".js-toggle-access", function () {
@@ -259,7 +260,7 @@ $("#registergov").on("submit", function (e) {
       method: "POST",
       timeout: 0,
       headers: {
-        Authorization: window.sessionStorage.token,
+        Authorization: "Bearer " + window.sessionStorage.token,
       },
       processData: false,
       mimeType: "multipart/form-data",
@@ -280,7 +281,7 @@ $("#registergov").on("submit", function (e) {
         method: "POST",
         timeout: 0,
         headers: {
-          Authorization: window.sessionStorage.token,
+          Authorization: "Bearer " + window.sessionStorage.token,
         },
         processData: false,
         mimeType: "multipart/form-data",
@@ -344,7 +345,7 @@ $("#registergov").on("submit", function (e) {
           method: "POST",
           timeout: 0,
           headers: {
-            Authorization: window.sessionStorage.token,
+            Authorization: "Bearer " + window.sessionStorage.token,
           },
           processData: false,
           mimeType: "multipart/form-data",
@@ -364,7 +365,7 @@ $("#registergov").on("submit", function (e) {
             method: "POST",
             timeout: 0,
             headers: {
-              Authorization: window.sessionStorage.token,
+              Authorization: "Bearer " + window.sessionStorage.token,
             },
             processData: false,
             mimeType: "multipart/form-data",
@@ -401,7 +402,7 @@ $("#registergov").on("submit", function (e) {
               method: "POST",
               timeout: 0,
               headers: {
-                Authorization: window.sessionStorage.token,
+                Authorization: "Bearer " + window.sessionStorage.token,
               },
               processData: false,
               mimeType: "multipart/form-data",
@@ -469,7 +470,7 @@ function check_users(noic, returnValue) {
     method: "POST",
     timeout: 0,
     headers: {
-      Authorization: window.sessionStorage.token,
+      Authorization: "Bearer " + window.sessionStorage.token,
     },
     processData: false,
     contentType: false,
@@ -2491,7 +2492,7 @@ function makeid(length) {
   return result;
 }
 
-function resetPassword(no_kad_pengenalan, nama) {    
+function resetPassword(id_users, nama, no_kad_pengenalan_masked) {
   swal({
       title: "Set Semula Katalaluan",
       text: "Anda Pasti Untuk Set Semula?",
@@ -2504,9 +2505,8 @@ function resetPassword(no_kad_pengenalan, nama) {
       html: false
   }).then(function () {
       var form = new FormData();
-      form.append('no_kad_pengenalan',no_kad_pengenalan);
-      form.append('katalaluan',no_kad_pengenalan);
-      var obj = new post(host+`usersReset`,form,window.sessionStorage.token).execute();
+      form.append('id_users', id_users);
+      var obj = new post(host+`usersResetPassword`,form,window.sessionStorage.token).execute();
       if(obj.success){
         swal({
             title: "Set Semula Katalaluan",
@@ -2515,7 +2515,7 @@ function resetPassword(no_kad_pengenalan, nama) {
             closeOnConfirm: true,
             showConfirmButton: true,
             allowOutsideClick: false,
-            html: "Berjaya!<br><br>Nama: " + nama + "<br>No. Kad Pengenalan: " + no_kad_pengenalan,
+            html: "Berjaya! Arahan set semula telah dihantar ke emel pengguna.<br><br>Nama: " + nama + "<br>No. Kad Pengenalan: " + no_kad_pengenalan_masked,
         }).then(function () {});
       }
   });

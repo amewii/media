@@ -41,7 +41,9 @@ class med_kategoripenggunaController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kategoripengguna');
 
-        $med_kategoripengguna = med_kategoripengguna::where('id_kategoripengguna',$id)->first();
+        $med_kategoripengguna = med_kategoripengguna::where('id_kategoripengguna',$id)->first([
+            'id_kategoripengguna', 'FK_jenis_pengguna', 'kategori_pengguna', 'kod_kategori_pengguna',
+        ]);
 
         if ($med_kategoripengguna)   {
             return response()->json([
@@ -53,7 +55,9 @@ class med_kategoripenggunaController extends Controller
     }
 
     public function list()  {
-        $med_kategoripengguna = med_kategoripengguna::all();
+        $med_kategoripengguna = med_kategoripengguna::get([
+            'id_kategoripengguna', 'FK_jenis_pengguna', 'kategori_pengguna', 'kod_kategori_pengguna',
+        ]);
 
         if ($med_kategoripengguna)   {
             return response()->json([

@@ -45,7 +45,8 @@ class med_bahagianController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_bahagian');
 
-        $med_bahagian = med_bahagian::where('id_bahagian',$id)->first();
+        $med_bahagian = med_bahagian::where('id_bahagian',$id)
+            ->first(['id_bahagian', 'nama_bahagian', 'kod_bahagian', 'statusrekod']);
 
         if ($med_bahagian)   {
             return response()->json([
@@ -59,7 +60,8 @@ class med_bahagianController extends Controller
     public function showGet($kod_kementerian, $kod_agensi)  {
         // $id = $request->input('id_bahagian');
         $condition = $kod_agensi . "-" . $kod_kementerian;
-        $med_bahagian = med_bahagian::where('kod_bahagian','LIKE', "{$condition}%")->get();
+        $med_bahagian = med_bahagian::where('kod_bahagian','LIKE', "{$condition}%")
+            ->get(['id_bahagian', 'nama_bahagian', 'kod_bahagian']);
         // dd($condition);
 
         if ($med_bahagian)   {
@@ -72,8 +74,8 @@ class med_bahagianController extends Controller
     }
 
     public function list()  {
-        $med_bahagian = med_bahagian::select("*") -> 
-                        where('med_bahagian.statusrekod','1') -> get(); // list all data
+        $med_bahagian = med_bahagian::where('med_bahagian.statusrekod','1')
+            ->get(['id_bahagian', 'nama_bahagian', 'kod_bahagian']);
 
         if ($med_bahagian)   {
             return response()->json([

@@ -31,6 +31,6 @@ class med_permohonan extends Model implements AuthenticatableContract, Authoriza
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'created_by', 'updated_by', 'deleted_by',
     ];
 }

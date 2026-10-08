@@ -17,9 +17,8 @@ class SendEmailResetPassword extends Job
      */
 
     public $no_kad_pengenalan;
-    public $masa;
     public $landing_page;
-    public $enc_link;
+    public $reset_token;
     public $emel_kerajaan;
     public $emel;
     public $nama;
@@ -27,9 +26,8 @@ class SendEmailResetPassword extends Job
     public function __construct($data)
     {
         $this->no_kad_pengenalan = $data['no_kad_pengenalan'];
-        $this->masa = $data['masa'];
         $this->landing_page = $data['landing_page'];
-        $this->enc_link = $data['enc_link'];
+        $this->reset_token = $data['reset_token'];
         $this->emel_kerajaan = $data['emel_kerajaan'];
         $this->emel = $data['emel'];
         $this->nama = $data['nama'];
@@ -43,9 +41,7 @@ class SendEmailResetPassword extends Job
     public function handle()
     {
         try {
-            $med_users = med_users::where('no_kad_pengenalan',$this->no_kad_pengenalan)->update([
-                'resetkatalaluan' => $this->enc_link
-            ]);
+            $med_users = med_users::where('no_kad_pengenalan', $this->no_kad_pengenalan)->exists();
             
             if ($med_users)  {
                 $tetapan_mail = med_tetapan::first();
@@ -73,7 +69,7 @@ class SendEmailResetPassword extends Job
                                     Anda telah membuat permintaan menetapkan semula kata laluan. <br>
                                     Sekiranya anda tidak membuat permintaan ini, silakan abaikan emel ini. <br>
                                     Sekiranya anda membuat permintaan ini, sila klik pautan dibawah untuk tetapkan semula katalaluan anda:<br><br>
-                                    <a href="'.$tetapan_mail->link_sistem.$this->landing_page.'/?temp='.$this->enc_link.'">Set Semula Katalaluan</a><br><br>
+                                    <a href="'.$tetapan_mail->link_sistem.$this->landing_page.'/?temp='.urlencode($this->reset_token).'">Set Semula Katalaluan</a><br><br>
                                     Terima kasih.';
                 $mail->AltBody = 'Alternate Message';
                 $mail->send();

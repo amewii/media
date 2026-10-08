@@ -9,6 +9,22 @@ use App\Models\med_tetapan;
 
 class med_tetapanController extends Controller
 {
+    private const RESPONSE_FIELDS = [
+        'id_tetapan',
+        'nama_sistem',
+        'versi_sistem',
+        'pelepasan_sistem',
+        'status_sistem',
+        'min_katalaluan',
+        'polisi_katalaluan',
+        'active_until',
+        'mail_gateway',
+        'mail_smtp_secure',
+        'mail_port',
+        'mail_sender',
+        'link_sistem',
+        'statusrekod',
+    ];
 
     public function register(Request $request) {
         $nama_sistem = $request->input('nama_sistem');
@@ -55,7 +71,8 @@ class med_tetapanController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_tetapan');
 
-        $med_tetapan = med_tetapan::where('id_tetapan',$id)->first();
+        $med_tetapan = med_tetapan::where('id_tetapan', $id)
+            ->first(self::RESPONSE_FIELDS);
 
         if ($med_tetapan)   {
             return response()->json([
@@ -67,7 +84,8 @@ class med_tetapanController extends Controller
     }
 
     public function list()  {
-        $med_tetapan = med_tetapan::where('statusrekod','1') -> first();
+        $med_tetapan = med_tetapan::where('statusrekod', '1')
+            ->first(self::RESPONSE_FIELDS);
 
         if ($med_tetapan)   {
             return response()->json([
@@ -97,7 +115,7 @@ class med_tetapanController extends Controller
         $updated_by = $request->input('updated_by');
 
 
-        $med_tetapan = med_tetapan::where('id_tetapan',$id)  -> update([
+        $updates = [
             'nama_sistem' => $nama_sistem,
             'versi_sistem' => $versi_sistem,
             'pelepasan_sistem' => $pelepasan_sistem,
@@ -106,13 +124,20 @@ class med_tetapanController extends Controller
             'polisi_katalaluan' => $polisi_katalaluan,
             'active_until' => $active_until,
             'mail_gateway' => $mail_gateway,
-            'mail_username' => $mail_username,
-            'mail_password' => $mail_password,
             'mail_smtp_secure' => $mail_smtp_secure,
             'mail_port' => $mail_port,
             'link_sistem' => $link_sistem,
-            'updated_by' => $updated_by
-        ]);
+            'updated_by' => $updated_by,
+        ];
+
+        if (is_string($mail_username) && trim($mail_username) !== '') {
+            $updates['mail_username'] = $mail_username;
+        }
+        if (is_string($mail_password) && $mail_password !== '') {
+            $updates['mail_password'] = $mail_password;
+        }
+
+        $med_tetapan = med_tetapan::where('id_tetapan', $id)->update($updates);
 
         if ($med_tetapan)  {
             return response()->json([

@@ -21,6 +21,9 @@ class med_permohonanController extends Controller
 {
     public function register(Request $request) {
         $FK_users = $request->input('FK_users');
+        if (!$this->canActForUser($request, $FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $sebab = $request->input('sebab');
         $FK_program = $request->input('FK_program');
         $status_permohonan = $request->input('status_permohonan');
@@ -30,6 +33,12 @@ class med_permohonanController extends Controller
         $updated_by = $request->input('updated_by'); 
         $statusrekod = $request->input('statusrekod');
         $flag_vip = $request->input('flag_vip');
+
+        if (!$this->isAdministrator($request)) {
+            $status_permohonan = '1';
+            $created_by = $request->user()->id_users;
+            $updated_by = $request->user()->id_users;
+        }
 
         $register = med_permohonan::create([
             'FK_users' => $FK_users,
@@ -63,7 +72,8 @@ class med_permohonanController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_permohonan');
 
-        $med_permohonan = med_permohonan::where('id_permohonan',$id)->first();
+        $med_permohonan = med_permohonan::where('id_permohonan',$id)
+            ->first($this->applicationRecordColumns());
 
         if ($med_permohonan)   {
             return response()->json([
@@ -75,9 +85,15 @@ class med_permohonanController extends Controller
     }
 
     public function showGet($id)  {
+        if (!$this->canAccessApplication(request(), $id)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
 
-        $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+        $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                            join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') ->
+                                            leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
+                                            leftJoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') ->
                                             where('med_permohonan.id_permohonan',$id)->first();
 
 
@@ -91,10 +107,15 @@ class med_permohonanController extends Controller
     }
 
     public function showGetUsers($FK_users)  {
+        if (!$this->canActForUser(request(), $FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
 
-        $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
-                                            join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
+        $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                            join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') ->
+                                            leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
+                                            join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') ->
                                             where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.FK_users',$FK_users)->
                                             orderBy('id_permohonan', 'desc') -> get();
 
@@ -108,11 +129,16 @@ class med_permohonanController extends Controller
     }
 
     public function showGetUsersNotification($FK_users)  {
-        $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
+        if (!$this->canActForUser(request(), $FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
+        $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                            join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
                                             join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
                                             join('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                             join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
-                                            where('med_permohonan.FK_users',$FK_users) -> where('med_permohonan.status_permohonan','2') -> orwhere('med_permohonan.status_permohonan','3') -> 
+                                            where('med_permohonan.FK_users',$FK_users) ->
+                                            whereIn('med_permohonan.status_permohonan', ['2', '3']) ->
                                             orderBy('id_permohonan', 'desc') ->
                                             get(); // list all data
 
@@ -129,7 +155,8 @@ class med_permohonanController extends Controller
     }
 
     public function list()  {
-        $med_permohonan = med_permohonan::  leftjoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') 
+        $med_permohonan = med_permohonan::select($this->applicationListColumns())
+                                            ->leftjoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users')
                                             ->leftJoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program')
                                             ->leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
                                             ->leftJoin('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan')
@@ -141,12 +168,6 @@ class med_permohonanController extends Controller
                 
 
         if (sizeof($med_permohonan)>0)   {
-            for($i=0;$i<sizeof($med_permohonan);$i++){
-                $obj_created_by = med_users::where('id_users',$med_permohonan[$i]->created_by)->first();
-                if($obj_created_by){
-                    $med_permohonan[$i]->created_by_users = $obj_created_by;
-                }
-            }
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
@@ -164,12 +185,7 @@ class med_permohonanController extends Controller
         $tarikh_permohonan = $request->input('tarikh_permohonan');
 
     
-        $query = med_permohonan::select( 'med_permohonan.*', 
-                                        'med_users.*', 
-                                        'med_program.*', 
-                                        'med_kampus.*', 
-                                        'med_status.*', 
-                                        'med_jenispengguna.*')
+        $query = med_permohonan::select($this->applicationReportColumns())
                                 ->leftJoin('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users')
                                 ->leftJoin('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program')
                                 ->leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus')
@@ -257,8 +273,10 @@ class med_permohonanController extends Controller
 
         $med_permohonan = '';
         if($FK_peranan == 2){
-            $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                                join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+            $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                                join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+                                                join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') ->
+                                                leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                                 join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                                 where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
                                                 where('med_program.FK_kluster',$FK_kluster) ->
@@ -266,8 +284,10 @@ class med_permohonanController extends Controller
                                                 orderBy('id_permohonan', 'desc') ->
                                                 get(); // list all data
         }else if($FK_peranan == 3){
-            $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                                join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+            $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                                join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+                                                join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') ->
+                                                leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                                 join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                                 where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
                                                 // where('med_permohonan.flag_vip',1) ->
@@ -277,12 +297,6 @@ class med_permohonanController extends Controller
         
 
         if (sizeof($med_permohonan)>0)   {
-            for($i=0;$i<sizeof($med_permohonan);$i++){
-                $obj_created_by = med_users::where('id_users',$med_permohonan[$i]->created_by)->first();
-                if($obj_created_by){
-                    $med_permohonan[$i]->created_by_users = $obj_created_by;
-                }
-            }
             return response()->json([
                 'success'=>'true',
                 'message'=>'List Success!',
@@ -314,8 +328,10 @@ class med_permohonanController extends Controller
     }
 
     public function listStatus($status_permohonan)  {
-        $med_permohonan = med_permohonan::  join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') -> 
-                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') -> 
+        $med_permohonan = med_permohonan::select($this->applicationListColumns()) ->
+                                            join('med_users', 'med_users.id_users', '=', 'med_permohonan.FK_users') ->
+                                            join('med_program', 'med_program.id_program', '=', 'med_permohonan.FK_program') ->
+                                            leftJoin('med_kampus', 'med_kampus.id_kampus', '=', 'med_program.FK_kampus') ->
                                             join('med_status', 'med_status.id_status', '=', 'med_permohonan.status_permohonan') -> 
                                             where('med_permohonan.statusrekod','1') -> where('med_users.statusrekod','1') -> where('med_permohonan.statusrekod','1') -> 
                                             where('med_permohonan.status_permohonan',$status_permohonan) -> 
@@ -388,8 +404,11 @@ class med_permohonanController extends Controller
 
     public function updatePermohonan(Request $request)    {
         $id = $request->input('id_permohonan');
+        if (!$this->canAccessApplication($request, $id)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $sebab = $request->input('sebab');
-        $updated_by = $request->input('updated_by');
+        $updated_by = $request->user()->id_users;
 
         $med_permohonan = med_permohonan::where('id_permohonan',$id)-> update([
             'sebab' => $sebab,
@@ -415,7 +434,13 @@ class med_permohonanController extends Controller
 
     public function updateLuput(Request $request)    {
         $id = $request->input('id_permohonan');
+        if (!$this->canAccessApplication($request, $id)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $status_permohonan = $request->input('status_permohonan');
+        if (!$this->isAdministrator($request) && (string) $status_permohonan !== '5') {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
 
         $med_permohonan = med_permohonan::where('id_permohonan',$id) -> update([
             'status_permohonan' => $status_permohonan
@@ -462,6 +487,9 @@ class med_permohonanController extends Controller
 
     public function cancel(Request $request)    {
         $id = $request->input('id_permohonan');
+        if (!$this->canAccessApplication($request, $id)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
 
         $med_permohonan = med_permohonan::where('id_permohonan',$id) -> update([
             'status_permohonan' => '4',
@@ -488,9 +516,13 @@ class med_permohonanController extends Controller
         
         $count = 0;
         $id_permohonan = $request->input('id_permohonan');
-        $tarikh_muatturun = $request->input('tarikh_muatturun');
+        $tarikh_muatturun = date('Ymd');
 
-        $med_muatturun = med_permohonan::select('*')->where('id_permohonan',$id_permohonan)->first();
+        $med_muatturun = med_permohonan::where('id_permohonan',$id_permohonan)
+            ->first(['id_permohonan', 'FK_program', 'FK_users', 'media_list']);
+        if (!$med_muatturun || !$this->canActForUser($request, $med_muatturun->FK_users)) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
         $FK_program = $med_muatturun->FK_program;
         $FK_users = $med_muatturun->FK_users;
         $media_list = $med_muatturun->media_list;
@@ -542,8 +574,12 @@ class med_permohonanController extends Controller
     //MIMI : REMOVE ZIP FILE START
     public function remove (Request $request){
         
-        $file_name = $request->input('file_name');
-        $publicPath = base_path('public/' . $file_name);
+        $file_name = basename((string) $request->input('file_name'));
+        if (!preg_match('/_(\d+)\.zip$/', $file_name, $matches)
+            || !$this->canActForUser($request, (int) $matches[1])) {
+            return response()->json(['success' => false, 'message' => 'Forbidden.'], 403);
+        }
+        $publicPath = base_path('public/uploads/' . $file_name);
 
         if(File::exists($publicPath)){
             File::delete($publicPath);
@@ -559,6 +595,64 @@ class med_permohonanController extends Controller
             'message'=>"Berjaya Muatturun!",
         ],200);
         
+    }
+
+    private function applicationRecordColumns(): array
+    {
+        return [
+            'id_permohonan', 'FK_users', 'sebab', 'media_list', 'FK_program',
+            'status_permohonan', 'tarikh_permohonan', 'tarikh_pengesahan',
+            'tarikh_luput', 'catatan_permohonan', 'flag_vip', 'statusrekod',
+        ];
+    }
+
+    private function applicationListColumns(): array
+    {
+        return [
+            'med_permohonan.id_permohonan',
+            'med_permohonan.FK_users',
+            'med_permohonan.sebab',
+            'med_permohonan.media_list',
+            'med_permohonan.FK_program',
+            'med_permohonan.status_permohonan',
+            'med_permohonan.tarikh_permohonan',
+            'med_permohonan.tarikh_pengesahan',
+            'med_permohonan.tarikh_luput',
+            'med_permohonan.catatan_permohonan',
+            'med_permohonan.flag_vip',
+            'med_users.nama',
+            'med_program.id_program',
+            'med_program.nama_program',
+            'med_program.tarikh_program',
+            'med_program.media_path',
+            'med_program.FK_vip',
+            'med_kampus.nama_kampus',
+            'med_status.nama_status',
+        ];
+    }
+
+    private function applicationReportColumns(): array
+    {
+        return [
+            'med_permohonan.id_permohonan',
+            'med_permohonan.tarikh_permohonan',
+            'med_users.nama',
+            'med_program.id_program',
+            'med_program.nama_program',
+            'med_program.tarikh_program',
+            'med_program.statusrekod AS programstatusrekod',
+            'med_status.nama_status',
+            'med_jenispengguna.jenis_pengguna',
+        ];
+    }
+
+    private function canAccessApplication(Request $request, $applicationId): bool
+    {
+        $application = med_permohonan::where('id_permohonan', $applicationId)
+            ->first(['FK_users']);
+
+        return $application
+            && $this->canActForUser($request, $application->FK_users);
     }
     //MIMI : REMOVE ZIP FILE END
 }

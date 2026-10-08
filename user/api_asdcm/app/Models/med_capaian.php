@@ -29,6 +29,6 @@ class med_capaian extends Model implements AuthenticatableContract, Authorizable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'created_by', 'updated_by', 'deleted_by',
     ];
 }

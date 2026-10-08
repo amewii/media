@@ -45,7 +45,8 @@ class med_agensiController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_agensi');
 
-        $med_agensi = med_agensi::where('id_agensi',$id)->where('statusrekod','1')->first();
+        $med_agensi = med_agensi::where('id_agensi',$id)->where('statusrekod','1')
+            ->first(['id_agensi', 'nama_agensi', 'kod_agensi', 'statusrekod']);
 
         if ($med_agensi)   {
             return response()->json([
@@ -59,7 +60,8 @@ class med_agensiController extends Controller
     public function showKod(Request $request)  {
         $kod_agensi = $request->input('kod_agensi');
 
-        $med_agensi = med_agensi::where('kod_agensi',$kod_agensi)->where('statusrekod','1')->get();
+        $med_agensi = med_agensi::where('kod_agensi',$kod_agensi)->where('statusrekod','1')
+            ->get(['id_agensi', 'nama_agensi', 'kod_agensi']);
 
         if ($med_agensi)   {
             return response()->json([
@@ -71,7 +73,8 @@ class med_agensiController extends Controller
     }
 
     public function list()  {
-        $med_agensi = med_agensi::where('med_agensi.statusrekod','1') -> get(); // list all data
+        $med_agensi = med_agensi::where('med_agensi.statusrekod','1')
+            ->get(['id_agensi', 'nama_agensi', 'kod_agensi']);
 
         if ($med_agensi)   {
             return response()->json([

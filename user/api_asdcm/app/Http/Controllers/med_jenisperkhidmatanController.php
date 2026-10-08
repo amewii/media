@@ -43,7 +43,8 @@ class med_jenisperkhidmatanController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_jenisperkhidmatan');
 
-        $med_jenisperkhidmatan = med_jenisperkhidmatan::where('id_jenisperkhidmatan',$id)->first();
+        $med_jenisperkhidmatan = med_jenisperkhidmatan::where('id_jenisperkhidmatan',$id)
+            ->first(['id_jenisperkhidmatan', 'nama_jenisperkhidmatan', 'statusrekod']);
 
         if ($med_jenisperkhidmatan)   {
             return response()->json([
@@ -55,7 +56,8 @@ class med_jenisperkhidmatanController extends Controller
     }
 
     public function list()  {
-        $med_jenisperkhidmatan = med_jenisperkhidmatan::where('statusrekod','1') -> get();
+        $med_jenisperkhidmatan = med_jenisperkhidmatan::where('statusrekod','1')
+            ->get(['id_jenisperkhidmatan', 'nama_jenisperkhidmatan']);
 
         if ($med_jenisperkhidmatan)   {
             return response()->json([

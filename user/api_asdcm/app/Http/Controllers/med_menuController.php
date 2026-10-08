@@ -61,7 +61,10 @@ class med_menuController extends Controller
         $med_menu = array_filter($med_menu, function($row) use ($id){
             return $row['id_menu'] == $id;
         });
-        $med_menu = array_values($med_menu)[0];
+        $med_menu = array_intersect_key(array_values($med_menu)[0], array_flip([
+            'id_menu', 'FK_parent', 'is_parent', 'id_nama_menu',
+            'nama_menu', 'nama_fail', 'nama_icon', 'modul', 'statusrekod',
+        ]));
 
         if ($med_menu)   {
             return response()->json([
@@ -89,9 +92,10 @@ class med_menuController extends Controller
     }
 
     public function top()  {
-        $med_menu = med_menu::select("*", "med_menu.is_parent as bapak") -> 
-                        where('FK_parent',"0") ->
-                        get(); // list all data
+        $med_menu = med_menu::where('FK_parent',"0")->get([
+            'id_menu', 'FK_parent', 'is_parent AS bapak', 'id_nama_menu',
+            'nama_menu', 'nama_fail', 'nama_icon', 'modul',
+        ]);
 
         if ($med_menu)   {
             return response()->json([
@@ -104,9 +108,10 @@ class med_menuController extends Controller
     }
 
     public function mid($FK_parent)  {
-        $med_menu = med_menu::select("*", "med_menu.is_parent as bapak") -> 
-                        where('FK_parent',$FK_parent) ->
-                        get(); // list all data
+        $med_menu = med_menu::where('FK_parent',$FK_parent)->get([
+            'id_menu', 'FK_parent', 'is_parent AS bapak', 'id_nama_menu',
+            'nama_menu', 'nama_fail', 'nama_icon', 'modul',
+        ]);
 
         if ($med_menu)   {
             return response()->json([
@@ -119,8 +124,10 @@ class med_menuController extends Controller
     }
 
     public function bot($FK_parent)  {
-        $med_menu = med_menu::where('FK_parent',$FK_parent) ->
-                        get(); // list all data
+        $med_menu = med_menu::where('FK_parent',$FK_parent)->get([
+            'id_menu', 'FK_parent', 'is_parent', 'id_nama_menu',
+            'nama_menu', 'nama_fail', 'nama_icon', 'modul',
+        ]);
 
         if ($med_menu)   {
             return response()->json([

@@ -1,6 +1,9 @@
 $(function () {
   $.ajaxSetup({
     cache: false,
+    headers: {
+      Authorization: "Bearer " + window.sessionStorage.token,
+    },
   });
   if(window.sessionStorage.token && window.sessionStorage.no_kad_pengenalan){
     users(function(){
@@ -358,7 +361,7 @@ $("#logKeluar").click(function () {
     allowOutsideClick: false,
     html: false,
   }).then(function () {
-      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan).execute()
+      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan, new FormData(), window.sessionStorage.token).execute()
       if (obj.success) {
         window.sessionStorage.clear();
         window.localStorage.clear();

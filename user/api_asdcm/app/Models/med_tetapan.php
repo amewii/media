@@ -31,6 +31,7 @@ class med_tetapan extends Model implements AuthenticatableContract, Authorizable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'mail_password', 'mail_username',
+        'created_by', 'updated_by', 'deleted_by',
     ];
 }

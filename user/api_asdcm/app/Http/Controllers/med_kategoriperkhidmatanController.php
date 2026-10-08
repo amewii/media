@@ -43,7 +43,8 @@ class med_kategoriperkhidmatanController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kategoriperkhidmatan');
 
-        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('id_kategoriperkhidmatan',$id)->first();
+        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('id_kategoriperkhidmatan',$id)
+            ->first(['id_kategoriperkhidmatan', 'nama_kategoriperkhidmatan', 'statusrekod']);
 
         if ($med_kategoriperkhidmatan)   {
             return response()->json([
@@ -57,7 +58,8 @@ class med_kategoriperkhidmatanController extends Controller
     public function showHrmis(Request $request)  {
         $nama_kategoriperkhidmatan = $request->input('nama_kategoriperkhidmatan');
 
-        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('nama_kategoriperkhidmatan',$nama_kategoriperkhidmatan)->first();
+        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('nama_kategoriperkhidmatan',$nama_kategoriperkhidmatan)
+            ->first(['id_kategoriperkhidmatan', 'nama_kategoriperkhidmatan']);
 
         if ($med_kategoriperkhidmatan)   {
             return response()->json([
@@ -69,7 +71,8 @@ class med_kategoriperkhidmatanController extends Controller
     }
 
     public function list()  {
-        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('statusrekod','1') -> get();
+        $med_kategoriperkhidmatan = med_kategoriperkhidmatan::where('statusrekod','1')
+            ->get(['id_kategoriperkhidmatan', 'nama_kategoriperkhidmatan']);
 
         if ($med_kategoriperkhidmatan)   {
             return response()->json([

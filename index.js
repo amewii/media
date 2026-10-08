@@ -1,10 +1,12 @@
 $(function () {
   $.ajaxSetup({
     cache: false,
+    headers: {
+      Authorization: "Bearer " + window.sessionStorage.token,
+    },
   });
   var obj = new get(host+`usersSiteAdmin/`+window.sessionStorage.no_kad_pengenalan,window.sessionStorage.token).execute();
   if(obj.success){
-    window.sessionStorage.token = obj.token;
     var data = obj.data;
     id_users_master = data.id_users;
     FK_capaian_master = data.FK_capaian;
@@ -614,7 +616,7 @@ $("#logKeluar").click(function () {
     allowOutsideClick: false,
     html: false,
   }).then(function () {
-      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan).execute()
+      var obj = new post(host + `logout/` + window.sessionStorage.no_kad_pengenalan, new FormData(), window.sessionStorage.token).execute()
       saveLog(id_users_master, "Logout.", window.sessionStorage.browser);
       window.sessionStorage.clear();
       window.localStorage.clear();

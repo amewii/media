@@ -370,6 +370,7 @@ $("#registergov").on("submit", function (e) {
           Swal(result.message, result.data, "error");
           return;
         }
+        const registrationToken = result.token;
 
         var settingsfetchusers = {
           url: host + "checkUsers",
@@ -448,6 +449,9 @@ $("#registergov").on("submit", function (e) {
               url: host + "addUsersgovs",
               method: "POST",
               timeout: 0,
+              headers: {
+                Authorization: "Bearer " + registrationToken,
+              },
               processData: false,
               mimeType: "multipart/form-data",
               contentType: false,
@@ -1318,7 +1322,7 @@ myInput.onkeyup = function() {
 
 // Validate Symbols
  var symbolLetter = /[^A-Za-z0-9]/;
-  if(myInput.value.match(symbolLetter)) {  
+  if(myInput.value.match(symbolLetter)) {
     symbol.classList.remove("invalid");
     symbol.classList.add("valid");
   } else {

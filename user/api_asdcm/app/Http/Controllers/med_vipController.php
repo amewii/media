@@ -45,7 +45,8 @@ class med_vipController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_vip');
 
-        $med_vip = med_vip::where('id_vip',$id)->first();
+        $med_vip = med_vip::where('id_vip',$id)
+            ->first(['id_vip', 'nama_vip', 'FK_gelaran', 'jawatan_vip', 'statusrekod']);
 
         if ($med_vip)   {
             return response()->json([
@@ -57,8 +58,11 @@ class med_vipController extends Controller
     }
 
     public function list()  {
-        $med_vip = med_vip::join('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_vip.FK_gelaran') -> 
-                        where('med_vip.statusrekod','1') -> where('med_gelaran.statusrekod','1') -> get(); // list all data
+        $med_vip = med_vip::join('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_vip.FK_gelaran')
+            ->where('med_vip.statusrekod','1')->where('med_gelaran.statusrekod','1')->get([
+                'med_vip.id_vip', 'med_vip.nama_vip', 'med_vip.FK_gelaran',
+                'med_vip.jawatan_vip', 'med_gelaran.nama_gelaran',
+            ]);
 
         if ($med_vip)   {
             return response()->json([
@@ -71,9 +75,11 @@ class med_vipController extends Controller
     }
 
     public function listall()  {
-        $med_vip = med_vip::select("*", "med_vip.statusrekod AS vipstatusrekod") -> 
-                        join('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_vip.FK_gelaran') -> 
-                        get(); // list all data
+        $med_vip = med_vip::join('med_gelaran', 'med_gelaran.id_gelaran', '=', 'med_vip.FK_gelaran')->get([
+            'med_vip.id_vip', 'med_vip.nama_vip', 'med_vip.FK_gelaran',
+            'med_vip.jawatan_vip', 'med_gelaran.nama_gelaran',
+            'med_vip.statusrekod AS vipstatusrekod',
+        ]);
 
         if ($med_vip)   {
             return response()->json([
@@ -92,7 +98,8 @@ class med_vipController extends Controller
         $FK_gelaran = $request->input('FK_gelaran');
         $updated_by = $request->input('updated_by');
 
-        $med_vip_check = med_vip::where('nama_vip',$nama_vip) -> where('jawatan_vip',$jawatan_vip) -> where('FK_gelaran',$FK_gelaran) -> first(); 
+        $med_vip_check = med_vip::where('nama_vip',$nama_vip)->where('jawatan_vip',$jawatan_vip)
+            ->where('FK_gelaran',$FK_gelaran)->first(['id_vip']);
         
         if ($med_vip_check) {
             return response()->json([
@@ -128,7 +135,7 @@ class med_vipController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_vip');
 
-        $med_vip_check = med_vip::where('id_vip',$id) -> first(); 
+        $med_vip_check = med_vip::where('id_vip',$id)->first(['id_vip', 'statusrekod']);
         
         switch($med_vip_check->statusrekod)    {
             case 0: $med_vip = med_vip::where('id_vip',$id) -> update([
@@ -141,7 +148,8 @@ class med_vipController extends Controller
                     break;
         }
 
-        $med_vip_check = med_vip::where('id_vip',$id) -> first(); 
+        $med_vip_check = med_vip::where('id_vip',$id)
+            ->first(['id_vip', 'nama_vip', 'FK_gelaran', 'jawatan_vip', 'statusrekod']);
 
         if ($med_vip)  {
             return response()->json([

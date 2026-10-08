@@ -44,7 +44,8 @@ class med_formatController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_format');
 
-        $med_format = med_format::where('id_format',$id)->first();
+        $med_format = med_format::where('id_format',$id)
+            ->first(['id_format', 'kod_format', 'jenis_format', 'statusrekod']);
 
         if ($med_format)   {
             return response()->json([
@@ -56,7 +57,8 @@ class med_formatController extends Controller
     }
 
     public function list()  {
-        $med_format = med_format::where('med_format.statusrekod','1') -> get();
+        $med_format = med_format::where('med_format.statusrekod','1')
+            ->get(['id_format', 'kod_format', 'jenis_format']);
 
         if ($med_format)   {
             return response()->json([
@@ -69,7 +71,7 @@ class med_formatController extends Controller
     }
 
     public function listall()  {
-        $med_format = med_format::get();
+        $med_format = med_format::get(['id_format', 'kod_format', 'jenis_format', 'statusrekod']);
 
         if ($med_format)   {
             return response()->json([
@@ -122,7 +124,8 @@ class med_formatController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_format');
 
-        $med_format_search = med_format::where('id_format',$id) -> first(); 
+        $med_format_search = med_format::where('id_format',$id)
+            ->first(['id_format', 'statusrekod']);
 
         switch($med_format_search->statusrekod)    {
             case 0: $med_format = med_format::where('id_format', $id) -> update([
@@ -135,7 +138,8 @@ class med_formatController extends Controller
                     break;
         }
 
-        $med_format_search = med_format::where('id_format',$id) -> first(); 
+        $med_format_search = med_format::where('id_format',$id)
+            ->first(['id_format', 'kod_format', 'jenis_format', 'statusrekod']);
 
         if ($med_format)  {
             return response()->json([

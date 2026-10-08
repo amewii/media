@@ -45,7 +45,8 @@ class med_kementerianController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kementerian');
 
-        $med_kementerian = med_kementerian::where('id_kementerian',$id)->first();
+        $med_kementerian = med_kementerian::where('id_kementerian',$id)
+            ->first(['id_kementerian', 'nama_kementerian', 'kod_kementerian', 'statusrekod']);
 
         if ($med_kementerian)   {
             return response()->json([
@@ -59,7 +60,8 @@ class med_kementerianController extends Controller
     public function showHrmis(Request $request)  {
         $nama_kementerian = $request->input('nama_kementerian');
 
-        $med_kementerian = med_kementerian::where('nama_kementerian',$nama_kementerian)->first();
+        $med_kementerian = med_kementerian::where('nama_kementerian',$nama_kementerian)
+            ->first(['id_kementerian', 'nama_kementerian', 'kod_kementerian']);
 
         if ($med_kementerian)   {
             return response()->json([
@@ -73,7 +75,8 @@ class med_kementerianController extends Controller
     public function showName(Request $request)  {
         $nama_kementerian = $request->input('nama_kementerian');
 
-        $med_kementerian = med_kementerian::where('nama_kementerian',$nama_kementerian)->get();
+        $med_kementerian = med_kementerian::where('nama_kementerian',$nama_kementerian)
+            ->get(['id_kementerian', 'nama_kementerian', 'kod_kementerian']);
         if ($med_kementerian)   {
             return response()->json([
                 'success'=>'true',
@@ -84,7 +87,8 @@ class med_kementerianController extends Controller
     }
 
     public function list()  {
-        $med_kementerian = med_kementerian::where('med_kementerian.statusrekod','1') -> get(); // list all data
+        $med_kementerian = med_kementerian::where('med_kementerian.statusrekod','1')
+            ->get(['id_kementerian', 'nama_kementerian', 'kod_kementerian']);
 
         if ($med_kementerian)   {
             return response()->json([

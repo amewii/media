@@ -46,7 +46,8 @@ class med_unitController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_unit');
 
-        $med_unit = med_unit::where('id_unit',$id)->first();
+        $med_unit = med_unit::where('id_unit',$id)
+            ->first(['id_unit', 'nama_unit', 'FK_kluster', 'FK_subkluster', 'statusrekod']);
 
         if ($med_unit)   {
             return response()->json([
@@ -59,7 +60,8 @@ class med_unitController extends Controller
 
     public function showGet($FK_kluster, $FK_subkluster)  {
 
-        $med_unit = med_unit::where('FK_kluster',$FK_kluster)->where('FK_subkluster',$FK_subkluster)->get();
+        $med_unit = med_unit::where('FK_kluster',$FK_kluster)->where('FK_subkluster',$FK_subkluster)
+            ->get(['id_unit', 'nama_unit', 'FK_kluster', 'FK_subkluster']);
 
         if ($med_unit)   {
             return response()->json([
@@ -71,9 +73,14 @@ class med_unitController extends Controller
     }
 
     public function list()  {
-        $med_unit = med_unit::join('med_kluster', 'med_kluster.id_kluster', '=', 'med_unit.FK_kluster') -> 
-                            join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_unit.FK_subkluster') -> 
-                            where('med_unit.statusrekod','1') -> where('med_kluster.statusrekod','1') -> where('med_subkluster.statusrekod','1') -> get(); // list all data
+        $med_unit = med_unit::join('med_kluster', 'med_kluster.id_kluster', '=', 'med_unit.FK_kluster')
+            ->join('med_subkluster', 'med_subkluster.id_subkluster', '=', 'med_unit.FK_subkluster')
+            ->where('med_unit.statusrekod','1')->where('med_kluster.statusrekod','1')
+            ->where('med_subkluster.statusrekod','1')->get([
+                'med_unit.id_unit', 'med_unit.nama_unit', 'med_unit.FK_kluster',
+                'med_unit.FK_subkluster', 'med_kluster.nama_kluster',
+                'med_subkluster.nama_subkluster',
+            ]);
 
         if ($med_unit)   {
             return response()->json([

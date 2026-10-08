@@ -45,7 +45,8 @@ class med_statusController extends Controller
     {
         $id = $request->input('id_status');
 
-        $med_status = med_status::where('id_status', $id)->first();
+        $med_status = med_status::where('id_status', $id)
+            ->first(['id_status', 'kod_status', 'nama_status', 'statusrekod']);
 
         if ($med_status) {
             return response()->json([
@@ -58,7 +59,8 @@ class med_statusController extends Controller
 
     public function list()
     {
-        $med_status = med_status::where('statusrekod', '1')->get();
+        $med_status = med_status::where('statusrekod', '1')
+            ->get(['id_status', 'kod_status', 'nama_status']);
 
         if ($med_status) {
             return response()->json([
@@ -71,7 +73,7 @@ class med_statusController extends Controller
 
     public function listAll()
     {
-        $med_status = med_status::select('*')->get();
+        $med_status = med_status::get(['id_status', 'kod_status', 'nama_status', 'statusrekod']);
 
         if ($med_status) {
             return response()->json([
@@ -84,7 +86,8 @@ class med_statusController extends Controller
 
     public function listkelulusan()
     {
-        $med_status = med_status::where('id_status' < '4')->get();
+        $med_status = med_status::where('id_status', '<', '4')
+            ->get(['id_status', 'kod_status', 'nama_status', 'statusrekod']);
 
         if ($med_status) {
             return response()->json([
@@ -135,7 +138,8 @@ class med_statusController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_status');
 
-        $med_status_search = med_status::where('id_status',$id) -> first(); 
+        $med_status_search = med_status::where('id_status',$id)
+            ->first(['id_status', 'statusrekod']);
 
         switch($med_status_search->statusrekod)    {
             case 0: $med_format = med_status::where('id_status', $id) -> update([
@@ -148,7 +152,8 @@ class med_statusController extends Controller
                     break;
         }
 
-        $med_status_search = med_status::where('id_status',$id) -> first(); 
+        $med_status_search = med_status::where('id_status',$id)
+            ->first(['id_status', 'kod_status', 'nama_status', 'statusrekod']);
 
         if ($med_format)  {
             return response()->json([

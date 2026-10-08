@@ -63,48 +63,25 @@ $("#send_noic").on("submit", function (e) {
             $("#semak_btn").prop("disabled", false);
             $("#icon_semak").prop("class", "fa fa-search");
           } else {
-            check_usersIntan(noic, function () {
-              if (obj_usersIntan == "") {
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-                swal({
-                  title: "Daftar Pengguna",
-                  text: "Bukan Pengguna Dalaman INTAN",
-                  confirmButtonText: "OK",
-                  closeOnConfirm: true,
-                  allowOutsideClick: false,
-                  html: false,
-                }).then(function () {
-                  $("#check_noic").modal("hide");
-                  $("#noic_check").val("");
-                });
-              } else {
-                $("#nama_text_add").text(obj_hrmis.peribadi.nama);
-                $("#noic_text_add").text(obj_hrmis.peribadi.icno);
-                $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
-                $("#nama_jawatan_add").val(
-                  obj_hrmis.perkhidmatan.schmofservtitle
-                );
-                $("#nama_add").val(obj_hrmis.peribadi.nama);
-                $("#emel_add").val(obj_hrmis.peribadi.COEmail);
-                $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
-                $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
-                $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
-                $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
-                $("#noic_check").val("");
-                $("#check_noic").modal("hide");
-                $("#register_users").modal("show");
-                $("#noic_check").prop("disabled", false);
-                $("#semak_btn").prop("disabled", false);
-                $("#icon_semak").prop("class", "fa fa-search");
-
-                // $.each(obj_usersIntan,function(i,field){
-                //     ezxsSubKluster(field.post.bahagian);
-                // });
-              }
-            });
+            $("#nama_text_add").text(obj_hrmis.peribadi.nama);
+            $("#noic_text_add").text(obj_hrmis.peribadi.icno);
+            $("#notel_text_add").text(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_text_add").html(obj_hrmis.peribadi.COEmail);
+            $("#nama_jawatan_add").val(
+              obj_hrmis.perkhidmatan.schmofservtitle
+            );
+            $("#nama_add").val(obj_hrmis.peribadi.nama);
+            $("#emel_add").val(obj_hrmis.peribadi.COEmail);
+            $("#no_kad_pengenalan_add").val(obj_hrmis.peribadi.icno);
+            $("#notel_add").val(obj_hrmis.peribadi.COHPhoneNo);
+            $("#emel_kerajaan_add").val(obj_hrmis.peribadi.COEmail);
+            $("#notel_kerajaan_add").val(obj_hrmis.peribadi.COOffTelNo);
+            $("#noic_check").val("");
+            $("#check_noic").modal("hide");
+            $("#register_users").modal("show");
+            $("#noic_check").prop("disabled", false);
+            $("#semak_btn").prop("disabled", false);
+            $("#icon_semak").prop("class", "fa fa-search");
           }
         });
       }
@@ -348,38 +325,9 @@ function check_users(noic, returnValue) {
   });
 }
 
-function check_usersIntan(noic, returnValue) {
-  var settings = {
-    url: "https://admin.dtims.intan.my/api/ezxs/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
-    method: "GET",
-    timeout: 0,
-  };
-  $.ajax(settings).done(function (response) {
-    obj_usersIntan = response.posts;
-    returnValue();
-  });
-  //     $.ajax({
-  // //        "url": "http://localhost/admin/html/assets/"+noic+".json",
-  //          "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
-  //         "method": "GET",
-  //         "timeout": 0,
-
-  //         success: function(response) {
-  //             obj_usersIntan = response.posts;
-  //         returnValue();
-  //     },
-  //         error: function(){
-  //             obj_usersIntan = false;
-  //         returnValue();
-  //     }
-  //     });
-}
-
 function check_hrmis(noic, returnValue) {
   var settings = {
     url: "https://admin.dtims.intan.my/api/hrmis/check/" + noic,
-    // "url": "http://10.1.3.152/ezxs_webservice/index.php?ic="+noic,
     method: "GET",
     timeout: 0,
   };

@@ -1,15 +1,16 @@
 const queryString = window.location.search;
+let passwordResetToken = null;
 if (queryString != "") {
   const urlParams = new URLSearchParams(queryString);
   const temp = urlParams.get("temp");
+  passwordResetToken = temp;
   var settings = {
     url: host + "usersResetKatalaluan/" + temp,
     method: "GET",
     timeout: 0,
   };
   $.ajax(settings).done(function (response) {
-    $("#no_kad_pengenalan_final").val(response.data.no_kad_pengenalan);
-    if (typeof response.data.no_kad_pengenalan !== "undefined") {
+    if (response.data.valid === true) {
       $("#checkic").addClass("hidden");
       $("#backtologin").addClass("hidden");
       $("#checkic3").removeClass("hidden");
@@ -171,12 +172,13 @@ $("#checkusers3").on("submit", function (e) {
     e.preventDefault();
     $("#hantar").prop("disabled", true);
     $("#icon_hantar").prop("class", "fa fa-cog fa-spin");
-    let no_kad_pengenalan = $("#no_kad_pengenalan_final").val();
     let katalaluan = $("#katalaluan").val();
 
     var form = new FormData();
-    form.append("no_kad_pengenalan", no_kad_pengenalan);
     form.append("katalaluan", katalaluan);
+    if (passwordResetToken) {
+      form.append("reset_token", passwordResetToken);
+    }
 
     // console.log(nama_user)
     var settings = {

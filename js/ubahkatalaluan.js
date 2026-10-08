@@ -19,7 +19,7 @@ $("#katalaluansemasa").change(function () {
     timeout: 0,
     processData: false,
     headers: {
-        Authorization: window.sessionStorage.token
+        Authorization: "Bearer " + window.sessionStorage.token
     },
     contentType: false,
     data: form,

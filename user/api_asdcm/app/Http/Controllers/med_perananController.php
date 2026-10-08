@@ -58,7 +58,9 @@ class med_perananController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_peranan');
 
-        $peranan = med_peranan::where('id_peranan',$id)->first();
+        $peranan = med_peranan::where('id_peranan',$id)->first([
+            'id_peranan', 'nama_peranan', 'FK_submodul', 'FK_capaian', 'statusrekod',
+        ]);
 
         if ($peranan)   {
             return response()->json([
@@ -70,7 +72,9 @@ class med_perananController extends Controller
     }
 
     public function list()  {
-        $peranan = med_peranan::where('med_peranan.statusrekod','1') -> get(); // list all data
+        $peranan = med_peranan::where('med_peranan.statusrekod','1')->get([
+            'id_peranan', 'nama_peranan', 'FK_submodul', 'FK_capaian',
+        ]);
 
         if ($peranan)   {
             return response()->json([

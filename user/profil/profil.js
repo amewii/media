@@ -153,7 +153,7 @@ $("#update").on("submit", function (e) {
       url: host + "usersEditProfile",
       method: "POST",
       headers: {
-        'Authorization' : window.sessionStorage.token
+        'Authorization' : 'Bearer ' + window.sessionStorage.token
       },
       timeout: 0,
       processData: false,

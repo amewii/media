@@ -74,6 +74,8 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('cache');
+$app->configure('security');
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +89,8 @@ $app->configure('app');
 */
 
 $app->middleware([
-    App\Http\Middleware\ExampleMiddleware::class,
+    App\Http\Middleware\SanitizeApiResponse::class,
+    App\Http\Middleware\SecurityHeaders::class,
     // Illuminate\Cookie\Middleware\EncryptCookies,
     // Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse,
     // Illuminate\Session\Middleware\StartSession,
@@ -95,8 +98,9 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'public' => App\Http\Middleware\public_auth::class,
     'auth' => App\Http\Middleware\Authenticate::class,
+    'admin' => App\Http\Middleware\EnsureAdministrator::class,
+    'auth.throttle' => App\Http\Middleware\AuthenticationThrottle::class,
 ]);
 
 /*
@@ -111,6 +115,8 @@ $app->routeMiddleware([
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+$app->register(Illuminate\Cache\CacheServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 

@@ -51,7 +51,10 @@ class med_kategoriprogramController extends Controller
     public function show(Request $request)  {
         $id = $request->input('id_kategoriprogram');
 
-        $med_kategoriprogram = med_kategoriprogram::where('id_kategoriprogram',$id)->first();
+        $med_kategoriprogram = med_kategoriprogram::where('id_kategoriprogram',$id)->first([
+            'id_kategoriprogram', 'kod_kategori', 'nama_kategori', 'bilangan_fail',
+            'kod_format', 'flag_kod_format', 'saiz_fail', 'statusrekod',
+        ]);
 
         if ($med_kategoriprogram)   {
             return response()->json([
@@ -63,7 +66,10 @@ class med_kategoriprogramController extends Controller
     }
 
     public function list()  {
-        $med_kategoriprogram = med_kategoriprogram::where('.statusrekod','1') -> get(); // list all data
+        $med_kategoriprogram = med_kategoriprogram::where('statusrekod','1')->get([
+            'id_kategoriprogram', 'kod_kategori', 'nama_kategori', 'bilangan_fail',
+            'kod_format', 'flag_kod_format', 'saiz_fail',
+        ]);
 
         if ($med_kategoriprogram)   {
             return response()->json([
@@ -76,7 +82,10 @@ class med_kategoriprogramController extends Controller
     }
 
     public function listall()  {
-        $med_kategoriprogram = med_kategoriprogram::get(); // list all data
+        $med_kategoriprogram = med_kategoriprogram::get([
+            'id_kategoriprogram', 'kod_kategori', 'nama_kategori', 'bilangan_fail',
+            'kod_format', 'flag_kod_format', 'saiz_fail', 'statusrekod',
+        ]);
 
         if ($med_kategoriprogram)   {
             return response()->json([
@@ -125,7 +134,8 @@ class med_kategoriprogramController extends Controller
     public function delete(Request $request)    {
         $id = $request->input('id_kategoriprogram');
 
-        $med_kategoriprogram_search = med_kategoriprogram::where('id_kategoriprogram',$id) -> first(); 
+        $med_kategoriprogram_search = med_kategoriprogram::where('id_kategoriprogram',$id)
+            ->first(['id_kategoriprogram', 'statusrekod']);
 
         switch($med_kategoriprogram_search->statusrekod)    {
             case 0: $med_kategoriprogram = med_kategoriprogram::where('id_kategoriprogram',$id) -> update([
@@ -138,7 +148,10 @@ class med_kategoriprogramController extends Controller
                     break;
         }
         
-        $med_kategoriprogram_search = med_kategoriprogram::where('id_kategoriprogram',$id) -> first(); 
+        $med_kategoriprogram_search = med_kategoriprogram::where('id_kategoriprogram',$id)->first([
+            'id_kategoriprogram', 'kod_kategori', 'nama_kategori', 'bilangan_fail',
+            'kod_format', 'flag_kod_format', 'saiz_fail', 'statusrekod',
+        ]);
         
         if ($med_kategoriprogram)  {
             return response()->json([
