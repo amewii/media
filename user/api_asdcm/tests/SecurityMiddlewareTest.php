@@ -44,6 +44,18 @@ class SecurityMiddlewareTest extends TestCase
         $this->assertNotContains('admin', $applications->getMiddlewareForMethod('register'));
     }
 
+    public function testAdministratorPolicyKeepsLegacySuperadminAccessWithoutRelaxingOtherRoles(): void
+    {
+        $policy = new App\Security\AdministratorAccess();
+
+        $this->assertTrue($policy->allowsAssignment(1, '0', '1'));
+        $this->assertTrue($policy->allowsAssignment(1, '1', '1'));
+        $this->assertTrue($policy->allowsAssignment(2, '1', '1'));
+        $this->assertFalse($policy->allowsAssignment(2, '0', '1'));
+        $this->assertFalse($policy->allowsAssignment(3, '0', '1'));
+        $this->assertFalse($policy->allowsAssignment(1, '0', '0'));
+    }
+
     public function testLoginThrottleUsesSeparateIpAndPathCounters(): void
     {
         $middleware = $this->app->make(App\Http\Middleware\AuthenticationThrottle::class);

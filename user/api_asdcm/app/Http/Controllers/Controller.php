@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\med_capaian;
+use App\Security\AdministratorAccess;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
@@ -88,9 +88,6 @@ class Controller extends BaseController
             return false;
         }
 
-        return med_capaian::query()
-            ->where('FK_users', $user->id_users)
-            ->where('statusrekod', '1')
-            ->exists();
+        return app(AdministratorAccess::class)->allows($user);
     }
 }

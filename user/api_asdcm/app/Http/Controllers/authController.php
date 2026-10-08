@@ -11,6 +11,7 @@ use App\Models\med_users;
 use App\Models\med_tetapan;
 use Illuminate\Support\Facades\Queue;
 use App\Security\AccessToken;
+use App\Security\AdministratorAccess;
 use App\Security\PasswordResetToken;
 use App\Security\Passwords;
 
@@ -18,6 +19,7 @@ class authController extends Controller
 {
     public function __construct(
         private AccessToken $accessToken,
+        private AdministratorAccess $administratorAccess,
         private PasswordResetToken $passwordResetToken,
         private Passwords $passwords
     )
@@ -120,14 +122,16 @@ class authController extends Controller
     public function login(Request $request){
         $no_kad_pengenalan = (string) $request->input('no_kad_pengenalan');
         $katalaluan = (string) $request->input('katalaluan');
-        $userS = med_users::join('med_capaian', 'med_capaian.FK_users', '=', 'med_users.id_users')
+        $userS = med_users::query()
             ->where('med_users.no_kad_pengenalan', $no_kad_pengenalan)
             ->where('med_users.FK_jenis_pengguna', '1')
             ->first([
                 'med_users.id_users',
                 'med_users.katalaluan',
+                'med_users.FK_jenis_pengguna',
+                'med_users.statusrekod',
             ]);
-        if($userS){
+        if($userS && $this->administratorAccess->allows($userS)){
             if ($this->passwords->verify($katalaluan, (string) $userS->katalaluan)) {
                 $this->upgradePasswordIfNeeded($userS, $katalaluan);
                 $token = $this->getToken($userS->id_users);

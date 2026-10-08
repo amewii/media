@@ -2,20 +2,20 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\med_capaian;
+use App\Security\AdministratorAccess;
 use Closure;
 
 class EnsureAdministrator
 {
+    public function __construct(private AdministratorAccess $administratorAccess)
+    {
+    }
+
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        $isAdministrator = $user && med_capaian::query()
-            ->where('FK_users', $user->id_users)
-            ->where('statusrekod', '1')
-            ->exists();
 
-        if (!$isAdministrator) {
+        if (!$this->administratorAccess->allows($user)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Forbidden.',
