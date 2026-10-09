@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Security\ApiResponseMessage;
 use Closure;
 use Illuminate\Http\JsonResponse;
 
@@ -38,14 +39,50 @@ class SanitizeApiResponse
         }
 
         $payload = $response->getData(true);
-        if (is_array($payload) && array_key_exists('data', $payload)) {
+        if (!is_array($payload)) {
+            return $response;
+        }
+
+        if ($this->isFailure($payload, $response->getStatusCode())) {
+            $message = ApiResponseMessage::forFailure($request, $response->getStatusCode());
+
+            unset(
+                $payload['errors'],
+                $payload['error'],
+                $payload['exception'],
+                $payload['trace'],
+                $payload['file'],
+                $payload['line'],
+                $payload['token']
+            );
+
+            $payload['message'] = $message;
+            if (array_key_exists('messages', $payload)) {
+                $payload['messages'] = $message;
+            }
+            $payload['data'] = $message;
+        } elseif (array_key_exists('data', $payload)) {
             // Authentication tokens at the response root are intentional.
             // Database attributes nested under data are never allowed through.
             $payload['data'] = $this->sanitize($payload['data']);
-            $response->setData($payload);
         }
 
+        $response->setData($payload);
+
         return $response;
+    }
+
+    private function isFailure(array $payload, int $status): bool
+    {
+        if ($status >= 400) {
+            return true;
+        }
+
+        if (!array_key_exists('success', $payload)) {
+            return false;
+        }
+
+        return filter_var($payload['success'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== true;
     }
 
     private function sanitize($value)

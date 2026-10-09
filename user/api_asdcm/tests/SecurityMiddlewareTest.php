@@ -131,7 +131,7 @@ class SecurityMiddlewareTest extends TestCase
         $this->assertResponseStatus(401);
         $this->seeJson([
             'success' => false,
-            'message' => 'Unauthenticated.',
+            'message' => 'Permintaan tidak dapat diproses.',
         ]);
         $this->assertSame('Bearer', $this->response->headers->get('WWW-Authenticate'));
     }
@@ -187,6 +187,53 @@ class SecurityMiddlewareTest extends TestCase
         $this->assertArrayNotHasKey('mail_password', $payload['data']);
         $this->assertArrayNotHasKey('created_by', $payload['data']);
         $this->assertArrayNotHasKey('password', $payload['data']['nested']);
+    }
+
+    public function testFailedLoginUsesTheSameGenericMessageAndRemovesDetails(): void
+    {
+        $middleware = new App\Http\Middleware\SanitizeApiResponse();
+        $request = Illuminate\Http\Request::create('/loginUser', 'POST');
+        $next = static fn () => response()->json([
+            'success' => false,
+            'messages' => 'Katalaluan salah',
+            'message' => 'Pengguna dijumpai tetapi katalaluan salah',
+            'data' => 'Katalaluan salah',
+            'errors' => ['katalaluan' => ['Tidak tepat']],
+            'token' => false,
+        ], 401);
+
+        $response = $middleware->handle($request, $next);
+        $payload = json_decode($response->getContent(), true);
+        $generic = 'Kombinasi No. Kad Pengenalan dan katalaluan tidak tepat.';
+
+        $this->assertSame($generic, $payload['message']);
+        $this->assertSame($generic, $payload['messages']);
+        $this->assertSame($generic, $payload['data']);
+        $this->assertArrayNotHasKey('errors', $payload);
+        $this->assertArrayNotHasKey('token', $payload);
+    }
+
+    public function testAllOtherApiFailuresRemoveValidationAndExceptionDetails(): void
+    {
+        $middleware = new App\Http\Middleware\SanitizeApiResponse();
+        $request = Illuminate\Http\Request::create('/usersRegister', 'POST');
+        $next = static fn () => response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => ['no_kad_pengenalan' => ['Already exists']],
+            'exception' => 'Database exception',
+            'trace' => ['internal call'],
+        ], 422);
+
+        $response = $middleware->handle($request, $next);
+        $payload = json_decode($response->getContent(), true);
+        $generic = 'Maklumat yang diberikan tidak dapat diproses.';
+
+        $this->assertSame($generic, $payload['message']);
+        $this->assertSame($generic, $payload['data']);
+        $this->assertArrayNotHasKey('errors', $payload);
+        $this->assertArrayNotHasKey('exception', $payload);
+        $this->assertArrayNotHasKey('trace', $payload);
     }
 
     public function testSensitiveModelAttributesAreHiddenBeforeMiddlewareRuns(): void

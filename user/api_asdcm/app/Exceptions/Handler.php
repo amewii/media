@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Security\ApiResponseMessage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
@@ -51,14 +52,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof MethodNotAllowedHttpException) {
-            return view('errors.405');
+        $status = 500;
+
+        if ($exception instanceof ValidationException) {
+            $status = 422;
+        } elseif ($exception instanceof AuthorizationException) {
+            $status = 403;
+        } elseif ($exception instanceof HttpException) {
+            $status = $exception->getStatusCode();
+        } elseif ($exception instanceof ModelNotFoundException) {
+            $status = 404;
         }
 
-        if ($exception instanceof NotFoundHttpException) {
-            return view('errors.404');
-        }
+        $message = ApiResponseMessage::forFailure($request, $status);
 
-        return parent::render($request, $exception);
+        return response()->json([
+            'success' => false,
+            'message' => $message,
+            'data' => $message,
+        ], $status);
     }
 }
